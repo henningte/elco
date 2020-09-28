@@ -1,5 +1,5 @@
 Package: elco
-Title: Handling data on chemical element contents
+Title: Handling data on chemical element contents and isotope signatures.
 Version: 0.0.0.9000
 Authors@R: c(
     person(given = "Henning", family = "Teickner", role = c("aut", "cre"), email = "henning.teickner@wwu.de"),
