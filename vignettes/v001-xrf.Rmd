@@ -1,0 +1,80 @@
+---
+title: "Reformatting and checking raw data (csv files) from the X-ray fluorescence device (ZSX Primus II, Rigaku)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{v002-reformat-xrf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# packages
+library(sop)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(magrittr)
+```
+
+# Introduction
+
+This vignette shows how to
+
+1. Import raw data files (csv files) as exported from the X-ray fluorescence device in the lab (ZSX Primus II, Rigaku).
+
+2. Reformat the data to get a tidy `data.frame`.
+
+3. Check the data via plots.
+
+4. Export the data and metadata as csv files in the tidy format.
+
+## Data import and reformatting
+
+Data import and reformatting are done with function `elco:elco_xrf_import_csv`:
+
+```{r data-import}
+# get names of files to import
+files <- list.files("./../inst/extdata/xrf/", full.names = TRUE)
+
+# data import
+d <- elco::elco_xrf_import_csv(files = files)
+```
+
+## Data checks
+
+To check the data, a plot is created for each measured variable and sample and points for which the calibration range was exceeded are colored.
+
+```{r plot-check, fig.width=20, fig.height=7 * nrow(d)/50, out.width="200%"}
+# plot for checking
+plot(d)
+```
+
+## Data export
+
+To export the data, use `elco::elco_xrf_export_csv`.
+
+```{r data-export}
+d <- elco::elco_xrf_export_csv(d, file = "./xrf_export.csv")
+```
+
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This Rmarkdown template is licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+Title: Reformatting and checking raw data (csv files) from the X-ray fluorescence device (ZSX Primus II, Rigaku) <br>
+Author: Henning Teickner <br>
+Date: 2020-08-05 <br>
+
+## Session Info
+```{r session-info}
+sessionInfo()
+```
+
+

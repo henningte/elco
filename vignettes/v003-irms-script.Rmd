@@ -1,0 +1,227 @@
+---
+title: "project: eb..."
+author: "your name"
+output: bookdown::html_document2
+---
+
+```{r, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = "center"
+)
+```
+
+```{r setup}
+# packages
+library(elco)
+library(magrittr)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+# Introduction
+
+This is the script to (1) import and check raw EA-IRMS data, and (2) perform correction of raw measured EA-IRMS data (correction of isotope signatures and element contents) in case of signal area mismatches between standards and samples.
+
+## Data import and reformatting
+
+```{r data-import}
+# data import
+d <- 
+  list.files("./../inst/extdata/irms/", full.names = TRUE) %>% # "./../data/raw_data/irms/"
+  elco::elco_irms_import_csv()
+```
+
+## Checks
+
+### Compare signal areas of standards and samples
+
+If the signal area for the samples differs clearly from those of the standards, especially BBOT_CN., it is very likely that there is a bias in the measured isotope signatures and element contents.
+
+```{r checks-signal, fig.width=6, fig.height=5, fig.cap="Signal areas of the EA-IRMS chromatograms for all samples and the different standards. Numbered rows represent different imported files and columns contain the data for the two different peaks (<sup>13</sup>C and <sup>15</sup>N).", echo=FALSE}
+d %>%
+  dplyr::mutate(
+    standard = purrr::map_lgl(d$sample_label, function(x) x %in% elco::irms_standards$standard_name),
+    sample_label = factor(ifelse(standard, sample_label, "Sample"), levels = c(elco::irms_standards$standard_name, "Sample"))
+  ) %>%
+  tidyr::pivot_longer(cols = dplyr::all_of(c("13C_area", "15N_area")),
+                      names_to = "isotope",
+                      values_to = "signal_area") %>%
+  ggplot(aes(x = sample_label, y = signal_area)) +
+  geom_point() + 
+  facet_grid(file_id ~ isotope, scales = "free_x") +
+  coord_flip() +
+  scale_y_log10() +
+  labs(x = "Signal area", y = "Standard/sample")
+```
+
+### Isotope signatures of standards
+
+If there is a large difference between the median measured isotope signature and the known isotope signature for a standard, (especially one with similar signal area, see the previous plot), it is very likely that isotope signatures of samples are biased, too.
+
+```{r checks-isotopes-standards, fig.width=6, fig.height=5, fig.cap="Isotope signatures [&delta;&#8240;] for all standards. Numbered rows represent different imported files and columns contain the data for the two different isotopes (<sup>13</sup>C and <sup>15</sup>N). The red points are the respective known true isotope signatures for each standard and isotope.", echo=FALSE}
+  d %>%
+  elco::elco_irms_extract_standards() %>%
+  tidyr::pivot_longer(cols = dplyr::all_of(c("13C", "15N")),
+                      names_to = "isotope",
+                      values_to = "isotope_signature") %>%
+  ggplot(aes(x = sample_label, y = isotope_signature)) +
+  geom_boxplot() +
+  geom_point(data = elco::irms_standards %>%
+               dplyr::rename(sample_label = standard_name) %>% 
+               tidyr::pivot_longer(cols = dplyr::all_of(c("13C", "15N")),
+                                   names_to = "isotope",
+                                   values_to = "isotope_signature"), 
+             mapping =  aes(x = sample_label, y = isotope_signature),
+             colour = "red") +
+  facet_grid(file_id ~ isotope, scales = "free_x") +
+  coord_flip() +
+  labs(y = expression(Isotope~"signature ["*delta*"\u2030]"),
+       x = "Standards")
+```
+
+### Isotope signatures of standards over time
+
+If there is a trend visible, the heurisitic procedure used for the correction of isotope signatures (see below) may not provide the "best" correction because it does not consider this trend, but simply substracts the median isotope signature of a certain standard.
+
+```{r checks-isotopes-standards-time, fig.width=6, fig.height=5, fig.cap="Isotope signatures [&delta;&#8240;] for all standards over the time of measurement. Different panels show the data for different isotopes (<sup>13</sup>C and <sup>15</sup>N) and different files (indicated by numbers). Points are the measured values and solid lines are lines of a fitted regression model (to make trends more visible). Different colours represent different standards. Dashed horizontal lines represent the known true isotope signatures of the standards.", echo=FALSE}
+  d %>%
+  elco::elco_irms_extract_standards() %>%
+  tidyr::pivot_longer(cols = dplyr::all_of(c("13C", "15N")),
+                      names_to = "isotope",
+                      values_to = "isotope_signature") %>%
+  ggplot(aes(x = time, y = isotope_signature, colour = sample_label)) +
+  geom_hline(data = elco::irms_standards %>%
+               dplyr::rename(sample_label = standard_name) %>% 
+               tidyr::pivot_longer(cols = dplyr::all_of(c("13C", "15N")),
+                                   names_to = "isotope",
+                                   values_to = "isotope_signature"), 
+             mapping =  aes(yintercept = isotope_signature, colour = sample_label),
+             linetype = 2) +
+  geom_smooth(se = FALSE, method = "lm") +
+  geom_point() +
+  facet_wrap(isotope ~ file_id, scales = "free") +
+  labs(y = expression(Isotope~"signature ["*delta*"\u2030]"),
+       x = "Time") +
+  guides(colour = guide_legend(title = "Standard")) +
+  theme(legend.position = "bottom")
+
+```
+
+### Element contents of standards
+
+If there is a large difference between the median measured element content and the known element content for a standard, (especially one with similar signal area, see the previous plot), it is very likely that isotope signatures of samples are biased, too.
+
+```{r checks-elco-standards, fig.width=6, fig.height=5, fig.cap="Element contents [mass fraction; unitless] for all standards. Numbered rows represent different imported files and columns contain the data for the two different chemical elements (C and N). The red points are the respective known true element contents for each standard and cemical element.", echo=FALSE}
+d %>%
+  elco::elco_irms_extract_standards() %>%
+  dplyr::mutate(
+    C = elco::drop_elco(C),
+    N = elco::drop_elco(N),
+  ) %>%
+  tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
+                      names_to = "element",
+                      values_to = "mass_fraction") %>%
+  ggplot(aes(x = sample_label, y = as.numeric(mass_fraction))) +
+  geom_boxplot() +
+  geom_point(data = elco::irms_standards %>%
+               dplyr::rename(sample_label = standard_name) %>% 
+               dplyr::mutate(
+                 C = elco::drop_elco(C),
+                 N = elco::drop_elco(N),
+               ) %>%
+               tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
+                                   names_to = "element",
+                                   values_to = "mass_fraction"), 
+             mapping =  aes(x = sample_label, y = as.numeric(mass_fraction)),
+             colour = "red") +
+  facet_grid(file_id ~ element, scales = "free_x") +
+  coord_flip() +
+  labs(y = "Mass fraction",
+       x = "Standards")
+```
+### Element contents of standards over time
+
+If there is a trend visible, the heurisitic procedure used for the correction of isotope signatures (see below) may not provide the "best" correction because it does not consider this trend, but simply substracts the median isotope signature of a certain standard.
+
+```{r checks-elco-standards-time, fig.width=6, fig.height=5, fig.cap="Element contents [mass fraction; unitless] for all standards over the time of measurement. Different panels show the data for different chemical elements (C and N) and different files (indicated by numbers). Points are the measured values and solid lines are lines of a fitted regression model (to make trends more visible). Different colours represent different standards. Dashed horizontal lines represent the known true element contents of the standards.", echo=FALSE}
+  d %>%
+  elco::elco_irms_extract_standards() %>%
+  dplyr::mutate(
+    C = elco::drop_elco(C),
+    N = elco::drop_elco(N),
+  ) %>%
+  tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
+                      names_to = "element",
+                      values_to = "mass_fraction") %>%
+  ggplot(aes(x = time, y = as.numeric(mass_fraction), colour = sample_label)) +
+  geom_hline(data = elco::irms_standards %>%
+               dplyr::rename(sample_label = standard_name) %>% 
+               dplyr::mutate(
+                 C = elco::drop_elco(C),
+                 N = elco::drop_elco(N),
+               ) %>%
+               tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
+                                   names_to = "element",
+                                   values_to = "mass_fraction"), 
+             mapping =  aes(yintercept = as.numeric(mass_fraction), colour = sample_label),
+             linetype = 2) +
+  geom_smooth(se = FALSE, method = "lm") +
+  geom_point() +
+  facet_wrap(element ~ file_id, scales = "free") +
+  labs(y = "Mass fraction",
+       x = "Time") +
+  guides(colour = guide_legend(title = "Standard")) +
+  theme(legend.position = "bottom")
+
+```
+
+
+## Corrections
+
+### Isotope signatures
+
+Correction of the $^{13}$C isotope signatures. The corrected values for the standards (especially those with a similar signal area as the samples) should match their known true values. 
+
+```{r corrections-isotopes-13C, fig.width=6, fig.height=5, fig.cap=c("Isotope signatures for <sup>13</sup>C [&delta;&#8240;] for all standards before and after correction. Black points represent the known true isotope signatures of the standards.", "Isotope signatures for <sup>13</sup>C [&delta;&#8240;] for all standards and samples before and after correction. Black points represent the known true isotope signatures of the standards."), echo=TRUE}
+d %<>%
+  elco::elco_irms_correct_isotopes(isotope = "13C", t = 5, by_file = TRUE, plotit = TRUE)
+```
+
+Correction of the $^{15}$N isotope signatures. The corrected values for the standards (especially thos with a similar signal area as the samples) should match their known true values. 
+
+```{r corrections-isotopes-15N, fig.width=6, fig.height=5, fig.cap=c("Isotope signatures for <sup>15</sup>N [&delta;&#8240;] for all standards before and after correction. Black points represent the known true isotope signatures of the standards. Different point shapes indicate the standard that was used as reference during the correction procedure for each sample.", "Isotope signatures for <sup>15</sup>N [&delta;&#8240;] for all standards and samples before and after correction. Black points represent the known true isotope signatures of the standards. Different point shapes indicate the standard that was used as reference during the correction procedure for each sample."), echo=TRUE}
+d %<>%
+  elco::elco_irms_correct_isotopes(isotope = "15N", t = 5, by_file = TRUE, plotit = TRUE)
+```
+
+### Element contents
+
+Correction of the C content.
+
+```{r corrections-elco-C, fig.width=6, fig.height=5, fig.cap=c("Relative mass fractions of C [mass-%] as these were originally measured (y axis) and after the correction procedure (x axis) for all samples and files. Different colours represent different standards and the samples. The black line is the identity line. Points on the identity line are not affected by the correction. Points below the identity line were underestimated and points above the identity line were overestimated. Horizontal and vertical coloured line segments mark the known true isotope signatures of the standards.", purrr::map_chr(unique(d$file_id), function(x) paste0("Regression line for file ", x, ", for the absolute sample mass of C [mg] in dependency of the respective signal area. Points are the measured values. Different colours represent different standards. The black line is the fitted regression line."))), echo=TRUE}
+d %<>%
+  elco::elco_irms_correct_elements(element = "C", 
+                                   standards = elco::irms_standards$standard_name, 
+                                   by_file = TRUE, 
+                                   plotit = TRUE)
+```
+
+Correction of the N content
+
+```{r corrections-elco-N, fig.width=6, fig.height=5, fig.cap=c("Relative mass fractions of N [mass-%] as these were originally measured (y axis) and after the correction procedure (x axis) for all samples and files. Different colours represent different standards and the samples. The black line is the identity line. Points on the identity line are not affected by the correction. Points below the identity line were underestimated and points above the identity line were overestimated. Horizontal and vertical coloured line segments mark the known true isotope signatures of the standards.", purrr::map_chr(unique(d$file_id), function(x) paste0("Regression line for file ", x, ", for the absolute sample mass of N [mg] in dependency of the respective signal area. Points are the measured values. Different colours represent different standards. The black line is the fitted regression line."))), echo=TRUE}
+d %<>%
+  elco::elco_irms_correct_elements(element = "N", 
+                                   standards = elco::irms_standards$standard_name, 
+                                   by_file = TRUE, 
+                                   plotit = TRUE)
+```
+
+# Session info
+
+```{r session-info}
+sessionInfo()
+```
+
