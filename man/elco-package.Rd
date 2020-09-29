@@ -4,10 +4,10 @@
 \name{elco-package}
 \alias{elco}
 \alias{elco-package}
-\title{elco: Handling data on chemical element contents}
+\title{elco: Handling data on chemical element contents and isotope signatures.}
 \description{
 elco provides functions to read in raw data on element contents
-    from X-ray fluorescence (XRF), thermal element analysis (TEA), and isotope ratio
+    from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio
     mass spectromtery (IRMS), handling these as data.frames with units, and
     computing simple derived variables, such as element ratios.
 }

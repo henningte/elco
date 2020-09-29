@@ -5,7 +5,7 @@ Authors@R: c(
     person(given = "Henning", family = "Teickner", role = c("aut", "cre"), email = "henning.teickner@wwu.de"),
     person(given = "Klaus-Holger", family = "Knorr", role = c("aut"), email = "kh.knorrr@wwu.de"))
 Description: elco provides functions to read in raw data on element contents
-    from X-ray fluorescence (XRF), thermal element analysis (TEA), and isotope ratio
+    from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio
     mass spectromtery (IRMS), handling these as data.frames with units, and
     computing simple derived variables, such as element ratios.
 License: GPL-3
@@ -20,7 +20,8 @@ Imports:
     lubridate,
     data.table,
     PeriodicTable,
-    vctrs
+    vctrs,
+    Rdpack
 RoxygenNote: 7.1.0
 Suggests: 
     knitr,
@@ -32,3 +33,5 @@ Depends:
     quantities,
     errors,
     units
+RdMacros: 
+    Rdpack
