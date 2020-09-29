@@ -136,7 +136,7 @@ elco_irms_correct_elements <- function(x,
   # plot
   if(plotit) {
 
-    is_standard <- ifelse(x_or$sample_label %in% irms_standards$standard_name, x_or$sample_label, "Sample")
+    is_standard <- ifelse(x_or$sample_label %in% irms_standards$standard_name, x_or$sample_label, ifelse(x_or$sample_label == "bla", "Blank", "Sample"))
 
     # measured vs fitted values
     p1 <-
@@ -168,9 +168,11 @@ elco_irms_correct_elements <- function(x,
 
     # regression models
     purrr::map(x_standards, function(y) {
-      p2 <-ggplot(y, aes(y = as.numeric(element_m_abs), x = !!delement_area)) +
+      p2 <-
+        ggplot(y, aes(y = as.numeric(element_m_abs), x = !!delement_area)) +
         geom_smooth(method = "lm", se = FALSE, colour = "dimgrey") +
         geom_point(aes(colour = sample_label)) +
+        geom_rug(data = x[is_standard == "Sample" & x$file_id == y$file_id[[1]], ], aes(y = as.numeric(C)/as.numeric(sample_mass), x = !!delement_area), sides="b") +
         labs(y = paste0("Absolute ", element, " mass [mg]"),
              x = "Signal area",
              title = paste0("Element: ", element,", File: ", y$file_id[[1]])) +
