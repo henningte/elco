@@ -6,6 +6,8 @@
 \usage{
 elco_irms_correct_isotopes(
   x,
+  ref = irms_standards[irms_standards$standard_name == "BBOT_CN.", ],
+  check = irms_standards,
   isotope = "13C",
   t = 5,
   by_file = TRUE,
@@ -14,6 +16,15 @@ elco_irms_correct_isotopes(
 }
 \arguments{
 \item{x}{An object of class \code{\link[elco:elco_new_irms]{irms}}.}
+
+\item{ref}{A \code{data.frame} with the same format as \code{\link[elco:irms_standards]{irms_standards}}
+and exactly one row. \code{ref} contains the data for the standard to use for the correction.}
+
+\item{check}{A \code{data.frame} with the same format as \code{\link[elco:irms_standards]{irms_standards}}.
+\code{check} contains data for standards with which to check the correction. If the median of their
+corrected isotope signature values deviates (absolutely) by more than a threshold value as defined by
+\code{check$threshold_13C} or \code{check$threshold_15N} (depending on the value of \code{isotope}), a
+warning will be printed. Can alternatively be set to \code{NULL}, in which case no warning is printed.}
 
 \item{isotope}{A character value representing the isotope for which to correct isotope signatures.
 This must be one of "13C" or "15N".}
@@ -37,16 +48,17 @@ files are batch-processed, using either standards from all files or only from th
 sample is located in.
 The procedure is as follows:
 \enumerate{
-  \item For each standard, compute the median isotope signature and median signal area for the respective isotope.
-  The median is used instead of an
-  average to prevent potential outliers from having too large an effect.
-  \item For each standard, record the number of measurements. This is used to exclude using standards
-  as reference with too few measurmements since these will have large uncertainties in their estimated
-  median. From the list of standards, discard all with <t measurements, where t is an integer value >1.
-  \item For each sample (including the measured standards), compute the absolute difference in the signal area for the respective isotope to all
-  standards' median signal area values. Record for each sample the standard with the least absolute difference.
-  \item Look up the known reference isotope signatures for each assigned standard and substract this value
-  from the measured value.
+  \item For a standard defined by the user, compute the median of the individually measured isotope signals
+  for the selected isotope. The defined standard should be a trusted standard.
+  \item For the same standard, count the number of samples that have been measured. If this number is smaller
+  than a threshold \code{t}, print a warning. This is done to avoid that correction is done without enough
+  samples to reliably compute a median value.
+  \item Look up the known reference isotope signature for the selected standard. Compute the difference between
+  this value and the median of the isotope signature of the standard. Take this difference and substract it
+  from each measured value.
+  \item (Optionally): Extract the values of other standards after the correction, compute their medians, and
+  check if the absolute deviation from the reference value is larger than some threshold. Print a warning
+  if this is the case.
   \item (Optionally): create a plot showing uncorrected and corrected isotope signatures for all measured
   standards along their known reference values. This plot may be used as a visual check of the heuristic
   correction procedure.
