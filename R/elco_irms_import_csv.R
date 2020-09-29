@@ -1,4 +1,4 @@
-#' Reformats raw csv element analyzr isotope ratio mass spectrometry (EA-IRMS) data as exported by the vendor software.
+#' Reformats raw csv element analyzer isotope ratio mass spectrometry (EA-IRMS) data as exported by the vendor software.
 #'
 #' \code{elco_irms_import_csv} reads one or more csv files that contain raw element analyzer isotope ratio mass spectrometry
 #' (EA-IRMS) data as exported by the vendor software of the IRMS spectromter (___ todo) and tidys the

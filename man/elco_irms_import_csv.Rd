@@ -2,7 +2,7 @@
 % Please edit documentation in R/elco_irms_import_csv.R
 \name{elco_irms_import_csv}
 \alias{elco_irms_import_csv}
-\title{Reformats raw csv element analyzr isotope ratio mass spectrometry (EA-IRMS) data as exported by the vendor software.}
+\title{Reformats raw csv element analyzer isotope ratio mass spectrometry (EA-IRMS) data as exported by the vendor software.}
 \usage{
 elco_irms_import_csv(files)
 }
