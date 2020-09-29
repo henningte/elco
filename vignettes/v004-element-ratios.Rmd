@@ -1,5 +1,5 @@
 ---
-title: "v004-element-ratios"
+title: "Computation with element contents - unit conversion, element ratios, nominal oxidation state of carbon, oxidative ratio, and degree of unsaturation"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{v004-element-ratios}
