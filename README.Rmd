@@ -33,7 +33,7 @@ elco provides functions to handle and (rudimentary) analyse element content data
 
 5. Computation of the **nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)** [@Worrall.2016b].
 
-```{r, out.width="70%"}
+```{r, out.width="50%", fig.align='center', echo=FALSE}
 knitr::include_graphics("https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg")
 ```
 

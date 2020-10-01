@@ -27,13 +27,7 @@ content data and isotope signatur data. Fetures are:
     oxidative ratio (OR), and degree of unsaturation (DU)** (Worrall et
     al. 2016).
 
-<!-- end list -->
-
-``` r
-knitr::include_graphics("https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg")
-```
-
-<img src="https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg" width="70%" />
+<img src="https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg" width="50%" style="display: block; margin: auto;" />
 
 ### How to install
 
