@@ -1,5 +1,6 @@
 #' @importFrom rlang .data !!
 #' @importFrom stats predict
+#' @importFrom Rdpack reprompt
 #' @import errors
 #' @import quantities
 #' @import units

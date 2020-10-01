@@ -3,7 +3,9 @@ Title: Handling data on chemical element contents and isotope signatures.
 Version: 0.0.0.9000
 Authors@R: c(
     person(given = "Henning", family = "Teickner", role = c("aut", "cre"), email = "henning.teickner@wwu.de"),
-    person(given = "Klaus-Holger", family = "Knorr", role = c("aut"), email = "kh.knorrr@wwu.de"))
+    person(given = "Klaus-Holger", family = "Knorr", role = c("aut"), email = "kh.knorrr@wwu.de"),
+    person(given = "Tanja", family = "Broder", role = c("ctb")),
+    person(given = "Mariusz", family = "Gałka", role = c("ctb")))
 Description: elco provides functions to read in raw data on element contents
     from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio
     mass spectromtery (IRMS), handling these as data.frames with units, and

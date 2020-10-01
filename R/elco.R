@@ -165,6 +165,12 @@ errors.elco <- function(x) {
 
 #'
 #' @export
+`[.elco` <- function(x, ...) {
+  elco::elco_new_elco(NextMethod(), el_symbol = attr(x, "el_symbol"))
+}
+
+#'
+#' @export
 vec_restore.elco <- function(x, to, ...) {
   print(class(x))
   x_el_symbol <- attr(x, "el_symbol")

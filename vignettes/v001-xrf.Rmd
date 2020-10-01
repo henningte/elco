@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{v002-reformat-xrf}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: "./../inst/REFERENCES.bib"
 ---
 
 ```{r, include = FALSE}
@@ -72,9 +73,11 @@ Title: Reformatting and checking raw data (csv files) from the X-ray fluorescenc
 Author: Henning Teickner <br>
 Date: 2020-08-05 <br>
 
+**Data:** The data are licensed under the [CC-BY-SA-4.0 license](https://creativecommons.org/licenses/by-sa/4.0/deed.en). All data for elco were provided by @Gaka.2019.
+
 ## Session Info
 ```{r session-info}
 sessionInfo()
 ```
 
-
+## References

@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: "./inst/REFERENCES.bib"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -32,9 +33,94 @@ elco provides functions to handle and (rudimentary) analyse element content data
 
 5. Computation of the **nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)** [@Worrall.2016b].
 
+```{r, out.width="70%"}
+knitr::include_graphics("https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg")
+```
+
+### How to install
+
+elco can be installed from GitHub:
+
+```{r, eval = FALSE}
+remotes::install_github("henningte/elco")
+```
+
 ### How to use
 
-Examples will be provided here as soon as sample data is available.
+Here is a short overview on elco general-purpose capabilities (handling element content ratios). Examples of how to import and correct data are not described here, but in the vignettes.
+
+Required packages
+```{r, mesage = FALSE, warning=FALSE}
+library(elco) # load elco
+library(dplyr)
+library(quantities)
+library(magrittr)
+```
+
+
+First, we have a short look at the sample data and its structure:
+```{r}
+d <- elco::chno
+d
+```
+
+Contents for one element are stored in a numeric vector. Measurement units and errors are tracked using the [quantities](https://github.com/r-quantities/quantities) package. elco adds to this an identifier for the element:
+
+```{r}
+# show exemplary structure for the C content
+d$C
+```
+
+New elco objects can be defined with `elco_new_elco` (by providing a quantities object and an element symbol). For instance, this specifies two new C content values:
+
+```{r}
+x <- 
+  quantities::set_quantities(c(0.3, 0.43), unit = "g/g", errors = c(0.2, 0.12)) %>%
+  elco_new_elco(el_symbol = "C")
+x
+```
+
+elco supports unit conversion (using the functions of the quantities package and molar masses from [PeriodicTable](https://github.com/cran/PeriodicTable)):
+```{r}
+# g/g to mol
+x %>% 
+  elco_elco_convert(to = "mol", 
+                    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0))
+
+# g/g to mg
+x %>% 
+  elco_elco_convert(to = "mg", 
+                    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0))
+```
+
+... even with complete data.frames!
+```{r}
+# g/g to mol
+d %>% elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass)
+```
+
+elco helps computing element ratios:
+
+```{r}
+d %>%
+  elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass) %>%
+  dplyr::mutate(cn_molar = C/N,
+                ch_molar = C/H,
+                co_molar = C/O)
+```
+
+Finally, elco provides functions to compute the nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU) [@Worrall.2016b]
+
+```{r}
+d <- 
+  d %>%
+  elco::elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass) %>%
+  dplyr::mutate(
+    nosc = elco_nosc(C, H, N, O),
+    or = elco_or(C, H, N, O),
+    du = elco_du(C, H, N)
+  )
+```
 
 Further information can be found in the vignettes:
 
@@ -50,15 +136,23 @@ Please cite this compendium as:
 
 > Teickner, H. and Knorr, K.-H., (`r format(Sys.Date(), "%Y")`). _elco: Handling data on chemical element contents and isotope signatures._. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://github.com/henningte/elco>
 
+### Acknowledgments
+
+We thank @Gaka.2019 for the provision of test data.
+
 ### Licenses
 
 **Text and figures :**  [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/)
 
 **Code :** See the [DESCRIPTION](DESCRIPTION) file
 
-**Data :** [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en)
+**Data :** [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en). All external data (files "xrf1.csv", "xrf2.csv", "irms1.csv", and "irms2.csv") for elco were provided by @Gaka.2019. `elco::irms_standards` was collected from different data sources [@Coplen.2006; @IVAAnalysentechnikGmbHuCoKGt.2016] and own measurements (see the documentation for details). `elco::chno` was created by the package's authors.
 
 ### Contributions
 
 We welcome contributions from everyone. Before you get started, please see our [contributor guidelines](CONTRIBUTING.md). Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+### Sources
+
+All data for this package are from @Gaka.2019.
 

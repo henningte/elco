@@ -22,7 +22,10 @@ A data frame with 4 rows and 5 columns:
 }
 }
 \source{
-Coplen.2006
+\describe{
+  \item{IAEA 600}{\insertRef{Coplen.2006}{elco}}
+  \item{BBOT_CN., WFS}{\insertRef{IVAAnalysentechnikGmbHuCoKGt.2016}{elco}}
+}
 }
 \usage{
 irms_standards

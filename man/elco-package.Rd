@@ -19,5 +19,11 @@ Authors:
   \item Klaus-Holger Knorr \email{kh.knorrr@wwu.de}
 }
 
+Other contributors:
+\itemize{
+  \item Tanja Broder [contributor]
+  \item Mariusz Galka [contributor]
+}
+
 }
 \keyword{internal}

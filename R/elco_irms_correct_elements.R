@@ -111,7 +111,7 @@ elco_irms_correct_elements <- function(x,
 
   # compute absolute C mass contents
   x_standards <- purrr::map(x_standards, function(y) {
-    dplyr::mutate(y, element_m_abs = element_m * sample_mass)
+    dplyr::mutate(y, element_m_abs = element_m * errors::drop_errors(sample_mass))
   })
 
   # compute regression models

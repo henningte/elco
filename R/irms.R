@@ -20,7 +20,7 @@
 #'   \item{sample_label}{A character vector with names for the samples. If \code{measurmeent_type == "Sam"},
 #'   this is a label for the sample. If \code{measurement_type == "Ref"}, this is the name of the standard
 #'   as given in \code{\link[elco:irms_standards]{irms_standards}}}.
-#'   \item{sample_mass}{A units vector representing the mass of the sample [g].}
+#'   \item{sample_mass}{A quantities vector representing the mass of the sample [g] with measurmeent errors (these are set to 0 by default).}
 #'   \item{time}{A POSIXct vector with the date and time when the sample was measured.}
 #'   \item{file_name}{A character vector with the full path to the .RUN file containing the raw
 #'   data for the corresponding measurement.}
@@ -52,7 +52,7 @@ elco_new_irms <- function(x) {
     }
   }
   x <- x[, target_variables] # sort columns
-  target_variable_types <- c("integer", "integer", "character", "character", "units", "POSIXct",
+  target_variable_types <- c("integer", "integer", "character", "character", "quantities", "POSIXct",
                              "character", "numeric", "numeric", "numeric", "numeric", "numeric",
                              "elco", "elco")
   x_variable_types <- purrr::map_chr(x, function(x) class(x)[[1]])

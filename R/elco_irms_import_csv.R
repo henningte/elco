@@ -78,7 +78,7 @@ elco_irms_import_csv <- function(files) {
   d <- purrr::map(d, function(x) {
     dplyr::mutate(x,
                   "measurement_id" = as.integer(.data$measurement_id),
-                  "sample_mass" = units::set_units(as.numeric(.data$sample_mass), "mg"),
+                  "sample_mass" = quantities::set_quantities(as.numeric(.data$sample_mass), unit = "mg", errors = 0),
                   "15N_area" = as.numeric(.data$`15N_area`),
                   "15N" = as.numeric(.data$`15N`),
                   "13C_area" = as.numeric(.data$`13C_area`),

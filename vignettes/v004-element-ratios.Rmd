@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{v004-element-ratios}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: "./../inst/REFERENCES.bib"
 ---
 
 ```{r, include = FALSE}
@@ -34,32 +35,10 @@ This vignette shows how to:
 
 # Data
 
-Creation of toy data
+Load the example data (simulated CHNO content data and sample masses for five samples):
 
 ```{r data}
-# create toy data
-no = 5
-d <- 
-  tibble::tibble(
-    C = rbeta(no, shape1 = 1000, shape2 = 1000),
-    H = rbeta(no, shape1 = 1000, shape2 = 5000),
-    N = rbeta(no, shape1 = 1000, shape2 = 10000),
-    O = rbeta(no, shape1 = 1000, shape2 = 5000)
-  )
-
-# convert to class elco
-d <- 
-  d %>%
-  purrr::map_df(quantities::set_quantities, unit = "g/g", errors = 0) %>%
-  purrr::map2_df(colnames(d), function(x, y) elco::elco_new_elco(x, el_symbol = y))
-
-# add sample mass
-d <- 
-  d %>%
-  dplyr::mutate(sample_mass = quantities::set_quantities(
-    rnorm(no, mean = 4, sd = 0.3), 
-    unit = "mg", 
-    errors = rnorm(no, mean = 0, sd = 0.01)))
+d <- elco::chno
 ```
 
 # Unit conversion
@@ -149,7 +128,7 @@ plot(errors::drop_errors(d$cn_molar) ~ errors::drop_errors(d$co_molar))
 
 # C$_\textrm{ox}$, OR, and degree of unsaturation
 
-Functions `elco_nosc`, `elco_or`, and `elco_du` enable the computation of the C$_\textrm{ox}$, OR, and degree of unsaturation, respectively.
+Functions `elco_nosc`, `elco_or`, and `elco_du` enable the computation of the C$_\textrm{ox}$, OR, and degree of unsaturation, respectively [@Worrall.2016b].
 
 ```{r nosc1}
 # compute nosc, or, and du
@@ -179,3 +158,17 @@ with(d, elco_or(C, H, N, O))
 with(d, elco_du(C, H, N))
 ```
 
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This Rmarkdown template is licensed under the <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+Title: Computation with element contents - unit conversion, element ratios, nominal oxidation state of carbon, oxidative ratio, and degree of unsaturation <br>
+Author: Henning Teickner <br>
+Date: 2020-10-01 <br>
+
+## Session Info
+```{r session-info}
+sessionInfo()
+```
+
+## References
