@@ -205,32 +205,43 @@ elco_irms_correct_isotopes <- function(x,
     x_or$sample_label <- ifelse(x_or$sample_label %in% irms_standards$standard_name, x_or$sample_label, ifelse(x_or$sample_label == "bla", "Blank", "Sample"))
     x_or$signature_known[x_or$sample_label %in% c("Sample", "Blank")] <- NA_real_
 
+    if(by_file) {
+      x_or <- split(x_or, f = x_or$file_id)
+    } else {
+      x_or <- list(x_or)
+    }
+
+
     # plot (don't show blanks and samples because these often have such small values that checking for standards and samples gets impossible)
     print(
-      ggplot(dplyr::filter(x_or[x_or$sample_label != "Blank", ], sample_label != "Sample"), aes(x = sample_label)) +
-        geom_jitter(aes(y = !!disotope, colour = Corrected)) +
-        geom_point(data = irms_standards, aes(x = standard_name, y = !!disotope)) +
-        stat_boxplot(aes(y = !!disotope, colour = Corrected), fill = NA) +
-        geom_point(aes(x = sample_label, y = signature_known)) +
-        guides(colour = guide_legend(nrow = 2)) +
-        theme(legend.position = "bottom") +
-        labs(x = "Standards",
-             y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-             title = "Corrected and uncorrected isotope signatures")
-    )
-    # same plot as before, but now also with samples
-    print(
-      ggplot(x_or[x_or$sample_label != "Blank", ], aes(x = sample_label)) +
-        geom_jitter(aes(y = !!disotope, colour = Corrected)) +
-        stat_boxplot(aes(y = !!disotope, colour = Corrected), fill = NA) +
-        geom_point(aes(x = sample_label, y = signature_known)) +
-        guides(colour = guide_legend(nrow = 2)) +
-        theme(legend.position = "bottom") +
-        labs(x = "Standards and Samples",
-             y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-             title = "Corrected and uncorrected isotope signatures")
+      purrr::map(x_or, function(y) {
+        ggplot(dplyr::filter(y[y$sample_label != "Blank", ], sample_label != "Sample"), aes(x = sample_label)) +
+          geom_jitter(aes(y = !!disotope, colour = Corrected)) +
+          geom_point(data = irms_standards, aes(x = standard_name, y = !!disotope)) +
+          stat_boxplot(aes(y = !!disotope, colour = Corrected), fill = NA) +
+          geom_point(aes(x = sample_label, y = signature_known)) +
+          guides(colour = guide_legend(nrow = 2)) +
+          theme(legend.position = "bottom") +
+          labs(x = "Standards",
+               y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
+               title = paste0("File id: ", y$file_id[[1]], ", Corrected and uncorrected isotope signatures"))
+      })
     )
 
+    # same plot as before, but now also with samples
+    print(
+      purrr::map(x_or, function(y) {
+        ggplot(y[y$sample_label != "Blank", ], aes(x = sample_label)) +
+          geom_jitter(aes(y = !!disotope, colour = Corrected)) +
+          stat_boxplot(aes(y = !!disotope, colour = Corrected), fill = NA) +
+          geom_point(aes(x = sample_label, y = signature_known)) +
+          guides(colour = guide_legend(nrow = 2)) +
+          theme(legend.position = "bottom") +
+          labs(x = "Standards and Samples",
+               y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
+               title = paste0("File id: ", y$file_id[[1]], ", Corrected and uncorrected isotope signatures"))
+      })
+    )
   }
 
   x
