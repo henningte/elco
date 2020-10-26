@@ -17,8 +17,9 @@ elco_irms_extract_standards <- function(x) {
   irms_standards <- irms_standards[, 1, drop = FALSE]
   colnames(irms_standards) <- "sample_label"
 
-  # join
+  # join and discard empty cases
   x <- dplyr::left_join(irms_standards, x, by = "sample_label")
+  x <- x[!is.na(x$file_id), ]
 
   # restore class
   elco_new_irms_std(elco_new_irms(x))
