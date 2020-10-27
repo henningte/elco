@@ -54,6 +54,9 @@ d <- elco::elco_irms_import_csv(files = files)
 
 # show first ten rows
 head(d)
+
+# change sample labels of standards to match the labels used by elco (elco::irms_standards)
+d$sample_label[d$sample_label == "BBOT_CN."] <- "BBOT"
 ```
 
 ## Extract and export information on the standards
