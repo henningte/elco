@@ -12,8 +12,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 elco provides functions to handle and (rudimentary) analyse element
 content data and isotope signatur data. Fetures are:
 
-1.  **Import of XRF and IRMS data** as they can be exported from … and
-    X-ray fluorescence spectrometers (Rigaku ZSX Primus II).
+1.  **Import of XRF and IRMS data** as they can be exported from X-ray
+    fluorescence spectrometers (Rigaku ZSX Primus II) and EA-IRMS
+    devices (HEKATech’s Eurovector EA3000 coupled with Nu Instruments Nu
+    Horizon).
 
 2.  Graphical display for easy **data checking**.
 
@@ -197,7 +199,7 @@ Further information can be found in the vignettes:
 Please cite this compendium as:
 
 > Teickner, H. and Knorr, K.-H., (2020). *elco: Handling data on
-> chemical element contents and isotope signatures.*. Accessed 01 Okt
+> chemical element contents and isotope signatures.*. Accessed 27 Okt
 > 2020. Online at <https://github.com/henningte/elco>
 
 ### Acknowledgments
