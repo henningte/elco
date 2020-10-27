@@ -6,7 +6,7 @@
 \usage{
 elco_irms_correct_isotopes(
   x,
-  ref = irms_standards[irms_standards$standard_name == "BBOT_CN.", ],
+  ref = irms_standards[irms_standards$standard_name == "BBOT", ],
   check = irms_standards,
   isotope = "13C",
   t = 5,

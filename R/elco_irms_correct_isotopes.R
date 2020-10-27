@@ -44,7 +44,7 @@
 #' @return nothig.
 #' @export
 elco_irms_correct_isotopes <- function(x,
-                                       ref = irms_standards[irms_standards$standard_name == "BBOT_CN.", ],
+                                       ref = irms_standards[irms_standards$standard_name == "BBOT", ],
                                        check = irms_standards,
                                        isotope = "13C",
                                        t = 5,
@@ -217,7 +217,7 @@ elco_irms_correct_isotopes <- function(x,
       purrr::map(x_or, function(y) {
         ggplot(dplyr::filter(y[y$sample_label != "Blank", ], sample_label != "Sample"), aes(x = sample_label)) +
           geom_jitter(aes(y = !!disotope, colour = Corrected)) +
-          geom_point(data = irms_standards, aes(x = standard_name, y = !!disotope)) +
+          geom_point(data = dplyr::filter(irms_standards, standard_name %in% x$sample_label), aes(x = standard_name, y = !!disotope)) +
           stat_boxplot(aes(y = !!disotope, colour = Corrected), fill = NA) +
           geom_point(aes(x = sample_label, y = signature_known)) +
           guides(colour = guide_legend(nrow = 2)) +
