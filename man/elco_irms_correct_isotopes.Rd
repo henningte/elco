@@ -2,7 +2,7 @@
 % Please edit documentation in R/elco_irms_correct_isotopes.R
 \name{elco_irms_correct_isotopes}
 \alias{elco_irms_correct_isotopes}
-\title{Heuristic function to correct IRMS isotope signals by substracting differences measured values for standards and their known isotope signature.}
+\title{Heuristic function to correct IRMS isotope signals by subtracting differences measured values for standards and their known isotope signature.}
 \usage{
 elco_irms_correct_isotopes(
   x,

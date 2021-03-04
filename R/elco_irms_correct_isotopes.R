@@ -1,4 +1,4 @@
-#' Heuristic function to correct IRMS isotope signals by substracting differences measured values for standards and their known isotope signature.
+#' Heuristic function to correct IRMS isotope signals by subtracting differences measured values for standards and their known isotope signature.
 #'
 #' \code{elco_irms_correct_isotopes} is a heuristic function to correct measured isotope signatures of samples
 #' during IRMS analysis. Correction can be performed for either \eqn{^{13}}C or \eqn{^{13}}N and, if multiple
