@@ -123,7 +123,10 @@ elco_irms_correct_elements <- function(x,
   # predict values
   x <- purrr::map2(x, x_standards_lm, function(y, z) {
     res <- as.data.frame(predict(z, newdata = y, se.fit = TRUE, type = "response"))
-    res <- elco_new_elco(quantities::set_quantities(res$fit/as.numeric(y$sample_mass), unit = units(y[, element, drop = TRUE]), errors = res$se.fit/as.numeric(y$sample_mass), mode = "standard"), el_symbol = element)
+    res$se_pi <- sqrt(res$se.fit^2 + res$residual.scale^2)
+    res <- elco_new_elco(quantities::set_quantities(res$fit/as.numeric(y$sample_mass),
+                                                    unit = units(y[, element, drop = TRUE]),
+                                                    errors = res$se_pi/as.numeric(y$sample_mass), mode = "standard"), el_symbol = element)
     switch(element,
            "C" = dplyr::mutate(y, C = res),
            "N" = dplyr::mutate(y, N = res)
