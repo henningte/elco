@@ -1,7 +1,7 @@
 ## code to prepare `el_units_allowed` dataset goes here
 
-mass = c("kg", "g", "mg", "µg", "ng", "pg")
-amount = c("mol", "µmol", "nmol", "pmol")
+mass = c("kg", "g", "mg", "µg", "ng", "pg", "ug")
+amount = c("mol", "µmol", "nmol", "pmol", "umol")
 
 mass_mass_combn <- expand.grid(mass1 = mass, mass2 = mass)
 mol_mass_combn <- expand.grid(amount = amount, mass = mass)

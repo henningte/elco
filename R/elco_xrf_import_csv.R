@@ -61,7 +61,7 @@ elco_xrf_import_csv <- function(files) {
     index_unit <- x_units$unit == "ppm"
     x_units$division_factor <- ifelse(index_unit, 1, 100)
     x_units$unit[!index_unit] <- "g/g"
-    x_units$unit[index_unit] <- "µg/g"
+    x_units$unit[index_unit] <- "ug/g"
     x_units
   })
   d <- purrr::map(d, function(x) {
