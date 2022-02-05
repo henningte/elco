@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 elco provides functions to handle and (rudimentary) analyse element
-content data and isotope signatur data. Fetures are:
+content data and isotope signatur data. Features are:
 
 1.  **Import of XRF and IRMS data** as they can be exported from X-ray
     fluorescence spectrometers (Rigaku ZSX Primus II) and EA-IRMS
@@ -29,7 +29,7 @@ content data and isotope signatur data. Fetures are:
     oxidative ratio (OR), and degree of unsaturation (DU)** (Worrall et
     al. 2016).
 
-<img src="https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/elco-features.svg" width="50%" style="display: block; margin: auto;" />
 
 ### How to install
 
@@ -158,13 +158,13 @@ d %>%
                 ch_molar = C/H,
                 co_molar = C/O)
 #> # A tibble: 5 x 8
-#>           C         H         N         O sample_mass cn_molar ch_molar co_molar
-#>   (err) [mo (err) [mo (err) [mo (err) [mo  (err) [mg] (err) [1 (err) [1 (err) [1
-#> 1 1.552(5)~ 6.66(2)e~ 2.485(7)~ 4.03(1)e~     3.78(1)  6.24(3) 0.233(1)  3.85(2)
-#> 2 1.578(5)~ 6.40(2)e~ 2.509(8)~ 3.91(1)e~     3.81(1)  6.29(3) 0.247(1)  4.04(2)
-#> 3 1.518(2)~ 5.647(7)~ 2.276(3)~ 3.508(4)~    3.494(4)  6.67(1) 0.2688(~ 4.327(7)
-#> 4 1.773(1)~ 6.927(5)~ 2.707(2)~ 4.397(3)~    4.251(3) 6.550(6) 0.2559(~ 4.032(4)
-#> 5 1.690(4)~ 6.98(2)e~ 2.671(6)~ 4.069(9)~    4.046(9)  6.33(2) 0.2421(~  4.15(1)
+#>             C         H        N        O sample_mass cn_molar ch_molar co_molar
+#>   (err) [mol] (err) [mol] (err) [mol] (err) [mol]  (err) [mg] (err) [1] (err) [1] (err) [1]
+#> 1 1.552(5)e-4 6.66(2)e~ 2.485(7~ 4.03(1)~     3.78(1)  6.24(3) 0.233(1)  3.85(2)
+#> 2 1.578(5)e-4 6.40(2)e~ 2.509(8~ 3.91(1)~     3.81(1)  6.29(3) 0.247(1)  4.04(2)
+#> 3 1.518(2)e-4 5.647(7)~ 2.276(3~ 3.508(4~    3.494(4)  6.67(1) 0.2688(~ 4.327(7)
+#> 4 1.773(1)e-4 6.927(5)~ 2.707(2~ 4.397(3~    4.251(3) 6.550(6) 0.2559(~ 4.032(4)
+#> 5 1.690(4)e-4 6.98(2)e~ 2.671(6~ 4.069(9~    4.046(9)  6.33(2) 0.2421(~  4.15(1)
 ```
 
 Finally, elco provides functions to compute the nominal oxidation state
@@ -198,9 +198,9 @@ Further information can be found in the vignettes:
 
 Please cite this compendium as:
 
-> Teickner, H. and Knorr, K.-H., (2020). *elco: Handling data on
-> chemical element contents and isotope signatures.*. Accessed 27 Okt
-> 2020. Online at <https://github.com/henningte/elco>
+> Teickner, H. and Knorr, K.-H., (2022). *elco: Handling data on
+> chemical element contents and isotope signatures.*. Accessed 05 Feb
+> 2022. Online at <https://github.com/henningte/elco>
 
 ### Acknowledgments
 

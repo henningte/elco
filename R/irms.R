@@ -43,7 +43,7 @@ elco_new_irms <- function(x) {
                         "sample_mass", "time", "file_name", "15N_area", "15N", "13C_area",
                         "13C", "18O", "N", "C")
 
-  cond <- !purrr::map_lgl(colnames(x), function(y) y %in% target_variables)
+  cond <- !purrr::map_lgl(target_variables, function(y) y %in% colnames(x))
   if(any(cond)) {
     if(sum(cond) == 1) {
       rlang::abort(paste0("`x` must contain defined columns. Column ", target_variables[[cond]], " should exist, but is missing."))
@@ -51,6 +51,7 @@ elco_new_irms <- function(x) {
       rlang::abort(paste0("`x` must contain defined columns. Columns ", paste(target_variables[cond], collapse = ", "), " should exist, but are missing."))
     }
   }
+  x_leftover <- x[, colnames(x)[!colnames(x) %in% target_variables]]
   x <- x[, target_variables] # sort columns
   target_variable_types <- c("integer", "integer", "character", "character", "quantities", "POSIXct",
                              "character", "numeric", "numeric", "numeric", "numeric", "numeric",
@@ -65,7 +66,7 @@ elco_new_irms <- function(x) {
     }
   }
 
-  structure(x, class = c("irms", class(x)))
+  structure(cbind(x, x_leftover), class = c("irms", class(x)))
 
 }
 

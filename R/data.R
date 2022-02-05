@@ -38,3 +38,20 @@
 #'   \item{sample_mass}{A numeric vector with the mass of the samples [mg].}
 #' }
 "chno"
+
+#' Correction factors for XRF element contents for samples with differing masses.
+#'
+#' A \code{data.frame} with chemical element-specific heuristic correction factors for XRF element contents (relative to
+#' a reference mass of 500 mg) measured with masses smaller than the reference mass.
+#'
+#' @format A data frame with 60 rows and 3 columns:
+#' \describe{
+#'   \item{el_symbol}{A character vector with the symbols of chemical elements for which
+#'   correction factors were computed.}
+#'   \item{sample_mass}{A character vector with discrete sample mass values [mg] for
+#'   which the correction factors were computed.}
+#'   \item{correction_factor}{A \code{quantities} vector with the mean, standard deviation, and
+#'   unit for each correction factor. See \code{\link[elco:elco_xrf_correct_elements]{elco_xrf_correct_elements}}}
+#'   for how these values are used.
+#' }
+"xrf_calibration"

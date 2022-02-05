@@ -9,7 +9,7 @@ bibliography: "./inst/REFERENCES.bib"
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "man/figures"
 )
 # Please put your title here to include it in the file below.
 Title <- "Title of your paper goes here"
@@ -35,7 +35,7 @@ EA3000 coupled with Nu Instruments Nu Horizon).
 5. Computation of the **nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)** [@Worrall.2016b].
 
 ```{r, out.width="50%", fig.align='center', echo=FALSE}
-knitr::include_graphics("https://github.com/henningte/elco/raw/master/man/figures/elco-features.svg")
+knitr::include_graphics("man/figures/elco-features.svg")
 ```
 
 ### How to install
