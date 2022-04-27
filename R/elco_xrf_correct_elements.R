@@ -109,7 +109,7 @@ elco_xrf_correct_elements <- function(x,
     )
     factors <- dplyr::left_join(factors, xrf_calibration, by = c("el_symbol", "sample_mass"))
     y_unit <- as.character(units(y))
-    y <- elco::drop_elco(y)/factors$correction_factor
+    y <- elco::elco_drop_elco(y)/factors$correction_factor
     y <- units::set_units(y, "g/g")
     units(y) <- with(units::ud_units, y_unit)
     y

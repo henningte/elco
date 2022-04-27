@@ -33,7 +33,7 @@ elco_xrf_import_csv <- function(files) {
   }
 
   # import individual data
-  d <- purrr::map(files, read.csv, header = TRUE, as.is = TRUE, row.names = NULL)
+  d <- purrr::map(files, utils::read.csv, header = TRUE, as.is = TRUE, row.names = NULL)
 
   # rename columns
   d <- purrr::map(d, function(x) {

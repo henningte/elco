@@ -29,9 +29,7 @@
 #' )
 #'
 #' @export
-elco_elco_convert <- function(x,
-                              to,
-                              sample_mass = NULL) {
+elco_elco_convert <- function(x, to, sample_mass = NULL) {
 
   # checks
   stopifnot(elco_check_elco(x))
@@ -45,7 +43,7 @@ elco_elco_convert <- function(x,
     rlang::abort("`sample_mass` must be NULL or a quantities object.")
   }
   if(!is.null(sample_mass)) {
-    cond <- !units:::ud_are_convertible(sample_mass, units::set_units(1, "g"))
+    cond <- !units::ud_are_convertible(sample_mass, units::set_units(1, "g"))
     if(cond) rlang::abort(paste0("`sample_mass` must have a unit of measurement representing a mass, but is given in ", as.character(units(sample_mass)), "."))
   }
 
@@ -57,7 +55,7 @@ elco_elco_convert <- function(x,
   element <- attr(x, "el_symbol")
 
   # convert unit
-  x <- drop_elco(x)
+  x <- elco_drop_elco(x)
   res <-
     switch(paste0(type_conversion_from, "-", type_conversion_to),
            # conversion between equivalent units

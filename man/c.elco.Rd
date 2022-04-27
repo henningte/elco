@@ -2,7 +2,7 @@
 % Please edit documentation in R/elco.R
 \name{c.elco}
 \alias{c.elco}
-\title{Combine Values into a Vector or List}
+\title{Combine \code{elco} objects into a vector or list}
 \usage{
 \method{c}{elco}(...)
 }
@@ -11,10 +11,14 @@
     are dropped before method dispatch unless at the very beginning of the
     argument list.}
 }
+\value{
+\code{...} concatenated into one vector.
+}
 \description{
-S3 method for \code{quantities} objects (see \code{\link[=c]{c()}}).
+S3 method for \code{elco} objects (see \code{\link[=c]{c()}}).
 }
 \examples{
-c(set_quantities(1, m/s, 0.2), set_quantities(30, km/h, 0.1))
+c(elco::chno$C[[1]], elco::chno$C[-1])
+c(elco::chno$C[[1]], elco::chno$N[-1])
 
 }

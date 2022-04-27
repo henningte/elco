@@ -20,7 +20,7 @@
 #'   \item{sample_label}{A character vector with names for the samples. If `measurement_type == "Sam"`,
 #'   this is a label for the sample. If `measurement_type == "Ref"`, this is the name of the standard
 #'   as given in [elco::irms_standards()]}.
-#'   \item{sample_mass}{A quantities vector representing the mass of the sample [g] with measurement errors (these are set to 0 by default).}
+#'   \item{sample_mass}{A quantities vector representing the mass of the sample \[g\] with measurement errors (these are set to 0 by default).}
 #'   \item{time}{A POSIXct vector with the date and time when the sample was measured.}
 #'   \item{file_name}{A character vector with the full path to the .RUN file containing the raw
 #'   data for the corresponding measurement.}

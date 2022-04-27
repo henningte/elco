@@ -133,8 +133,8 @@ If there is a large difference between the median measured element content and t
 d %>%
   elco::elco_irms_extract_standards() %>%
   dplyr::mutate(
-    C = elco::drop_elco(C),
-    N = elco::drop_elco(N),
+    C = elco::elco_drop_elco(C),
+    N = elco::elco_drop_elco(N),
   ) %>%
   tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
                       names_to = "element",
@@ -146,8 +146,8 @@ d %>%
                dplyr::filter(standard_name %in% d$sample_label) %>%
                dplyr::rename(sample_label = standard_name) %>% 
                dplyr::mutate(
-                 C = elco::drop_elco(C),
-                 N = elco::drop_elco(N),
+                 C = elco::elco_drop_elco(C),
+                 N = elco::elco_drop_elco(N),
                ) %>%
                tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
                                    names_to = "element",
@@ -167,8 +167,8 @@ If there is a trend visible, the heuristic procedure used for the correction of 
   d %>%
   elco::elco_irms_extract_standards() %>%
   dplyr::mutate(
-    C = elco::drop_elco(C),
-    N = elco::drop_elco(N),
+    C = elco::elco_drop_elco(C),
+    N = elco::elco_drop_elco(N),
   ) %>%
   tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
                       names_to = "element",
@@ -179,8 +179,8 @@ If there is a trend visible, the heuristic procedure used for the correction of 
                dplyr::filter(standard_name %in% d$sample_label) %>%
                dplyr::rename(sample_label = standard_name) %>% 
                dplyr::mutate(
-                 C = elco::drop_elco(C),
-                 N = elco::drop_elco(N),
+                 C = elco::elco_drop_elco(C),
+                 N = elco::elco_drop_elco(N),
                ) %>%
                tidyr::pivot_longer(cols = dplyr::all_of(c("C", "N")),
                                    names_to = "element",

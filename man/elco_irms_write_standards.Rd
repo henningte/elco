@@ -21,7 +21,7 @@ and a new file should be created (\code{TRUE}).}
 not (\code{FALSE}).}
 }
 \value{
-nothig.
+nothing.
 }
 \description{
 \code{elco_irms_extract_standards} takes an object of class \code{irms_std} and extracts all rows

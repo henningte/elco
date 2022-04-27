@@ -33,7 +33,7 @@ elco_irms_import_csv <- function(files) {
   }
 
   # import individual data
-  d <- purrr::map(files, read.csv, header = TRUE, as.is = TRUE, row.names = NULL)
+  d <- purrr::map(files, utils::read.csv, header = TRUE, as.is = TRUE, row.names = NULL)
 
   # extract analysis metadata
   d_metadata_analysis <- purrr::map2_df(d, seq_along(d), function(x, i) {

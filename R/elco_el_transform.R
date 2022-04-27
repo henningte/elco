@@ -15,7 +15,7 @@
 #' contains the mass of the sample. `col_sample_mass` can be set to `NULL`, if the unit
 #' transformation does not involve multiplication with the sample mass. Otherwise, the values in this
 #' column are used to transform the units (for example to compute the amount of C in a sample \[mol\] based
-#' on its mass fraction [g/g] and the sample mass \[g\]).
+#' on its mass fraction \[g/g\] and the sample mass \[g\]).
 #' @return `x` with converted element contents.
 #' @export
 elco_el_transform <- function(x, ..., to, col_sample_mass = NULL) {

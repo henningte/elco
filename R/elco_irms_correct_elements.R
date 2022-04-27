@@ -140,44 +140,44 @@ elco_irms_correct_elements <- function(x,
 
     # measured vs fitted values
     p1 <-
-      ggplot(mapping = aes(y = as.numeric(x_or[, element, drop = TRUE]),
-                         x = as.numeric(x[, element, drop = TRUE]),
-                         colour = is_standard)) +
-      geom_segment(data = irms_standards_sel,
-                   mapping = aes(x = as.numeric(element_m),
-                                 xend = as.numeric(element_m),
-                                 y = 0,
-                                 yend = as.numeric(element_m),
-                                 colour = sample_label)) +
-      geom_segment(data = irms_standards_sel,
-                   mapping = aes(x = 0,
-                                 xend = as.numeric(element_m),
-                                 y = as.numeric(element_m),
-                                 yend = as.numeric(element_m),
-                                 colour = sample_label)) +
-      geom_errorbarh(mapping = aes(y = as.numeric(x_or[, element, drop = TRUE]),
-        xmin = as.numeric(x[, element, drop = TRUE]) - errors(x[, element, drop = TRUE]),
-                                   xmax = as.numeric(x[, element, drop = TRUE]) + errors(x[, element, drop = TRUE]),), height = 0, colour = "dimgrey") +
-      geom_point() +
-      geom_abline(intercept = 0, slope = 1, colour = "dimgrey") +
-      labs(y = "Measured", x = "Fitted", title = paste0("Element: ", element,", File: all files")) +
-      guides(colour = guide_legend(title = "Sample type")) +
-      theme(legend.position = "bottom")
+      ggplot2::ggplot(mapping = ggplot2::aes(y = as.numeric(x_or[, element, drop = TRUE]),
+                                             x = as.numeric(x[, element, drop = TRUE]),
+                                             colour = is_standard)) +
+      ggplot2::geom_segment(data = irms_standards_sel,
+                            mapping = ggplot2::aes(x = as.numeric(element_m),
+                                                   xend = as.numeric(element_m),
+                                                   y = 0,
+                                                   yend = as.numeric(element_m),
+                                                   colour = sample_label)) +
+      ggplot2::geom_segment(data = irms_standards_sel,
+                            mapping = ggplot2::aes(x = 0,
+                                                   xend = as.numeric(element_m),
+                                                   y = as.numeric(element_m),
+                                                   yend = as.numeric(element_m),
+                                                   colour = sample_label)) +
+      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = as.numeric(x_or[, element, drop = TRUE]),
+                                                     xmin = as.numeric(x[, element, drop = TRUE]) - errors(x[, element, drop = TRUE]),
+                                                     xmax = as.numeric(x[, element, drop = TRUE]) + errors(x[, element, drop = TRUE]),), height = 0, colour = "dimgrey") +
+      ggplot2::geom_point() +
+      ggplot2::geom_abline(intercept = 0, slope = 1, colour = "dimgrey") +
+      ggplot2::labs(y = "Measured", x = "Fitted", title = paste0("Element: ", element,", File: all files")) +
+      ggplot2::guides(colour = ggplot2::guide_legend(title = "Sample type")) +
+      ggplot2::theme(legend.position = "bottom")
 
     print(p1)
 
     # regression models
     purrr::map(x_standards, function(y) {
       p2 <-
-        ggplot(y, aes(y = as.numeric(element_m_abs), x = !!delement_area)) +
-        geom_smooth(method = "lm", se = FALSE, colour = "dimgrey") +
-        geom_point(aes(colour = sample_label)) +
-        geom_rug(data = x[is_standard == "Sample" & x$file_id == y$file_id[[1]], ], aes(y = as.numeric(C)/as.numeric(sample_mass), x = !!delement_area), sides="b") +
-        labs(y = paste0("Absolute ", element, " mass [mg]"),
-             x = "Signal area",
-             title = paste0("Element: ", element,", File: ", y$file_id[[1]])) +
-        guides(colour = guide_legend(title = "Standard")) +
-        theme(legend.position = "bottom")
+        ggplot2::ggplot(y, ggplot2::aes(y = as.numeric(element_m_abs), x = !!delement_area)) +
+        ggplot2::geom_smooth(method = "lm", se = FALSE, colour = "dimgrey") +
+        ggplot2::geom_point(aes(colour = sample_label)) +
+        ggplot2::geom_rug(data = x[is_standard == "Sample" & x$file_id == y$file_id[[1]], ], aes(y = as.numeric(C)/as.numeric(sample_mass), x = !!delement_area), sides="b") +
+        ggplot2::labs(y = paste0("Absolute ", element, " mass [mg]"),
+                      x = "Signal area",
+                      title = paste0("Element: ", element,", File: ", y$file_id[[1]])) +
+        ggplot2::guides(colour = ggplot2::guide_legend(title = "Standard")) +
+        ggplot2::theme(legend.position = "bottom")
       print(p2)
     })
 

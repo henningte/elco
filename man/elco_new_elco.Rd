@@ -2,21 +2,30 @@
 % Please edit documentation in R/elco.R
 \name{elco_new_elco}
 \alias{elco_new_elco}
+\alias{elco_drop_elco}
+\alias{print.elco}
 \title{Creates an object of class \code{elco}}
 \usage{
 elco_new_elco(x, el_symbol)
+
+elco_drop_elco(x)
+
+\method{print}{elco}(x, ...)
 }
 \arguments{
-\item{x}{A numeric vector that is an object of class
-\code{\link[quantities:quantities]{quantities}} with each element representing an
-element content.}
+\item{x}{An object of class \code{\link[=elco_new_elco]{elco}}.}
 
 \item{el_symbol}{A character value representing the symbol for a chemical
-element.}
+element. To check this, \code{\link[PeriodicTable:atomRecognition]{PeriodicTable::isSymb()}} is used.}
+
+\item{...}{Additional arguments, will be ignored.}
 }
 \value{
 An object of class \code{elco}. This is identical to \code{x}, but has
-an additional attribute \code{"el_symbol"} and class attribute.
+an additional attribute \code{"el_symbol"} and an additional class attribute
+\code{"elco"}.
+
+Returns the input object \code{x}. Prints its content as side effect.
 }
 \description{
 \code{elco_new_elco} is the constructor function for objects of class \code{elco}. An
@@ -33,5 +42,7 @@ elco_new_elco(
   x = quantities::set_quantities(0.42, unit = "mol/g", errors = 0.002),
   el_symbol = "C"
 )
+
+print(elco::chno$C)
 
 }

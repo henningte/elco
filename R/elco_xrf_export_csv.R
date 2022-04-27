@@ -43,7 +43,7 @@ elco_xrf_export_csv <- function(x,
   x_metadata$variable_type[x_metadata$variable_type == "units"] <- "numeric"
 
   # export
-  write.csv(x, file, row.names = FALSE)
-  write.csv(x_metadata, paste0(stringr::str_remove(file, "\\.csv$"), "_metadata", stringr::str_extract(file, "\\.csv$")), row.names = FALSE)
+  utils::write.csv(x, file, row.names = FALSE)
+  utils::write.csv(x_metadata, paste0(stringr::str_remove(file, "\\.csv$"), "_metadata", stringr::str_extract(file, "\\.csv$")), row.names = FALSE)
 
 }

@@ -18,7 +18,7 @@ elco_nosc <- function(c,
                       o) {
 
   elco_chno_check(c = c, h = h, n = n, o = o)
-  (quantities::set_quantities(2, unit = "1", errors = 0) * drop_elco(o) - drop_elco(h) + quantities::set_quantities(3, unit = "1", errors = 0) * drop_elco(n))/drop_elco(c)
+  (quantities::set_quantities(2, unit = "1", errors = 0) * elco_drop_elco(o) - elco_drop_elco(h) + quantities::set_quantities(3, unit = "1", errors = 0) * elco_drop_elco(n))/elco_drop_elco(c)
 
 }
 
@@ -35,7 +35,7 @@ elco_or <- function(c,
                     o) {
 
   nosc <- elco_nosc(c = c, h = h, n = n, o = o)
-  nosc/quantities::set_quantities(4, unit = "1", errors = 0) + (quantities::set_quantities(3, unit = "1", errors = 0) * drop_elco(n))/(quantities::set_quantities(4, unit = "1", errors = 0) * drop_elco(c))
+  nosc/quantities::set_quantities(4, unit = "1", errors = 0) + (quantities::set_quantities(3, unit = "1", errors = 0) * elco_drop_elco(n))/(quantities::set_quantities(4, unit = "1", errors = 0) * elco_drop_elco(c))
 
 }
 
@@ -50,7 +50,7 @@ elco_du <- function(c,
                     n) {
 
   elco_chno_check(c = c, h = h, n = n, o = NULL)
-  drop_elco(c) - drop_elco(h)/quantities::set_quantities(2, unit = "1", errors = 0) - drop_elco(n)/quantities::set_quantities(2, unit = "1", errors = 0) + quantities::set_quantities(1, unit = "mol", errors = 0)
+  elco_drop_elco(c) - elco_drop_elco(h)/quantities::set_quantities(2, unit = "1", errors = 0) - elco_drop_elco(n)/quantities::set_quantities(2, unit = "1", errors = 0) + quantities::set_quantities(1, unit = "mol", errors = 0)
 
 }
 

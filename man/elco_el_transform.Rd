@@ -22,7 +22,7 @@ should be transformed. This should be one of \code{c("g/g", "mol/g")}.}
 contains the mass of the sample. \code{col_sample_mass} can be set to \code{NULL}, if the unit
 transformation does not involve multiplication with the sample mass. Otherwise, the values in this
 column are used to transform the units (for example to compute the amount of C in a sample [mol] based
-on its mass fraction \link{g/g} and the sample mass [g]).}
+on its mass fraction [g/g] and the sample mass [g]).}
 }
 \value{
 \code{x} with converted element contents.

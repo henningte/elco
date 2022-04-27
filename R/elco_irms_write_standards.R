@@ -12,7 +12,7 @@
 #' and a new file should be created (`TRUE`).
 #' @param verbose A logical value indicating if messages should be printed (`TRUE`) or
 #' not (`FALSE`).
-#' @return nothig.
+#' @return nothing.
 #' @export
 elco_irms_write_standards <- function(x,
                                       file,
