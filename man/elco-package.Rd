@@ -4,15 +4,12 @@
 \name{elco-package}
 \alias{elco}
 \alias{elco-package}
-\title{elco: Handling data on chemical element contents and isotope signatures.}
+\title{elco: Handling Data on Chemical Element Contents and Isotope signatures}
 \description{
-elco provides functions to read in raw data on element contents
-    from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio
-    mass spectromtery (IRMS), handling these as data.frames with units, and
-    computing simple derived variables, such as element ratios.
+'elco' provides functions to read in raw data on element contents from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio mass spectrometry (IRMS), handling these as data frames with units, and computing simple derived variables, such as element ratios.
 }
 \author{
-\strong{Maintainer}: Henning Teickner \email{henning.teickner@wwu.de}
+\strong{Maintainer}: Henning Teickner \email{h_teic01@uni-muenster.de} (\href{https://orcid.org/0000-0002-3993-1182}{ORCID})
 
 Authors:
 \itemize{
@@ -22,7 +19,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Tanja Broder [contributor]
-  \item Mariusz Galka [contributor]
+  \item Mariusz Gałka [contributor]
 }
 
 }

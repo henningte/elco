@@ -7,10 +7,12 @@
 \method{c}{elco}(...)
 }
 \arguments{
-\item{...}{objects to be concatenated.}
+\item{...}{objects to be concatenated.  All \code{\link[base]{NULL}} entries
+    are dropped before method dispatch unless at the very beginning of the
+    argument list.}
 }
 \description{
-S3 method for \code{quantities} objects (see \code{\link{c}}).
+S3 method for \code{quantities} objects (see \code{\link[=c]{c()}}).
 }
 \examples{
 c(set_quantities(1, m/s, 0.2), set_quantities(30, km/h, 0.1))

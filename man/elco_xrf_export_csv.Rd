@@ -7,14 +7,14 @@
 elco_xrf_export_csv(x, file)
 }
 \arguments{
-\item{x}{An object of class \code{\link[xrf]{xrf}}.}
+\item{x}{An object of class \code{\link[=elco_new_xrf]{xrf}}.}
 
 \item{file}{A character value representing a path and file name (csv file) where to export
 the reformatted data to. The two exported csv files are named using the value of \code{file}:
 \enumerate{
-  \item A file named with the value of \code{file}.
-  \item A file named with the value of \code{file} and with additional \code{"_metadata"}, containing
-  the metadata (variable type and unit).
+\item A file named with the value of \code{file}.
+\item A file named with the value of \code{file} and with additional \code{"_metadata"}, containing
+the metadata (variable type and unit).
 }}
 }
 \value{

@@ -7,7 +7,7 @@
 \method{print}{elco}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_elco]{elco}}.}
+\item{x}{An object of class \code{\link[=elco_new_elco]{elco()}}.}
 
 \item{...}{Additional arguments, will be ignored.}
 }

@@ -15,5 +15,5 @@ the column is of class \code{elco} or not.
 }
 \description{
 \code{elco_identify_elco_df} identifies columns in a \code{data.frame} that
-are of class \code{\link[elco_elco_new_elco]{elco}}.
+are of class \code{\link[=elco_new_elco]{elco}}.
 }

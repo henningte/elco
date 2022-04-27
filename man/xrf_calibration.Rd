@@ -7,13 +7,13 @@
 \format{
 A data frame with 60 rows and 3 columns:
 \describe{
-  \item{el_symbol}{A character vector with the symbols of chemical elements for which
-  correction factors were computed.}
-  \item{sample_mass}{A character vector with discrete sample mass values [mg] for
-  which the correction factors were computed.}
-  \item{correction_factor}{A \code{quantities} vector with the mean, standard deviation, and
-  unit for each correction factor. See \code{\link[elco:elco_xrf_correct_elements]{elco_xrf_correct_elements}}}
-  for how these values are used.
+\item{el_symbol}{A character vector with the symbols of chemical elements for which
+correction factors were computed.}
+\item{sample_mass}{A character vector with discrete sample mass values [mg] for
+which the correction factors were computed.}
+\item{correction_factor}{A \code{quantities} vector with the mean, standard deviation, and
+unit for each correction factor. See \code{\link[=elco_xrf_correct_elements]{elco_xrf_correct_elements()}}}
+for how these values are used.
 }
 }
 \usage{

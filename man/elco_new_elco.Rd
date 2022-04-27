@@ -8,7 +8,7 @@ elco_new_elco(x, el_symbol)
 }
 \arguments{
 \item{x}{A numeric vector that is an object of class
-\code{\link[quantities:quantities]{quantities}} with each element representing an
+\code{\link[quantities:quantities]{quantities::quantities()}} with each element representing an
 element content.}
 
 \item{el_symbol}{A character value representing the symbol for a chemical element.}
@@ -21,6 +21,6 @@ an additional attribute \code{"el_symbol"} and class attribute.
 \code{elco_new_elco} is the constructor function for objects of class
 \code{elco}. An object of class \code{elco} is a numeric vector with each element
 representing a chemical element content value. At the same time, the numeric vector
-is an object of class \code{\link[quantities:quantities]{quantities}} with an
+is an object of class \code{\link[quantities:quantities]{quantities::quantities()}} with an
 additional attribute \code{"el_symbol"} with the respective element symbol.
 }

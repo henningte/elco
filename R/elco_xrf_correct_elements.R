@@ -1,6 +1,6 @@
 #' Heuristic function to correct XRF element contents of samples measured with sample masses smaller than used for the instrument calibration.
 #'
-#' \code{elco_xrf_correct_elements} is a heuristic function to correct measured element contents of samples
+#' `elco_xrf_correct_elements` is a heuristic function to correct measured element contents of samples
 #' during XRF analysis. Elements for which to perform a correction can be selected. Only batch processing of
 #' files is possible.
 #' The correction is based on a reference calibration data set where five different samples have been measured
@@ -14,36 +14,36 @@
 #' A consequence is that the correction procedure currently can only be applied to values measured with sample masses
 #' as used in the calibration data set.
 #' The regression models assume a Gamma distribution since all computed ratios are \eqn{\ge0}. The models are fit with
-#' \code{\link[rstanarm:rstanarm-package]{rstanarm}} (\code{\link[rstanarm:stan_glmer]{stan_glmer}}) using default
+#' [`rstanarm()`][rstanarm::rstanarm-package] ([rstanarm::stan_glmer()]) using default
 #' priors. From the models' predictive distributions, the predicted correction factors are sampled and its mean and
 #' standard deviation stored.
-#' During correction, the measured value to correct and a sample mass are given. \code{elco_xrf_correct_elements}
+#' During correction, the measured value to correct and a sample mass are given. `elco_xrf_correct_elements`
 #' searches the respective correction factor and its standard deviation and multiplies it with the
-#' measured value. The \code{\link[quantities]{quantities}} package is used to propagate the uncertainty in the
+#' measured value. The [quantities::quantities()] package is used to propagate the uncertainty in the
 #' correction factor into the corrected value.
 #'
-#' @param x An object of class \code{data.frame}.
+#' @param x An object of class `data.frame`.
 #' @param element A character vector representing the chemical elements for which to correct the mass fraction
-#' values. This must be one in \code{\link[elco:xrf_calibration]{xrf_calibration$el_symbol}}. Can alternatively be set to
-#' \code{NULL} to correct all chemical elements possible.
-#' @param sample_mass A vector of class \code{\link[units:units]{units}} with an element for each row in \code{x}
-#' and \code{"mg"} as measurement unit.
+#' values. This must be one in [`xrf_calibration$el_symbol()`][elco::xrf_calibration]. Can alternatively be set to
+#' `NULL` to correct all chemical elements possible.
+#' @param sample_mass A vector of class [units::units()] with an element for each row in `x`
+#' and `"mg"` as measurement unit.
 #' @param xrf_calibration A data frame which stores correction factors for combinations of chemical elements and sample
 #' masses, with a row for each element and sample mass and three columns:
 #' \describe{
 #'   \item{el_symbol}{A character vector with the chemical element symbol which the
-#'   correction factor in \code{correction_factor} applies.}
-#'   \item{sample_mass}{A character vector with the sample mass [mg] for which the
-#'   correction factor in \code{correction_factor} applies.}
-#'   \item{correction_factor}{A \code{\link[quantities:quantities]{quantities}} vector
+#'   correction factor in `correction_factor` applies.}
+#'   \item{sample_mass}{A character vector with the sample mass \[mg\] for which the
+#'   correction factor in `correction_factor` applies.}
+#'   \item{correction_factor}{A [quantities::quantities()] vector
 #'   with the correction factors.}
 #' }
-#' Alternatively, \code{xrf_calibration} can be set to \code{NULL}. In this case,
-#' the built-in \code{\link{xrf_calibration}} is used. Check beforehand if this
+#' Alternatively, `xrf_calibration` can be set to `NULL`. In this case,
+#' the built-in [xrf_calibration()] is used. Check beforehand if this
 #' set of calibration factors is appropriate!
-#' @note Currently, the calibration procedure is rather crude and not based on a large amounf of samples. This
+#' @note Currently, the calibration procedure is rather crude and not based on a large amount of samples. This
 #' causes relative large uncertainties.
-#' @return \code{x} with corrected element content values.
+#' @return `x` with corrected element content values.
 #' @export
 elco_xrf_correct_elements <- function(x,
                                       element = NULL,

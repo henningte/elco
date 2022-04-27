@@ -1,17 +1,17 @@
-#' Takes an object of class \code{irms_std} and appends it to an existing rds file.
+#' Takes an object of class `irms_std` and appends it to an existing rds file.
 #'
-#' \code{elco_irms_extract_standards} takes an object of class \code{irms_std} and extracts all rows
-#' referring to standards in \code{irms_standards}.
+#' `elco_irms_extract_standards` takes an object of class `irms_std` and extracts all rows
+#' referring to standards in `irms_standards`.
 #'
-#' @param x An object of class \code{\link[elco_new_irms_std]{irms_std}}.
+#' @param x An object of class [`irms_std`][elco::elco_new_irms_std].
 #' @param file A character value representing a path to an existing rds file with
-#' an object of class \code{\link[irms_new_irms_std]{irms_std}} or to such a file
+#' an object of class [`irms_std`][elco::elco_new_irms_std] or to such a file
 #' to be created.
-#' @param initialize A logical value indicating if the file pointed to by \code{file}
-#' already exists and \code{x} should be appended to this (\code{TRUE}), or does not exist
-#' and a new file should be created (\code{TRUE}).
-#' @param verbose A logical value indicating if messages should be printed (\code{TRUE}) or
-#' not (\code{FALSE}).
+#' @param initialize A logical value indicating if the file pointed to by `file`
+#' already exists and `x` should be appended to this (`TRUE`), or does not exist
+#' and a new file should be created (`TRUE`).
+#' @param verbose A logical value indicating if messages should be printed (`TRUE`) or
+#' not (`FALSE`).
 #' @return nothig.
 #' @export
 elco_irms_write_standards <- function(x,

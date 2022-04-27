@@ -12,7 +12,7 @@ elco_reclass_elco(x)
 }
 \arguments{
 \item{x}{A numeric vector with the attributes of an object of class
-\code{\link[elco:elco_new_elco]{elco}}.}
+\code{\link[=elco_new_elco]{elco()}}.}
 }
 \value{
 An object of class \code{elco}.

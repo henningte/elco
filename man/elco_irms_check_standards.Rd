@@ -7,7 +7,7 @@
 elco_irms_check_standards(x)
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_irms]{irms}}}
+\item{x}{An object of class \code{\link[=elco_new_irms]{irms()}}}
 }
 \value{
 \code{x}.

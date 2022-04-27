@@ -7,11 +7,11 @@
 \format{
 A data frame with 5 rows and 5 columns:
 \describe{
-  \item{C}{A numeric vector with the relative mass fraction of C of the standards [g/g].}
-  \item{H}{A numeric vector with the relative mass fraction of H of the standards [g/g].}
-  \item{N}{A numeric vector with the relative mass fraction of N of the standards [g/g].}
-  \item{O}{A numeric vector with the relative mass fraction of O of the standards [g/g].}
-  \item{sample_mass}{A numeric vector with the mass of the samples [mg].}
+\item{C}{A numeric vector with the relative mass fraction of C of the standards [g/g].}
+\item{H}{A numeric vector with the relative mass fraction of H of the standards [g/g].}
+\item{N}{A numeric vector with the relative mass fraction of N of the standards [g/g].}
+\item{O}{A numeric vector with the relative mass fraction of O of the standards [g/g].}
+\item{sample_mass}{A numeric vector with the mass of the samples [mg].}
 }
 }
 \usage{

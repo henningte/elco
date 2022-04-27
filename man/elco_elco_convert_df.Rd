@@ -13,7 +13,7 @@ elco_elco_convert_df(x, to, sample_mass = NULL)
 should be transformed. This can be any combinations of masses and molar amounts (e.g. "g",
 "mol", "g/g", "mol/g").}
 
-\item{sample_mass}{Optionally. A numeric vector of class \code{\link[quantities:quantities]{quantities}}
+\item{sample_mass}{Optionally. A numeric vector of class \code{\link[quantities:quantities]{quantities::quantities()}}
 with t\code{nrow(x)} elements that contains the mass of the corresponding samples. This is used for all
 unit conversions that require the sample mass, for example to convert from a mass fraction [g/g] to molar
 amount [mol].}
@@ -22,6 +22,6 @@ amount [mol].}
 \code{x} with converted element contents.
 }
 \description{
-\code{elco_elco_convert_df} applies \code{\link{elco_elco_convert}} to all columns of
+\code{elco_elco_convert_df} applies \code{\link[=elco_elco_convert]{elco_elco_convert()}} to all columns of
 class \code{elco} in a specified \code{data.frame}
 }

@@ -7,12 +7,12 @@
 \method{plot}{xrf}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_xrf]{xrf}}.}
+\item{x}{An object of class \code{\link[=elco_new_xrf]{xrf()}}.}
 
 \item{...}{Further arguments, will be ignored}
 }
 \value{
-An object of class \code{\link[ggplot2:ggplot]{ggplot2}}
+An object of class \code{\link[ggplot2:ggplot]{ggplot2()}}
 }
 \description{
 \code{plot.xrf} is the plot method for objects of class

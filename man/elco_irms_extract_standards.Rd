@@ -7,11 +7,11 @@
 elco_irms_extract_standards(x)
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_irms]{irms}}}
+\item{x}{An object of class \code{\link[=elco_new_irms]{irms}}}
 }
 \value{
-An object of class \code{\link[elco_elco_new_irms_std]{irms_std}} containing only the rows
-in \code{x} where \code{sample_name \%in\% elco::irms_standards$standard_name}.
+An object of class \code{\link[=elco_new_irms_std]{irms_std}} containing only the rows
+in \code{x} where \verb{sample_name \\\%in\\\% elco::irms_standards$standard_name}.
 }
 \description{
 \code{elco_irms_extract_standards} takes an object of class \code{irms} and extracts all rows

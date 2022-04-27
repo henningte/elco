@@ -1,13 +1,13 @@
 #' Reformats raw csv X-ray fluorescence data as exported by the vendor software.
 #'
-#' \code{elco_xrf_import_csv} reads one or more csv files that contain raw X-ray fluorescence (XRF) data as
-#' exported by the vendor software of the XRF spectromter (ZSX Primus II, Rigaku) and tidys the data. This includes
+#' `elco_xrf_import_csv` reads one or more csv files that contain raw X-ray fluorescence (XRF) data as
+#' exported by the vendor software of the XRF spectrometer (ZSX Primus II, Rigaku) and tidies the data. This includes
 #' reformatting columns and rows, deleting unneeded columns and rows (summary statistics),
 #' adding units, and renaming columns.
 #'
 #' @param files A vector of character values representing paths to csv files with XRF raw data as exported
-#' by the vendor software of the XRF spectromter (ZSX Primus II, Rigaku).
-#' @return An object of class \code{\link[xrf]{xrf}}.
+#' by the vendor software of the XRF spectrometer (ZSX Primus II, Rigaku).
+#' @return An object of class [`xrf`][elco::elco_new_xrf].
 #' @export
 elco_xrf_import_csv <- function(files) {
 

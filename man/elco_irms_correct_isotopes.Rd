@@ -15,12 +15,12 @@ elco_irms_correct_isotopes(
 )
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_irms]{irms}}.}
+\item{x}{An object of class \code{\link[=elco_new_irms]{irms()}}.}
 
-\item{ref}{A \code{data.frame} with the same format as \code{\link[elco:irms_standards]{irms_standards}}
+\item{ref}{A \code{data.frame} with the same format as \code{\link[=irms_standards]{irms_standards()}}
 and exactly one row. \code{ref} contains the data for the standard to use for the correction.}
 
-\item{check}{A \code{data.frame} with the same format as \code{\link[elco:irms_standards]{irms_standards}}.
+\item{check}{A \code{data.frame} with the same format as \code{\link[=irms_standards]{irms_standards()}}.
 \code{check} contains data for standards with which to check the correction. If the median of their
 corrected isotope signature values deviates (absolutely) by more than a threshold value as defined by
 \code{check$threshold_13C} or \code{check$threshold_15N} (depending on the value of \code{isotope}), a
@@ -30,16 +30,13 @@ warning will be printed. Can alternatively be set to \code{NULL}, in which case 
 This must be one of "13C" or "15N".}
 
 \item{t}{An integer value specifying the number of measurements that must be available for a particular
-standard to make it eligble for being a reference for correcting the measured isotope values.}
+standard to make it eligible for being a reference for correcting the measured isotope values.}
 
 \item{by_file}{A logical value indicating if medians of standards are computed across different files
 as indicated by \code{x$file_id} or (\code{FALSE}) individually for each file (\code{TRUE}).}
 
 \item{plotit}{A logical value indicating if a plot for checking should be printed (\code{TRUE}) or not
 (\code{FALSE}).}
-}
-\value{
-nothig.
 }
 \description{
 \code{elco_irms_correct_isotopes} is a heuristic function to correct measured isotope signatures of samples
@@ -48,24 +45,19 @@ files are batch-processed, using either standards from all files or only from th
 sample is located in.
 The procedure is as follows:
 \enumerate{
-  \item For a standard defined by the user, compute the median of the individually measured isotope signals
-  for the selected isotope. The defined standard should be a trusted standard.
-  \item For the same standard, count the number of samples that have been measured. If this number is smaller
-  than a threshold \code{t}, print a warning. This is done to avoid that correction is done without enough
-  samples to reliably compute a median value.
-  \item Look up the known reference isotope signature for the selected standard. Compute the difference between
-  this value and the median of the isotope signature of the standard. Take this difference and substract it
-  from each measured value.
-  \item (Optionally): Extract the values of other standards after the correction, compute their medians, and
-  check if the absolute deviation from the reference value is larger than some threshold. Print a warning
-  if this is the case.
-  \item (Optionally): create a plot showing uncorrected and corrected isotope signatures for all measured
-  standards along their known reference values. This plot may be used as a visual check of the heuristic
-  correction procedure.
+\item For a standard defined by the user, compute the median of the individually measured isotope signals
+for the selected isotope. The defined standard should be a trusted standard.
+\item For the same standard, count the number of samples that have been measured. If this number is smaller
+than a threshold \code{t}, print a warning. This is done to avoid that correction is done without enough
+samples to reliably compute a median value.
+\item Look up the known reference isotope signature for the selected standard. Compute the difference between
+this value and the median of the isotope signature of the standard. Take this difference and subtract it
+from each measured value.
+\item (Optionally): Extract the values of other standards after the correction, compute their medians, and
+check if the absolute deviation from the reference value is larger than some threshold. Print a warning
+if this is the case.
+\item (Optionally): create a plot showing uncorrected and corrected isotope signatures for all measured
+standards along their known reference values. This plot may be used as a visual check of the heuristic
+correction procedure.
 }
-}
-\note{
-___ todo: Klaus suggested that to remove outliers in standard measurements that may not be discarded
-by the median approach, we should define a threshold value for each standard to exclude outliers before
-computing medians. Check if this should still be done.
 }

@@ -1,15 +1,27 @@
 Package: elco
-Title: Handling data on chemical element contents and isotope signatures.
+Title: Handling Data on Chemical Element Contents and Isotope signatures
 Version: 0.0.0.9000
 Authors@R: c(
-    person(given = "Henning", family = "Teickner", role = c("aut", "cre"), email = "henning.teickner@wwu.de"),
-    person(given = "Klaus-Holger", family = "Knorr", role = c("aut"), email = "kh.knorrr@wwu.de"),
-    person(given = "Tanja", family = "Broder", role = c("ctb")),
-    person(given = "Mariusz", family = "Gałka", role = c("ctb")))
-Description: elco provides functions to read in raw data on element contents
-    from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio
-    mass spectromtery (IRMS), handling these as data.frames with units, and
-    computing simple derived variables, such as element ratios.
+    person(given = "Henning",
+           family = "Teickner",
+           role = c("aut", "cre"),
+           email = "h_teic01@uni-muenster.de",
+           comment = c(ORCID = "0000-0002-3993-1182")),
+    person(given = "Klaus-Holger", 
+           family = "Knorr", 
+           role = c("aut"), 
+           email = "kh.knorrr@wwu.de"),
+    person(given = "Tanja", 
+           family = "Broder", 
+           role = c("ctb")),
+    person(given = "Mariusz", 
+           family = "Gałka", 
+           role = c("ctb"))
+           )
+Description: 'elco' provides functions to read in raw data on element contents
+    from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and 
+    isotope ratio mass spectrometry (IRMS), handling these as data frames with 
+    units, and computing simple derived variables, such as element ratios.
 License: GPL-3
 ByteCompile: true
 Encoding: UTF-8
@@ -24,11 +36,14 @@ Imports:
     PeriodicTable,
     vctrs,
     Rdpack
-RoxygenNote: 7.1.2
+RoxygenNote: 7.1.2.9000
 Suggests: 
     knitr,
     rmarkdown,
-    ggplot2
+    ggplot2,
+    spelling,
+    tibble,
+    magrittr
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
@@ -37,3 +52,5 @@ Depends:
     units
 RdMacros: 
     Rdpack
+Roxygen: list(markdown = TRUE)
+Language: en-US

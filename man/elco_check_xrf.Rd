@@ -10,9 +10,9 @@ elco_check_xrf(x)
 \item{x}{An object.}
 }
 \value{
-An object of class \code{\link[elco:elco_new_xrf]{xrf}}.
+An object of class \code{\link[=elco_new_xrf]{xrf()}}.
 }
 \description{
-\code{elco_check_xrf} checks if an object is of class \code{\link[elco:elco_new_xrf]{xrf}}.
+\code{elco_check_xrf} checks if an object is of class \code{\link[=elco_new_xrf]{xrf()}}.
 }
 \keyword{internal}

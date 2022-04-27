@@ -1,22 +1,22 @@
 #' Converts the unit of element contents.
 #'
-#' \code{elco_el_transform} takes a \code{data.frame}, that contains chemical element contents, and
+#' `elco_el_transform` takes a `data.frame`, that contains chemical element contents, and
 #' specified chemical elements as input, and converts their unit of measurement.
 #'
-#' @param x A \code{data.frame} that contains chemical element contents. Columns to be transformed
+#' @param x A `data.frame` that contains chemical element contents. Columns to be transformed
 #' have to be named as symbols of the respective chemical elements. Element contents must be of class
-#' \code{\link[units]{units}} and are allowed to have as units mass ratios (e.g. \code{"g/g"},
-#' \code{"mg/mg"}) or molar contents (e.g. \code{"mol/g"}).
+#' [units::units()] and are allowed to have as units mass ratios (e.g. `"g/g"`,
+#' `"mg/mg"`) or molar contents (e.g. `"mol/g"`).
 #' @param ... Chemical elements for which to transform the element content. This can be character
-#' values or symbols that represent the symbols of the chemical elements (e.g. \code{C}).
+#' values or symbols that represent the symbols of the chemical elements (e.g. `C`).
 #' @param to A character value representing the unit of measurement to which the element contents
-#' should be transformed. This should be one of \code{c("g/g", "mol/g")}.
-#' @param col_sample_mass A character value or an integer value indicating the column in \code{x} that
-#' contains the mass of the sample. \code{col_sample_mass} can be set to \code{NULL}, if the unit
+#' should be transformed. This should be one of `c("g/g", "mol/g")`.
+#' @param col_sample_mass A character value or an integer value indicating the column in `x` that
+#' contains the mass of the sample. `col_sample_mass` can be set to `NULL`, if the unit
 #' transformation does not involve multiplication with the sample mass. Otherwise, the values in this
-#' column are used to transform the units (for example to compute the amount of C in a sample [mol] based
-#' on its mass fraction [g/g] and the sample mass [g]).
-#' @return \code{x} with converted element contents.
+#' column are used to transform the units (for example to compute the amount of C in a sample \[mol\] based
+#' on its mass fraction [g/g] and the sample mass \[g\]).
+#' @return `x` with converted element contents.
 #' @export
 elco_el_transform <- function(x, ..., to, col_sample_mass = NULL) {
 

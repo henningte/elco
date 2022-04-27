@@ -7,10 +7,10 @@
 elco_irms_write_standards(x, file, initialize = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco_new_irms_std]{irms_std}}.}
+\item{x}{An object of class \code{\link[=elco_new_irms_std]{irms_std}}.}
 
 \item{file}{A character value representing a path to an existing rds file with
-an object of class \code{\link[irms_new_irms_std]{irms_std}} or to such a file
+an object of class \code{\link[=elco_new_irms_std]{irms_std}} or to such a file
 to be created.}
 
 \item{initialize}{A logical value indicating if the file pointed to by \code{file}

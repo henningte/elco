@@ -2,7 +2,7 @@
 title: "Reformatting and checking raw data (csv files) from the X-ray fluorescence device (ZSX Primus II, Rigaku)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{v002-reformat-xrf}
+  %\VignetteIndexEntry{Reformatting and checking raw data (csv files) from the X-ray fluorescence device (ZSX Primus II, Rigaku)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: "./../inst/REFERENCES.bib"
@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 # packages
-library(sop)
 library(ggplot2)
 library(dplyr)
 library(tidyr)

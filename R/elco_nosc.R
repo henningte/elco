@@ -1,16 +1,16 @@
 #' Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation.
 #'
 #' Functions to compute the carbon oxidation state, carbon oxidative ratio, and
-#' degree of unsaturation with objects of class \code{\link[elco:elco_new_elco]{elco}}.
+#' degree of unsaturation with objects of class [`elco()`][elco::elco_new_elco].
 #'
 #' @describeIn elco_nosc Computes the carbon oxidation
 #' state using the elemental composition of C, H, N, O.
 #'
-#' @param c An object of class \code{elco} with the amount of C [mol].
-#' @param h An object of class \code{elco} with the amount of H [mol].
-#' @param n An object of class \code{elco} with the amount of N [mol].
-#' @param o An object of class \code{elco} with the amount of O [mol].
-#' @return An object of class \code{\link[quantities:quantities]{quantities}} with the carbon oxidation state.
+#' @param c An object of class `elco` with the amount of C \[mol\].
+#' @param h An object of class `elco` with the amount of H \[mol\].
+#' @param n An object of class `elco` with the amount of N \[mol\].
+#' @param o An object of class `elco` with the amount of O \[mol\].
+#' @return An object of class [quantities::quantities()] with the carbon oxidation state.
 #' @export
 elco_nosc <- function(c,
                       h,

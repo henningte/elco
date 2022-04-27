@@ -1,7 +1,7 @@
 #' S3 Group Generic Functions
 #'
-#' \code{Math}, \code{Ops} and \code{Summary} group generic methods for
-#' \code{elco} objects (see \code{\link[base]{groupGeneric}} for a
+#' `Math`, `Ops` and `Summary` group generic methods for
+#' `elco` objects (see [base::groupGeneric()] for a
 #' comprehensive list of available methods).
 #'
 #' @inheritParams base::groupGeneric

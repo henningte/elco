@@ -1,13 +1,13 @@
 #' Reformats raw csv element analyzer isotope ratio mass spectrometry (EA-IRMS) data as exported by the vendor software.
 #'
-#' \code{elco_irms_import_csv} reads one or more csv files that contain raw element analyzer isotope ratio mass spectrometry
-#' (EA-IRMS) data as exported by the vendor software of the IRMS spectromter (___ todo) and tidys the
+#' `elco_irms_import_csv` reads one or more csv files that contain raw element analyzer isotope ratio mass spectrometry
+#' (EA-IRMS) data as exported by the vendor software of the IRMS spectrometer and tidies the
 #' data. This includes reformatting columns and rows, deleting unneeded columns and rows,
 #' adding units, and renaming columns.
 #'
 #' @param files A vector of character values representing paths to csv files with EA-IRMS raw data as exported
 #' by the vendor software of the IRMS.
-#' @return An object of class \code{\link[irms]{irms}}.
+#' @return An object of class [`irms`][elco::elco_new_irms].
 #' @export
 elco_irms_import_csv <- function(files) {
 
@@ -99,7 +99,7 @@ elco_irms_import_csv <- function(files) {
     )
   })
 
-  # remove awkward space at the beginning of sample labels (___ todo: check if these are always there)
+  # remove awkward space at the beginning of sample labels
   d <- purrr::map(d, function(x) {
     dplyr::mutate(x, "sample_label" = stringr::str_remove(.data$sample_label, pattern = "^ "))
   })

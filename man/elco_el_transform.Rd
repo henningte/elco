@@ -9,7 +9,7 @@ elco_el_transform(x, ..., to, col_sample_mass = NULL)
 \arguments{
 \item{x}{A \code{data.frame} that contains chemical element contents. Columns to be transformed
 have to be named as symbols of the respective chemical elements. Element contents must be of class
-\code{\link[units]{units}} and are allowed to have as units mass ratios (e.g. \code{"g/g"},
+\code{\link[units:units]{units::units()}} and are allowed to have as units mass ratios (e.g. \code{"g/g"},
 \code{"mg/mg"}) or molar contents (e.g. \code{"mol/g"}).}
 
 \item{...}{Chemical elements for which to transform the element content. This can be character
@@ -22,7 +22,7 @@ should be transformed. This should be one of \code{c("g/g", "mol/g")}.}
 contains the mass of the sample. \code{col_sample_mass} can be set to \code{NULL}, if the unit
 transformation does not involve multiplication with the sample mass. Otherwise, the values in this
 column are used to transform the units (for example to compute the amount of C in a sample [mol] based
-on its mass fraction [g/g] and the sample mass [g]).}
+on its mass fraction \link{g/g} and the sample mass [g]).}
 }
 \value{
 \code{x} with converted element contents.

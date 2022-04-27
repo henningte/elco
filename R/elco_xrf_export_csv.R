@@ -1,17 +1,18 @@
 #' Reformats raw csv X-ray fluorescence data as exported by the vendor software.
 #'
-#' \code{elco_xrf_export_csv} takes an object of class xrf and exports two csv files:
+#' `elco_xrf_export_csv` takes an object of class xrf and exports two csv files:
 #' one with the measured data and one with metadata indicating data types and units of measurement.
 #'
-#' @param x An object of class \code{\link[xrf]{xrf}}.
+#' @param x An object of class [`xrf`][elco::elco_new_xrf].
 #' @param file A character value representing a path and file name (csv file) where to export
-#' the reformatted data to. The two exported csv files are named using the value of \code{file}:
+#' the reformatted data to. The two exported csv files are named using the value of `file`:
 #' \enumerate{
-#'   \item A file named with the value of \code{file}.
-#'   \item A file named with the value of \code{file} and with additional \code{"_metadata"}, containing
+#'   \item A file named with the value of `file`.
+#'   \item A file named with the value of `file` and with additional `"_metadata"`, containing
 #'   the metadata (variable type and unit).
 #' }
 #' @return nothing.
+#'
 #' @export
 elco_xrf_export_csv <- function(x,
                            file) {

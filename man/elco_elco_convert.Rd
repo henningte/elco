@@ -7,13 +7,13 @@
 elco_elco_convert(x, to, sample_mass = NULL)
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_elco]{elco}}.}
+\item{x}{An object of class \code{\link[=elco_new_elco]{elco()}}.}
 
 \item{to}{A character value representing the unit of measurement to which the element contents
 should be transformed. This can be any combinations of masses and molar amounts (e.g. "g",
 "mol", "g/g", "mol/g").}
 
-\item{sample_mass}{Optionally. A numeric vector of class \code{\link[quantities:quantities]{quantities}}
+\item{sample_mass}{Optionally. A numeric vector of class \code{\link[quantities:quantities]{quantities::quantities()}}
 with the same length as \code{x} that contains the mass of the corresponding samples. This is used for all
 unit conversions that require the sample mass, for example to convert from a mass fraction [g/g] to molar
 amount [mol].}
@@ -24,4 +24,17 @@ amount [mol].}
 \description{
 \code{elco_elco_convert} takes an object of class \code{elco} and converts it measurement unit to
 a specified unit.
+}
+\examples{
+elco_elco_convert(elco::chno$C, to = "mol/g")
+
+# unit conversion where specifying the sample mass is needed
+library(quantities)
+
+elco_elco_convert(
+  elco::chno$C,
+  to = "mol",
+  sample_mass = quantities::set_quantities(1, "g", errors = 0)
+)
+
 }

@@ -13,6 +13,6 @@ elco_check_elco(x)
 An object of class \code{elco}.
 }
 \description{
-\code{elco_check_elco} checks if an object is of class \code{\link[elco:elco_new_elco]{elco}}.
+\code{elco_check_elco} checks if an object is of class \code{\link[=elco_new_elco]{elco()}}.
 }
 \keyword{internal}

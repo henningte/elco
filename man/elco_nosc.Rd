@@ -22,7 +22,7 @@ elco_du(c, h, n)
 \item{o}{An object of class \code{elco} with the amount of O [mol].}
 }
 \value{
-An object of class \code{\link[quantities:quantities]{quantities}} with the carbon oxidation state.
+An object of class \code{\link[quantities:quantities]{quantities::quantities()}} with the carbon oxidation state.
 
 A numeric vector with the oxidative ratio.
 
@@ -30,7 +30,7 @@ A numeric vector with the oxidative ratio.
 }
 \description{
 Functions to compute the carbon oxidation state, carbon oxidative ratio, and
-degree of unsaturation with objects of class \code{\link[elco:elco_new_elco]{elco}}.
+degree of unsaturation with objects of class \code{\link[=elco_new_elco]{elco()}}.
 }
 \section{Functions}{
 \itemize{

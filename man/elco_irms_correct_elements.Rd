@@ -13,13 +13,13 @@ elco_irms_correct_elements(
 )
 }
 \arguments{
-\item{x}{An object of class \code{\link[elco:elco_new_irms]{irms}}.}
+\item{x}{An object of class \code{\link[=elco_new_irms]{irms()}}.}
 
 \item{element}{A character value representing the chemical element for which to correct the mass fraction
 values. This must be one of "C" or "N".}
 
 \item{standards}{A character vale specifying standards to use for computing the regression equation.
-This must be one of \code{\link[irms_standard]{irms_standard$standard_name}}. Default is to
+This must be one of \code{irms_standard::irms_standard$standard_name}. Default is to
 use all standards.}
 
 \item{by_file}{A logical value indicating if medians of standards are computed across different files
@@ -38,26 +38,21 @@ files are batch-processed, using either standards from all files or only from th
 sample is located in.
 The procedure is as follows:
 \enumerate{
-  \item For each measured standard, assign the known reference element mass content from
-  \code{\link[irms_standard]{irms_standard}}.
-  \item Use the information on the mass of the measured samples and the assigned element mass content values
-  to compute the respective absolute known element content [mg].
-  \item For all measured standards, compute a linear regression model that predicts the absolute
-  element content in dependency of the respetive signal area.
-  \item For each sample, use the regression model and the respective measured signal area to compute
-  the absolute element content.
-  \item Divide the absolute predicted element contents by the samples' masses [mg] to get the mass fraction of
-  the element.
-  \item (Optionally): create plot: (1) showing uncorrected and corrected element mass fractions
-  for all measured standards and samples. This plot may be used as a visual check of the heuristic
-  correction procedure and shows how the values for all samples are corrected. In addition, for each
-  fitted regression model, the measured absolute element masses are plotted in dependency of the signal
-  areas with the regression line. These plot can be used to assess if the regression model captures well
-  the measured data for the standards.
+\item For each measured standard, assign the known reference element mass content from
+\code{\link{irms_standards}}.
+\item Use the information on the mass of the measured samples and the assigned element mass content values
+to compute the respective absolute known element content [mg].
+\item For all measured standards, compute a linear regression model that predicts the absolute
+element content in dependency of the respective signal area.
+\item For each sample, use the regression model and the respective measured signal area to compute
+the absolute element content.
+\item Divide the absolute predicted element contents by the samples' masses [mg] to get the mass fraction of
+the element.
+\item (Optionally): create plot: (1) showing uncorrected and corrected element mass fractions
+for all measured standards and samples. This plot may be used as a visual check of the heuristic
+correction procedure and shows how the values for all samples are corrected. In addition, for each
+fitted regression model, the measured absolute element masses are plotted in dependency of the signal
+areas with the regression line. These plot can be used to assess if the regression model captures well
+the measured data for the standards.
 }
-}
-\note{
-___ todo: Klaus suggested that to remove outliers in standard measurements that may not be discarded
-by the median approach, we should define a threshold value for each standard to exclude outliers before
-computing medians. Check if this should still be done.
 }

@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 elco provides functions to handle and (rudimentary) analyse element
-content data and isotope signatur data. Features are:
+content data and isotope signature data. Features are:
 
 1.  **Import of XRF and IRMS data** as they can be exported from X-ray
     fluorescence spectrometers (Rigaku ZSX Primus II) and EA-IRMS

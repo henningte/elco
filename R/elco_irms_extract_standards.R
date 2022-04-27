@@ -1,11 +1,11 @@
-#' Takes an object of class \code{irms} and extracts all rows referring to standards in \code{irms_standards}.
+#' Takes an object of class `irms` and extracts all rows referring to standards in `irms_standards`.
 #'
-#' \code{elco_irms_extract_standards} takes an object of class \code{irms} and extracts all rows
-#' referring to standards in \code{irms_standards}.
+#' `elco_irms_extract_standards` takes an object of class `irms` and extracts all rows
+#' referring to standards in `irms_standards`.
 #'
-#' @param x An object of class \code{\link[elco:elco_new_irms]{irms}}
-#' @return An object of class \code{\link[elco_elco_new_irms_std]{irms_std}} containing only the rows
-#' in \code{x} where \code{sample_name \%in\% elco::irms_standards$standard_name}.
+#' @param x An object of class [`irms`][elco::elco_new_irms]
+#' @return An object of class [`irms_std`][elco::elco_new_irms_std] containing only the rows
+#' in `x` where `sample_name \%in\% elco::irms_standards$standard_name`.
 #' @export
 elco_irms_extract_standards <- function(x) {
 
@@ -26,13 +26,13 @@ elco_irms_extract_standards <- function(x) {
 
 }
 
-#' Takes an object of class \code{irms} and checks if it contains only measurements on standards.
+#' Takes an object of class `irms` and checks if it contains only measurements on standards.
 #'
-#' \code{elco_irms_check_standards} takes an object of class \code{irms} and checks if it has only rows
-#' referring to standards in \code{irms_standards}.
+#' `elco_irms_check_standards` takes an object of class `irms` and checks if it has only rows
+#' referring to standards in `irms_standards`.
 #'
-#' @param x An object of class \code{\link[elco:elco_new_irms]{irms}}
-#' @return \code{x}.
+#' @param x An object of class [`irms()`][elco::elco_new_irms]
+#' @return `x`.
 elco_irms_check_standards <- function(x) {
 
   # checks

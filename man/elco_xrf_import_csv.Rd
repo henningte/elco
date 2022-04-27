@@ -8,14 +8,14 @@ elco_xrf_import_csv(files)
 }
 \arguments{
 \item{files}{A vector of character values representing paths to csv files with XRF raw data as exported
-by the vendor software of the XRF spectromter (ZSX Primus II, Rigaku).}
+by the vendor software of the XRF spectrometer (ZSX Primus II, Rigaku).}
 }
 \value{
-An object of class \code{\link[xrf]{xrf}}.
+An object of class \code{\link[=elco_new_xrf]{xrf}}.
 }
 \description{
 \code{elco_xrf_import_csv} reads one or more csv files that contain raw X-ray fluorescence (XRF) data as
-exported by the vendor software of the XRF spectromter (ZSX Primus II, Rigaku) and tidys the data. This includes
+exported by the vendor software of the XRF spectrometer (ZSX Primus II, Rigaku) and tidies the data. This includes
 reformatting columns and rows, deleting unneeded columns and rows (summary statistics),
 adding units, and renaming columns.
 }

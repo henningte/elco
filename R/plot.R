@@ -1,12 +1,12 @@
 #' Plots an object of class xrf.
 #'
-#' \code{plot.xrf} is the plot method for objects of class
-#' \code{xrf}. This function can be used to create plots for checking the
+#' `plot.xrf` is the plot method for objects of class
+#' `xrf`. This function can be used to create plots for checking the
 #' data.
 #'
-#' @param x An object of class \code{\link[elco:elco_new_xrf]{xrf}}.
+#' @param x An object of class [`xrf()`][elco::elco_new_xrf].
 #' @param ... Further arguments, will be ignored
-#' @return An object of class \code{\link[ggplot2:ggplot]{ggplot2}}
+#' @return An object of class [`ggplot2()`][ggplot2::ggplot]
 #' @export
 plot.xrf <- function(x,
                      ...) {

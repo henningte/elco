@@ -1,6 +1,6 @@
 #' Heuristic function to correct IRMS isotope signals by subtracting differences measured values for standards and their known isotope signature.
 #'
-#' \code{elco_irms_correct_isotopes} is a heuristic function to correct measured isotope signatures of samples
+#' `elco_irms_correct_isotopes` is a heuristic function to correct measured isotope signatures of samples
 #' during IRMS analysis. Correction can be performed for either \eqn{^{13}}C or \eqn{^{13}}N and, if multiple
 #' files are batch-processed, using either standards from all files or only from the file where the respective
 #' sample is located in.
@@ -9,10 +9,10 @@
 #'   \item For a standard defined by the user, compute the median of the individually measured isotope signals
 #'   for the selected isotope. The defined standard should be a trusted standard.
 #'   \item For the same standard, count the number of samples that have been measured. If this number is smaller
-#'   than a threshold \code{t}, print a warning. This is done to avoid that correction is done without enough
+#'   than a threshold `t`, print a warning. This is done to avoid that correction is done without enough
 #'   samples to reliably compute a median value.
 #'   \item Look up the known reference isotope signature for the selected standard. Compute the difference between
-#'   this value and the median of the isotope signature of the standard. Take this difference and substract it
+#'   this value and the median of the isotope signature of the standard. Take this difference and subtract it
 #'   from each measured value.
 #'   \item (Optionally): Extract the values of other standards after the correction, compute their medians, and
 #'   check if the absolute deviation from the reference value is larger than some threshold. Print a warning
@@ -22,26 +22,22 @@
 #'   correction procedure.
 #' }
 #'
-#' @param x An object of class \code{\link[elco:elco_new_irms]{irms}}.
+#' @param x An object of class [`irms()`][elco::elco_new_irms].
 #' @param isotope A character value representing the isotope for which to correct isotope signatures.
 #' This must be one of "13C" or "15N".
-#' @param ref A \code{data.frame} with the same format as \code{\link[elco:irms_standards]{irms_standards}}
-#' and exactly one row. \code{ref} contains the data for the standard to use for the correction.
-#' @param check A \code{data.frame} with the same format as \code{\link[elco:irms_standards]{irms_standards}}.
-#' \code{check} contains data for standards with which to check the correction. If the median of their
+#' @param ref A `data.frame` with the same format as [elco::irms_standards()]
+#' and exactly one row. `ref` contains the data for the standard to use for the correction.
+#' @param check A `data.frame` with the same format as [elco::irms_standards()].
+#' `check` contains data for standards with which to check the correction. If the median of their
 #' corrected isotope signature values deviates (absolutely) by more than a threshold value as defined by
-#' \code{check$threshold_13C} or \code{check$threshold_15N} (depending on the value of \code{isotope}), a
-#' warning will be printed. Can alternatively be set to \code{NULL}, in which case no warning is printed.
+#' `check$threshold_13C` or `check$threshold_15N` (depending on the value of `isotope`), a
+#' warning will be printed. Can alternatively be set to `NULL`, in which case no warning is printed.
 #' @param t An integer value specifying the number of measurements that must be available for a particular
-#' standard to make it eligble for being a reference for correcting the measured isotope values.
+#' standard to make it eligible for being a reference for correcting the measured isotope values.
 #' @param by_file A logical value indicating if medians of standards are computed across different files
-#' as indicated by \code{x$file_id} or (\code{FALSE}) individually for each file (\code{TRUE}).
-#' @param plotit A logical value indicating if a plot for checking should be printed (\code{TRUE}) or not
-#' (\code{FALSE}).
-#' @note ___ todo: Klaus suggested that to remove outliers in standard measurements that may not be discarded
-#' by the median approach, we should define a threshold value for each standard to exclude outliers before
-#' computing medians. Check if this should still be done.
-#' @return nothig.
+#' as indicated by `x$file_id` or (`FALSE`) individually for each file (`TRUE`).
+#' @param plotit A logical value indicating if a plot for checking should be printed (`TRUE`) or not
+#' (`FALSE`).
 #' @export
 elco_irms_correct_isotopes <- function(x,
                                        ref = irms_standards[irms_standards$standard_name == "BBOT", ],
@@ -143,8 +139,8 @@ elco_irms_correct_isotopes <- function(x,
     y <- dplyr::group_by(y, sample_label)
     y <- dplyr::summarise(y,
                           file_id = unique(file_id),
-                          signature_measured = median(!!disotope),
-                          area_measured = median(!!disotope_area),
+                          signature_measured = stats::median(!!disotope),
+                          area_measured = stats::median(!!disotope_area),
                           count = length(sample_mass),
                           .groups = "keep")
     y <- dplyr::left_join(y, irms_standards_sel, by = "sample_label")
@@ -159,7 +155,7 @@ elco_irms_correct_isotopes <- function(x,
     cond
   })
 
-  # substract
+  # subtract
   x <- purrr::map2(x, x_standards_signature_median, function(y, z) {
     y[, as.character(disotope)] <- y[, as.character(disotope), drop = TRUE] - z$signature_difference
     y
@@ -215,16 +211,16 @@ elco_irms_correct_isotopes <- function(x,
     # plot (don't show blanks and samples because these often have such small values that checking for standards and samples gets impossible)
     print(
       purrr::map(x_or, function(y) {
-        ggplot(dplyr::filter(y[y$sample_label != "Blank", ], sample_label != "Sample"), aes(x = sample_label)) +
-          geom_jitter(aes(y = !!disotope, colour = Corrected)) +
-          geom_point(data = dplyr::filter(irms_standards, standard_name %in% x$sample_label), aes(x = standard_name, y = !!disotope)) +
-          stat_boxplot(aes(y = !!disotope, colour = Corrected), fill = NA) +
-          geom_point(aes(x = sample_label, y = signature_known)) +
-          guides(colour = guide_legend(nrow = 2)) +
-          theme(legend.position = "bottom") +
-          labs(x = "Standards",
-               y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-               title = paste0("File id: ", y$file_id[[1]], ", Corrected and uncorrected isotope signatures"))
+        ggplot2::ggplot(dplyr::filter(y[y$sample_label != "Blank", ], sample_label != "Sample"), ggplot2::aes(x = sample_label)) +
+          ggplot2::geom_jitter(aes(y = !!disotope, colour = Corrected)) +
+          ggplot2::geom_point(data = dplyr::filter(irms_standards, standard_name %in% x$sample_label), ggplot2::aes(x = standard_name, y = !!disotope)) +
+          ggplot2::stat_boxplot(ggplot2::aes(y = !!disotope, colour = Corrected), fill = NA) +
+          ggplot2::geom_point(aes(x = sample_label, y = signature_known)) +
+          ggplot2::guides(colour = ggplot2::guide_legend(nrow = 2)) +
+          ggplot2::theme(legend.position = "bottom") +
+          ggplot2::labs(x = "Standards",
+                        y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
+                        title = paste0("File id: ", y$file_id[[1]], ", Corrected and uncorrected isotope signatures"))
       })
     )
 

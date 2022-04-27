@@ -1,17 +1,17 @@
-#' Creates an object of class \code{elco}
+#' Creates an object of class `elco`
 #'
-#' \code{elco_new_elco} is the constructor function for objects of class
-#' \code{elco}. An object of class \code{elco} is a numeric vector with each element
+#' `elco_new_elco` is the constructor function for objects of class
+#' `elco`. An object of class `elco` is a numeric vector with each element
 #' representing a chemical element content value. At the same time, the numeric vector
-#' is an object of class \code{\link[quantities:quantities]{quantities}} with an
-#' additional attribute \code{"el_symbol"} with the respective element symbol.
+#' is an object of class [quantities::quantities()] with an
+#' additional attribute `"el_symbol"` with the respective element symbol.
 #'
 #' @param x A numeric vector that is an object of class
-#' \code{\link[quantities:quantities]{quantities}} with each element representing an
+#' [quantities::quantities()] with each element representing an
 #' element content.
 #' @param el_symbol A character value representing the symbol for a chemical element.
-#' @return An object of class \code{elco}. This is identical to \code{x}, but has
-#' an additional attribute \code{"el_symbol"} and class attribute.
+#' @return An object of class `elco`. This is identical to `x`, but has
+#' an additional attribute `"el_symbol"` and class attribute.
 #' @export
 elco_new_elco <- function(x,
                           el_symbol) {
@@ -27,7 +27,7 @@ elco_new_elco <- function(x,
   }
 
   x_units_numerator <- units::as_units(x_units_numerator)
-  cond <- !(elco_check_unit_conversion(x_units_numerator, "g") | elco_check_unit_conversion(x_units_numerator, "mol"))
+  cond <- !(elco_check_unit_conversion(x_units_numerator, to = "g", mode = "standard") | elco_check_unit_conversion(x_units_numerator, to = "mol", mode = "standard"))
   if(cond) {
     rlang::abort(paste0("The units attribute of `x` must either identify a mass or a molar amount, but is ", as.character(x_units), "."))
   }
@@ -35,7 +35,7 @@ elco_new_elco <- function(x,
   x_units_denominator <- x_units$denominator
   if(length(x_units_denominator) == 1) {
     x_units_denominator <- units::as_units(x_units_denominator)
-    cond <- !(elco_check_unit_conversion(x_units_denominator, "g") | elco_check_unit_conversion(x_units_denominator, "mol"))
+    cond <- !(elco_check_unit_conversion(x_units_denominator, to = "g", mode = "standard") | elco_check_unit_conversion(x_units_denominator, to = "mol", mode = "standard"))
     if(cond) {
       rlang::abort(paste0("The units attribute of `x` must either identify a mass or a molar amount, but is ", as.character(x_units), "."))
     }
@@ -61,11 +61,11 @@ elco_new_elco <- function(x,
 
 }
 
-#' Prints an object of class \code{elco}.
+#' Prints an object of class `elco`.
 #'
-#' @param x An object of class \code{\link[elco:elco_new_elco]{elco}}.
+#' @param x An object of class [`elco()`][elco::elco_new_elco].
 #' @param ... Additional arguments, will be ignored.
-#' @return \code{x}.
+#' @return `x`.
 #' @export
 print.elco <- function(x, ...) {
   cat(paste0("Element: ", attr(x, "el_symbol"), "\n"))
@@ -75,30 +75,31 @@ print.elco <- function(x, ...) {
 
 #' Checks if a unit conversion is valid.
 #'
-#' \code{elco_check_unit_conversion} takes an object of class \code{\link[units:units]{units}}
+#' `elco_check_unit_conversion` takes an object of class [units::units()]
 #' and a character value representing a unit it should be converted into and checks if the
 #' conversion is valid.
 #'
-#' @param x An object of class \code{\link[units:units]{units}}.
+#' @param x An object of class [units::units()].
 #' @param to A character value representing the symbol for a unit into which
-#' \code{x} should be converted.
-#' @return A logical value indicating if the conversion is valid (\code{TRUE})
-#' or not (\code{FALSE}).
-elco_check_unit_conversion <- function(x, to, silent = TRUE) {
+#' `x` should be converted.
+#' @param ... Additional arguments passed to [units::set_units()].
+#' @return A logical value indicating if the conversion is valid (`TRUE`)
+#' or not (`FALSE`).
+elco_check_unit_conversion <- function(x, to, silent = TRUE, ...) {
   tryCatch({
-    units(x) <- suppressWarnings(with(units::ud_units, to))
+    units::set_units(x, to, ...)
     TRUE
   },
   error = function(cnd) FALSE,
   silent = silent)
 }
 
-#' Checks if an object is of class \code{elco}.
+#' Checks if an object is of class `elco`.
 #'
-#' \code{elco_check_elco} checks if an object is of class \code{\link[elco:elco_new_elco]{elco}}.
+#' `elco_check_elco` checks if an object is of class [`elco()`][elco::elco_new_elco].
 #'
 #' @param x An object.
-#' @return An object of class \code{elco}.
+#' @return An object of class `elco`.
 #' @keywords internal
 elco_check_elco <- function(x) {
   inherits(x, "elco")
@@ -106,7 +107,7 @@ elco_check_elco <- function(x) {
 
 #' Combine Values into a Vector or List
 #'
-#' S3 method for \code{quantities} objects (see \code{\link{c}}).
+#' S3 method for `quantities` objects (see [c()]).
 #'
 #' @inheritParams base::c
 #'
@@ -202,7 +203,7 @@ cbind.elco  <- function(..., deparse.level = 1) {
   structure(value, class = c("elco", "quantities", "units", "errors"))
 }
 
-#' @rdname cbind.quantities
+#'
 #' @export
 rbind.elco <- cbind.elco
 
@@ -211,7 +212,7 @@ rbind.elco <- cbind.elco
 # tidyverse
 
 #' @export
-#' @source Modified from \url{https://github.com/r-quantities/quantities/blob/master/R/tidyverse.R}.
+#' @source Modified from <https://github.com/r-quantities/quantities/blob/master/R/tidyverse.R>.
 vec_ptype2.elco.elco <- function(x, y, ..., x_arg = "", y_arg = "") {
   x_or <- x
   y_or <- y
@@ -265,14 +266,14 @@ mean.elco <- function(x, trim = 0, na.rm = FALSE, ...) {
   elco_new_elco(NextMethod(), el_symbol = attr(x, "el_symbol"))
 }
 
-#' Identifies columns of class \code{elco} in a \code{data.frame}.
+#' Identifies columns of class `elco` in a `data.frame`.
 #'
-#' \code{elco_identify_elco_df} identifies columns in a \code{data.frame} that
-#' are of class \code{\link[elco_elco_new_elco]{elco}}.
+#' `elco_identify_elco_df` identifies columns in a `data.frame` that
+#' are of class [`elco`][elco_new_elco].
 #'
-#' @param x A \code{data.frame}.
-#' @return A logical vector with an element for each column in \code{x} indicating if
-#' the column is of class \code{elco} or not.
+#' @param x A `data.frame`.
+#' @return A logical vector with an element for each column in `x` indicating if
+#' the column is of class `elco` or not.
 #' @export
 elco_identify_elco_df <- function(x) {
 

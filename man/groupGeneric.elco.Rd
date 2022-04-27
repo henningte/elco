@@ -11,16 +11,10 @@
 \method{Ops}{elco}(e1, e2)
 }
 \arguments{
-\item{x}{objects.}
-
 \item{...}{further arguments passed to methods.}
-
-\item{e1}{objects.}
-
-\item{e2}{objects.}
 }
 \description{
 \code{Math}, \code{Ops} and \code{Summary} group generic methods for
-\code{elco} objects (see \code{\link[base]{groupGeneric}} for a
+\code{elco} objects (see \code{\link[base:groupGeneric]{base::groupGeneric()}} for a
 comprehensive list of available methods).
 }

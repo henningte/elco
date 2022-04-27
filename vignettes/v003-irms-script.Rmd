@@ -97,7 +97,7 @@ If there is a large difference between the median measured isotope signature and
 
 ### Isotope signatures of standards over time
 
-If there is a trend visible, the heurisitic procedure used for the correction of isotope signatures (see below) may not provide the "best" correction because it does not consider this trend, but simply substracts the median isotope signature of a certain standard.
+If there is a trend visible, the heuristic procedure used for the correction of isotope signatures (see below) may not provide the "best" correction because it does not consider this trend, but simply subtracts the median isotope signature of a certain standard.
 
 ```{r checks-isotopes-standards-time, fig.width=6, fig.height=fig_height2, fig.cap="Isotope signatures [&delta;&#8240;] for all standards over the time of measurement. Different panels show the data for different isotopes (<sup>13</sup>C and <sup>15</sup>N) and different files (indicated by numbers). Points are the measured values and solid lines are lines of a fitted regression model (to make trends more visible). Different colours represent different standards. Dashed horizontal lines represent the known true isotope signatures of the standards.", echo=FALSE}
   d %>%
@@ -161,7 +161,7 @@ d %>%
 ```
 ### Element contents of standards over time
 
-If there is a trend visible, the heurisitic procedure used for the correction of isotope signatures (see below) may not provide the "best" correction because it does not consider this trend, but simply substracts the median isotope signature of a certain standard.
+If there is a trend visible, the heuristic procedure used for the correction of isotope signatures (see below) may not provide the "best" correction because it does not consider this trend, but simply subtracts the median isotope signature of a certain standard.
 
 ```{r checks-elco-standards-time, fig.width=6, fig.height=fig_height2, fig.cap="Element contents [mass fraction; unitless] for all standards over the time of measurement. Different panels show the data for different chemical elements (C and N) and different files (indicated by numbers). Points are the measured values and solid lines are lines of a fitted regression model (to make trends more visible). Different colours represent different standards. Dashed horizontal lines represent the known true element contents of the standards.", echo=FALSE}
   d %>%
@@ -213,9 +213,9 @@ d %<>%
                                    plotit = TRUE)
 ```
 
-Correction of the $^{15}$N isotope signatures. The corrected values for the standards (especially thos with a similar signal area as the samples) should match their known true values. 
+Correction of the $^{15}$N isotope signatures. The corrected values for the standards (especially those with a similar signal area as the samples) should match their known true values. 
 
-```{r corrections-isotopes-15N, fig.width=6, fig.height=5, fig.cap=c("Isotope signatures for <sup>15</sup>N [&delta;&#8240;] for all standards before and after correction. Black points represent the known true isotope signatures of the standards. Different point shapes indicate the standard that was used as reference during the correction procedure for each sample.", "Isotope signatures for <sup>15</sup>N [&delta;&#8240;] for all standards and samples before and after correction. Black points represent the known true isotope signatures of the standards. Different point shapes indicate the standard that was used as reference during the correction procedure for each sample."), echo=TRUE}
+```{r corrections-isotopes-15N, fig.width=6, fig.height=5, fig.cap=c("Isotope signaturees for <sup>15</sup>N [&delta;&#8240;] for all standards before and after correction. Black points represent the known true isotope signaturees of the standards. Different point shapes indicate the standard that was used as reference during the correction procedure for each sample.", "Isotope signaturees for <sup>15</sup>N [&delta;&#8240;] for all standards and samples before and after correction. Black points represent the known true isotope signaturees of the standards. Different point shapes indicate the standard that was used as reference during the correction procedure for each sample."), echo=TRUE}
 d %<>%
   elco::elco_irms_correct_isotopes(isotope = "15N", 
                                    ref = elco::irms_standards[irms_standards$standard_name == "BBOT", ],
@@ -229,7 +229,7 @@ d %<>%
 
 Correction of the C content.
 
-```{r corrections-elco-C, fig.width=6, fig.height=5, fig.cap=c("Relative mass fractions of C [mass-%] as these were originally measured (y axis) and after the correction procedure (x axis) for all samples and files. Different colours represent different standards and the samples. The black line is the identity line. Points on the identity line are not affected by the correction. Points below the identity line were underestimated and points above the identity line were overestimated. Horizontal and vertical coloured line segments mark the known true isotope signatures of the standards.", purrr::map_chr(unique(d$file_id), function(x) paste0("Regression line for file ", x, ", for the absolute sample mass of C [mg] in dependency of the respective signal area. Points are the measured values. Different colours represent different standards. The black line is the fitted regression line. Black ticks at the bottom show the distribution of the samples' signal area values."))), echo=TRUE}
+```{r corrections-elco-C, fig.width=6, fig.height=5, fig.cap=c("Relative mass fractions of C [mass-%] as these were originally measured (y axis) and after the correction procedure (x axis) for all samples and files. Different colours represent different standards and the samples. The black line is the identity line. Points on the identity line are not affected by the correction. Points below the identity line were underestimated and points above the identity line were overestimated. Horizontal and vertical coloured line segments mark the known true isotope signaturees of the standards.", purrr::map_chr(unique(d$file_id), function(x) paste0("Regression line for file ", x, ", for the absolute sample mass of C [mg] in dependency of the respective signal area. Points are the measured values. Different colours represent different standards. The black line is the fitted regression line. Black ticks at the bottom show the distribution of the samples' signal area values."))), echo=TRUE}
 d %<>%
   elco::elco_irms_correct_elements(element = "C", 
                                    standards = elco::irms_standards$standard_name[elco::irms_standards$standard_name %in% d$sample_label], 
@@ -239,7 +239,7 @@ d %<>%
 
 Correction of the N content
 
-```{r corrections-elco-N, fig.width=6, fig.height=5, fig.cap=c("Relative mass fractions of N [mass-%] as these were originally measured (y axis) and after the correction procedure (x axis) for all samples and files. Different colours represent different standards and the samples. The black line is the identity line. Points on the identity line are not affected by the correction. Points below the identity line were underestimated and points above the identity line were overestimated. Horizontal and vertical coloured line segments mark the known true isotope signatures of the standards.", purrr::map_chr(unique(d$file_id), function(x) paste0("Regression line for file ", x, ", for the absolute sample mass of N [mg] in dependency of the respective signal area. Points are the measured values. Different colours represent different standards. The black line is the fitted regression line. Black ticks at the bottom show the distribution of the samples' signal area values."))), echo=TRUE}
+```{r corrections-elco-N, fig.width=6, fig.height=5, fig.cap=c("Relative mass fractions of N [mass-%] as these were originally measured (y axis) and after the correction procedure (x axis) for all samples and files. Different colours represent different standards and the samples. The black line is the identity line. Points on the identity line are not affected by the correction. Points below the identity line were underestimated and points above the identity line were overestimated. Horizontal and vertical coloured line segments mark the known true isotope signaturees of the standards.", purrr::map_chr(unique(d$file_id), function(x) paste0("Regression line for file ", x, ", for the absolute sample mass of N [mg] in dependency of the respective signal area. Points are the measured values. Different colours represent different standards. The black line is the fitted regression line. Black ticks at the bottom show the distribution of the samples' signal area values."))), echo=TRUE}
 d %<>%
   elco::elco_irms_correct_elements(element = "N", 
                                    standards = elco::irms_standards$standard_name[elco::irms_standards$standard_name %in% d$sample_label],

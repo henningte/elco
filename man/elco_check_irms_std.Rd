@@ -10,9 +10,9 @@ elco_check_irms_std(x)
 \item{x}{An object.}
 }
 \value{
-An object of class \code{\link[elco:elco_new_irms_std]{irms_std}}.
+An object of class \code{\link[=elco_new_irms_std]{irms_std()}}.
 }
 \description{
-\code{elco_check_irms_std} checks if an object is of class \code{\link[elco:elco_new_irms_std]{irms_std}}.
+\code{elco_check_irms_std} checks if an object is of class \code{\link[=elco_new_irms_std]{irms_std()}}.
 }
 \keyword{internal}

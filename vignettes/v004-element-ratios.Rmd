@@ -31,7 +31,7 @@ This vignette shows how to:
 
 2. Compute element ratios for different elements.
 
-3. Compute the nominal oxidation state of carbon (C$_\textrm{ox}$), the ocidative ratio (OR), and the degree of unsaturation.
+3. Compute the nominal oxidation state of carbon (C$_\textrm{ox}$), the oxidative ratio (OR), and the degree of unsaturation.
 
 # Data
 

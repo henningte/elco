@@ -27,7 +27,7 @@ library(ggplot2)
 
 This vignette shows how to
 
-1. Import raw data files (csv files) as exported from the IRMS device in the lab (___ todo: add model and company name and version).
+1. Import raw data files (csv files) as exported from the IRMS device in the lab.
 
 2. Reformat the data to get a tidy `data.frame`.
 
@@ -144,7 +144,7 @@ d_standards %>%
 
 ## Correcting isotope signatures
 
-Isotope signaures can be corrected with a heuristic procedure using `elco::elco_irms_correct_isotopes`
+Isotope signatures can be corrected with a heuristic procedure using `elco::elco_irms_correct_isotopes`
 
 ```{r, fig.width=6, fig.height=5}
 # correct isotopes

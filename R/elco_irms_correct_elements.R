@@ -1,20 +1,20 @@
 #' Heuristic function to correct IRMS element contents by computing a manual calibration function from the standard measurements and apply this to predict element contents in samples.
 #'
-#' \code{elco_irms_correct_elements} is a heuristic function to correct measured element contents of samples
+#' `elco_irms_correct_elements` is a heuristic function to correct measured element contents of samples
 #' during IRMS analysis. Correction can be performed for either C or N and, if multiple
 #' files are batch-processed, using either standards from all files or only from the file where the respective
 #' sample is located in.
 #' The procedure is as follows:
 #' \enumerate{
 #'   \item For each measured standard, assign the known reference element mass content from
-#'   \code{\link[irms_standard]{irms_standard}}.
+#'   [`elco::irms_standards`].
 #'   \item Use the information on the mass of the measured samples and the assigned element mass content values
-#'   to compute the respective absolute known element content [mg].
+#'   to compute the respective absolute known element content \[mg\].
 #'   \item For all measured standards, compute a linear regression model that predicts the absolute
-#'   element content in dependency of the respetive signal area.
+#'   element content in dependency of the respective signal area.
 #'   \item For each sample, use the regression model and the respective measured signal area to compute
 #'   the absolute element content.
-#'   \item Divide the absolute predicted element contents by the samples' masses [mg] to get the mass fraction of
+#'   \item Divide the absolute predicted element contents by the samples' masses \[mg\] to get the mass fraction of
 #'   the element.
 #'   \item (Optionally): create plot: (1) showing uncorrected and corrected element mass fractions
 #'   for all measured standards and samples. This plot may be used as a visual check of the heuristic
@@ -24,20 +24,17 @@
 #'   the measured data for the standards.
 #' }
 #'
-#' @param x An object of class \code{\link[elco:elco_new_irms]{irms}}.
+#' @param x An object of class [`irms()`][elco::elco_new_irms].
 #' @param element A character value representing the chemical element for which to correct the mass fraction
 #' values. This must be one of "C" or "N".
 #' @param standards A character vale specifying standards to use for computing the regression equation.
-#' This must be one of \code{\link[irms_standard]{irms_standard$standard_name}}. Default is to
+#' This must be one of `irms_standard::irms_standard$standard_name`. Default is to
 #' use all standards.
 #' @param by_file A logical value indicating if medians of standards are computed across different files
-#' as indicated by \code{x$file_id} or (\code{FALSE}) individually for each file (\code{TRUE}).
-#' @param plotit A logical value indicating if a plot for checking should be printed (\code{TRUE}) or not
-#' (\code{FALSE}).
-#' @note ___ todo: Klaus suggested that to remove outliers in standard measurements that may not be discarded
-#' by the median approach, we should define a threshold value for each standard to exclude outliers before
-#' computing medians. Check if this should still be done.
-#' @return \code{x} with corrected element content.
+#' as indicated by `x$file_id` or (`FALSE`) individually for each file (`TRUE`).
+#' @param plotit A logical value indicating if a plot for checking should be printed (`TRUE`) or not
+#' (`FALSE`).
+#' @return `x` with corrected element content.
 #' @export
 elco_irms_correct_elements <- function(x,
                                        element = "C",
