@@ -272,72 +272,12 @@ as.data.frame.elco <- function(x, row.names = NULL, optional = FALSE, ...) {
 ####
 
 
-#'
-#' @export
-vec_restore.elco <- function(x, to, ...) {
-  print(class(x))
-  x_el_symbol <- attr(x, "el_symbol")
-
-  x <- elco_drop_elco(x)
-  print(class(x))
-
-  elco_new_elco(NextMethod(), el_symbol = x_el_symbol)
-}
 
 
 
 
-# tidyverse
 
-#' @export
-#' @source Modified from <https://github.com/r-quantities/quantities/blob/master/R/tidyverse.R>.
-vec_ptype2.elco.elco <- function(x, y, ..., x_arg = "", y_arg = "") {
-  x_or <- x
-  y_or <- y
-  if (!identical(attr(x_or, "el_symbol"), attr(y_or, "el_symbol"))) {
-    vctrs::stop_incompatible_type(x, y, x_arg = x_arg, y_arg = y_arg)
-  }
 
-  x_quantities <- elco_drop_elco(x)
-  y_quantities <- elco_drop_elco(y)
-  common <- vctrs::vec_ptype2(x_quantities, y_quantities, ...)
-
-  elco_new_elco(common, el_symbol = attr(x_or, "el_symbol"))
-}
-
-#' @export
-vec_proxy.elco <- function(x, ...) {
-  vec_proxy.quantities <- getS3method("vec_proxy", "quantities", envir = asNamespace("vctrs"))
-  vec_proxy.quantities(elco_drop_elco(x))
-}
-
-#' @export
-vec_restore.elco <- function(x, to, ...) {
-  vec_restore.quantities <- getS3method("vec_restore", "quantities", envir = asNamespace("vctrs"))
-
-  out <- vec_restore.quantities(x, elco_drop_elco(to))
-  elco_new_elco(out, attr(to, "el_symbol"))
-}
-
-#' @export
-vec_cast.elco.elco <- function(x, to, ...) {
-  to_units <- units(to)
-
-  # First set units and errors. Must happen first in case this causes
-  # `x` to become fractional (which should cause an error if `to` is
-  # integer).
-  out <- units::set_units(x, to_units, mode = "standard")
-  out_errors <- errors(out)
-
-  # Now cast base type
-  out_bare <- quantities::drop_quantities(out)
-  to_bare <- quantities::drop_quantities(to)
-  out <- vctrs::vec_cast(out_bare, to_bare, ...)
-
-  # Set quantities back
-  out <- set_quantities(out, to_units, out_errors, mode = "standard")
-  elco_new_elco(out, attr(to, "el_symbol"))
-}
 
 #' @export
 mean.elco <- function(x, trim = 0, na.rm = FALSE, ...) {
