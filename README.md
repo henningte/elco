@@ -9,7 +9,9 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-elco provides functions to handle and (rudimentary) analyse element
+## Overview
+
+‘elco’ provides functions to handle and (rudimentary) analyze element
 content data and isotope signature data. Features are:
 
 1.  **Import of XRF and IRMS data** as they can be exported from X-ray
@@ -27,7 +29,7 @@ content data and isotope signature data. Features are:
 
 5.  Computation of the **nominal oxidation state of carbon (NOSC),
     oxidative ratio (OR), and degree of unsaturation (DU)** (Worrall et
-    al. 2016).
+    al. 2016; Masiello et al. 2008).
 
 <img src="man/figures/elco-features.svg" width="50%" style="display: block; margin: auto;" />
 
@@ -45,14 +47,14 @@ Here is a short overview on elco general-purpose capabilities (handling
 element content ratios). Examples of how to import and correct data are
 not described here, but in the vignettes.
 
-Required packages
-
 ``` r
-library(elco) # load elco
+library(elco)
 #> Loading required package: quantities
 #> Loading required package: units
-#> udunits system database from C:/Users/henni/Documents/R/win-library/4.0/units/share/udunits
+#> udunits database from C:/Users/henni/AppData/Local/R/win-library/4.2/units/share/udunits/udunits2.xml
 #> Loading required package: errors
+
+# load other required packages
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -71,7 +73,7 @@ First, we have a short look at the sample data and its structure:
 ``` r
 d <- elco::chno
 d
-#> # A tibble: 5 x 5
+#> # A tibble: 5 × 5
 #>              C            H             N            O sample_mass
 #>    (err) [g/g]  (err) [g/g]   (err) [g/g]  (err) [g/g]  (err) [mg]
 #> 1 0.4928286(0)  0.177478(0) 0.09203495(0) 0.1705965(0)     3.78(1)
@@ -134,12 +136,12 @@ x %>%
 #> [1] 300 430
 ```
 
-… even with complete data.frames\!
+… even with complete data.frames!
 
 ``` r
 # g/g to mol
 d %>% elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass)
-#> # A tibble: 5 x 5
+#> # A tibble: 5 × 5
 #>             C           H           N           O sample_mass
 #>   (err) [mol] (err) [mol] (err) [mol] (err) [mol]  (err) [mg]
 #> 1 1.552(5)e-4  6.66(2)e-4 2.485(7)e-5  4.03(1)e-5     3.78(1)
@@ -157,19 +159,19 @@ d %>%
   dplyr::mutate(cn_molar = C/N,
                 ch_molar = C/H,
                 co_molar = C/O)
-#> # A tibble: 5 x 8
+#> # A tibble: 5 × 8
 #>             C         H        N        O sample_mass cn_molar ch_molar co_molar
-#>   (err) [mol] (err) [mol] (err) [mol] (err) [mol]  (err) [mg] (err) [1] (err) [1] (err) [1]
-#> 1 1.552(5)e-4 6.66(2)e~ 2.485(7~ 4.03(1)~     3.78(1)  6.24(3) 0.233(1)  3.85(2)
-#> 2 1.578(5)e-4 6.40(2)e~ 2.509(8~ 3.91(1)~     3.81(1)  6.29(3) 0.247(1)  4.04(2)
-#> 3 1.518(2)e-4 5.647(7)~ 2.276(3~ 3.508(4~    3.494(4)  6.67(1) 0.2688(~ 4.327(7)
-#> 4 1.773(1)e-4 6.927(5)~ 2.707(2~ 4.397(3~    4.251(3) 6.550(6) 0.2559(~ 4.032(4)
-#> 5 1.690(4)e-4 6.98(2)e~ 2.671(6~ 4.069(9~    4.046(9)  6.33(2) 0.2421(~  4.15(1)
+#>   (err) [mol] (err) [m… (err) [… (err) […  (err) [mg] (err) [… (err) [… (err) […
+#> 1 1.552(5)e-4 6.66(2)e… 2.485(7… 4.03(1)…     3.78(1)  6.24(3) 0.233(1)  3.85(2)
+#> 2 1.578(5)e-4 6.40(2)e… 2.509(8… 3.91(1)…     3.81(1)  6.29(3) 0.247(1)  4.04(2)
+#> 3 1.518(2)e-4 5.647(7)… 2.276(3… 3.508(4…    3.494(4)  6.67(1) 0.2688(… 4.327(7)
+#> 4 1.773(1)e-4 6.927(5)… 2.707(2… 4.397(3…    4.251(3) 6.550(6) 0.2559(… 4.032(4)
+#> 5 1.690(4)e-4 6.98(2)e… 2.671(6… 4.069(9…    4.046(9)  6.33(2) 0.2421(…  4.15(1)
 ```
 
 Finally, elco provides functions to compute the nominal oxidation state
 of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)
-(Worrall et al. 2016)
+(Worrall et al. 2016; Masiello et al. 2008)
 
 ``` r
 d <- 
@@ -184,13 +186,13 @@ d <-
 
 Further information can be found in the vignettes:
 
-  - [Reformatting and checking raw data (csv files) from the X-ray
+-   [Reformatting and checking raw data (csv files) from the X-ray
     fluorescence device (ZSX Primus II, Rigaku)](vignettes/v001-xrf.Rmd)
 
-  - [Importing and Manipulating IRMS
+-   [Importing and Manipulating IRMS
     data](vignettes/v002-irms-functions.Rmd)
 
-  - [Computation with element contents - unit conversion, element
+-   [Computation with element contents - unit conversion, element
     ratios, nominal oxidation state of carbon, oxidative ratio, and
     degree of unsaturation](vignettes/v004-element-ratios.Rmd)
 
@@ -199,7 +201,7 @@ Further information can be found in the vignettes:
 Please cite this compendium as:
 
 > Teickner, H. and Knorr, K.-H., (2022). *elco: Handling data on
-> chemical element contents and isotope signatures.*. Accessed 05 Feb
+> chemical element contents and isotope signatures.*. Accessed 28 Apr
 > 2022. Online at <https://github.com/henningte/elco>
 
 ### Acknowledgments
@@ -233,25 +235,28 @@ participating in this project you agree to abide by its terms.
 
 All data for this package are from Gałka et al. (2019).
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-Coplen.2006">
+<div id="ref-Coplen.2006" class="csl-entry">
 
 Coplen, Tyler B., Willi A. Brand, Matthias Gehre, Manfred Gröning, Harro
-A. J. Meijer, Blaza Toman, and R. Michael Verkouteren. 2006. “New
-guidelines for delta13C measurements.” *Analytical chemistry* 78 (7):
-2439–41. <https://doi.org/10.1021/ac052027c>.
+A. J. Meijer, Blaza Toman, and R. Michael Verkouteren. 2006. “<span
+class="nocase">New guidelines for
+![\\delta^{13}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta%5E%7B13%7D "\delta^{13}")C
+measurements</span>.” *Analytical Chemistry* 78 (7): 2439–41.
+<https://doi.org/10.1021/ac052027c>.
 
 </div>
 
-<div id="ref-Gaka.2019">
+<div id="ref-Gaka.2019" class="csl-entry">
 
-Gałka, M., T. Broder, H. Teickner, and K.-H. Knorr. 2019. “Randomized
-dummy IRMS and XRF data for peat for the R package elco.”
+Gałka, M., T. Broder, H. Teickner, and K.-H. Knorr. 2019. “<span
+class="nocase">Randomized dummy IRMS and XRF data for peat for the R
+package elco</span>.”
 
 </div>
 
-<div id="ref-IVAAnalysentechnikGmbHuCoKGt.2016">
+<div id="ref-IVAAnalysentechnikGmbHuCoKGt.2016" class="csl-entry">
 
 IVA Analysentechnik GmbH & Co. KGt. 2016. “Elementaranalyse Eurovector/
 HEKAtech.” Edited by IVA Analysentechnik GmbH & Co. KGt.
@@ -259,12 +264,22 @@ HEKAtech.” Edited by IVA Analysentechnik GmbH & Co. KGt.
 
 </div>
 
-<div id="ref-Worrall.2016b">
+<div id="ref-Masiello.2008" class="csl-entry">
+
+Masiello, C. A., M. E. Gallagher, J. T. Randerson, R. M. Deco, and O. A.
+Chadwick. 2008. “Evaluating Two Experimental Approaches for Measuring
+Ecosystem Carbon Oxidation State and Oxidative Ratio.” *Journal of
+Geophysical Research* 113 (G3): G03010.
+<https://doi.org/10.1029/2007JG000534>.
+
+</div>
+
+<div id="ref-Worrall.2016b" class="csl-entry">
 
 Worrall, Fred, Gareth D. Clay, Catherine S. Moody, Tim P. Burt, and Rob
-Rose. 2016. “The effective oxidation state of a peatland.” *Journal of
-Geophysical Research: Biogeosciences* 121 (1): 145–58.
-<https://doi.org/10.1002/2015JG003182>.
+Rose. 2016. “<span class="nocase">The effective oxidation state of a
+peatland</span>.” *Journal of Geophysical Research: Biogeosciences* 121
+(1): 145–58. <https://doi.org/10.1002/2015JG003182>.
 
 </div>
 
