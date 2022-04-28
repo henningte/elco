@@ -54,7 +54,7 @@ elco_irms_correct_elements <- function(x,
   if(!element %in% c("C", "N")) {
     rlang::abort(paste0("`element` must be one of c('C', 'N'), but is ", element, "."))
   }
-  data("irms_standards", package = "elco")
+  irms_standards <- irms_standards
   if(!is.character(standards)) {
     rlang::abort(paste0("`standards` must be a character vector, but is of class ", class(standards)[[1]], "."))
   }
@@ -108,13 +108,13 @@ elco_irms_correct_elements <- function(x,
 
   # compute absolute C mass contents
   x_standards <- purrr::map(x_standards, function(y) {
-    dplyr::mutate(y, element_m_abs = element_m * errors::drop_errors(sample_mass))
+    dplyr::mutate(y, element_m_abs = element_m * errors::drop_errors(.data$sample_mass))
   })
 
   # compute regression models
   x_standards_lm <- purrr::map(x_standards, function(y) {
     y <- purrr::map_df(y[, c("element_m_abs", as.character(delement_area))], as.numeric) # drop units
-    lm(y)
+    stats::lm(y)
   })
 
   # predict values
@@ -148,13 +148,13 @@ elco_irms_correct_elements <- function(x,
                                                    xend = as.numeric(element_m),
                                                    y = 0,
                                                    yend = as.numeric(element_m),
-                                                   colour = sample_label)) +
+                                                   colour = .data$sample_label)) +
       ggplot2::geom_segment(data = irms_standards_sel,
                             mapping = ggplot2::aes(x = 0,
                                                    xend = as.numeric(element_m),
                                                    y = as.numeric(element_m),
                                                    yend = as.numeric(element_m),
-                                                   colour = sample_label)) +
+                                                   colour = .data$sample_label)) +
       ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = as.numeric(x_or[, element, drop = TRUE]),
                                                      xmin = as.numeric(x[, element, drop = TRUE]) - errors(x[, element, drop = TRUE]),
                                                      xmax = as.numeric(x[, element, drop = TRUE]) + errors(x[, element, drop = TRUE]),), height = 0, colour = "dimgrey") +
@@ -169,10 +169,10 @@ elco_irms_correct_elements <- function(x,
     # regression models
     purrr::map(x_standards, function(y) {
       p2 <-
-        ggplot2::ggplot(y, ggplot2::aes(y = as.numeric(element_m_abs), x = !!delement_area)) +
+        ggplot2::ggplot(y, ggplot2::aes(y = as.numeric(.data$element_m_abs), x = !!delement_area)) +
         ggplot2::geom_smooth(method = "lm", se = FALSE, colour = "dimgrey") +
-        ggplot2::geom_point(aes(colour = sample_label)) +
-        ggplot2::geom_rug(data = x[is_standard == "Sample" & x$file_id == y$file_id[[1]], ], aes(y = as.numeric(C)/as.numeric(sample_mass), x = !!delement_area), sides="b") +
+        ggplot2::geom_point(ggplot2::aes(colour = .data$sample_label)) +
+        ggplot2::geom_rug(data = x[is_standard == "Sample" & x$file_id == y$file_id[[1]], ], ggplot2::aes(y = as.numeric(.data$C)/as.numeric(.data$sample_mass), x = !!delement_area), sides="b") +
         ggplot2::labs(y = paste0("Absolute ", element, " mass [mg]"),
                       x = "Signal area",
                       title = paste0("Element: ", element,", File: ", y$file_id[[1]])) +

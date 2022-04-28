@@ -11,7 +11,14 @@
 \method{Ops}{elco}(e1, e2)
 }
 \arguments{
+\item{x}{An object of class \code{elco}.}
+
 \item{...}{further arguments passed to methods.}
+
+\item{e1}{An object of class \code{elco}.}
+
+\item{e2}{An object of class \code{elco} which is
+added to/subtracted from/multiplied with/used for division of \code{e1}.}
 }
 \description{
 \code{Math}, \code{Ops} and \code{Summary} group generic methods for \code{elco} objects (see

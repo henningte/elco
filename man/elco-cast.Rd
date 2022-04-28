@@ -10,9 +10,9 @@
 \usage{
 elco_as_elco(x, ...)
 
-\method{elco_as_elco}{quantities}(x, el_symbol)
+\method{elco_as_elco}{quantities}(x, el_symbol, ...)
 
-\method{elco_as_elco}{elco}(x)
+\method{elco_as_elco}{elco}(x, ...)
 
 \method{as.data.frame}{elco}(x, row.names = NULL, optional = FALSE, ...)
 }

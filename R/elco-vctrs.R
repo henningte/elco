@@ -18,7 +18,7 @@ NULL
 #' vctrs::vec_restore(vctrs::vec_data(x), to = x)
 #'
 vec_restore.elco <- function(x, to, ...) {
-  vec_restore.quantities <- getS3method("vec_restore", "quantities", envir = asNamespace("vctrs"))
+  vec_restore.quantities <- utils::getS3method("vec_restore", "quantities", envir = asNamespace("vctrs"))
 
   out <- vec_restore.quantities(x, elco_drop_elco(to))
   elco_new_elco(out, el_symbol = elco_el_symbol(to))
@@ -32,7 +32,7 @@ vec_restore.elco <- function(x, to, ...) {
 #' vctrs::vec_proxy(elco::chno$C)
 #'
 vec_proxy.elco <- function(x, ...) {
-  vec_proxy.quantities <- getS3method("vec_proxy", "quantities", envir = asNamespace("vctrs"))
+  vec_proxy.quantities <- utils::getS3method("vec_proxy", "quantities", envir = asNamespace("vctrs"))
   vec_proxy.quantities(elco_drop_elco(x))
 }
 

@@ -21,7 +21,9 @@ Title <- "Title of your paper goes here"
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-elco provides functions to handle and (rudimentary) analyze element content data and isotope signature data. Features are:
+## Overview
+
+'elco' provides functions to handle and (rudimentary) analyze element content data and isotope signature data. Features are:
 
 1. **Import of XRF and IRMS data** as they can be exported from X-ray fluorescence spectrometers (Rigaku ZSX Primus II) and EA-IRMS devices (HEKATech's Eurovector
 EA3000 coupled with Nu Instruments Nu Horizon).
@@ -32,11 +34,12 @@ EA3000 coupled with Nu Instruments Nu Horizon).
 
 4. **Unit conversion** of element content data (e.g. g/g to mol).
 
-5. Computation of the **nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)** [@Worrall.2016b].
+5. Computation of the **nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)** [@Worrall.2016b; @Masiello.2008].
 
 ```{r, out.width="50%", fig.align='center', echo=FALSE}
 knitr::include_graphics("man/figures/elco-features.svg")
 ```
+
 
 ### How to install
 
@@ -46,13 +49,15 @@ elco can be installed from GitHub:
 remotes::install_github("henningte/elco")
 ```
 
+
 ### How to use
 
 Here is a short overview on elco general-purpose capabilities (handling element content ratios). Examples of how to import and correct data are not described here, but in the vignettes.
 
-Required packages
 ```{r, mesage = FALSE, warning=FALSE}
-library(elco) # load elco
+library(elco)
+
+# load other required packages
 library(dplyr)
 library(quantities)
 library(magrittr)
@@ -60,6 +65,7 @@ library(magrittr)
 
 
 First, we have a short look at the sample data and its structure:
+
 ```{r}
 d <- elco::chno
 d
@@ -82,6 +88,7 @@ x
 ```
 
 elco supports unit conversion (using the functions of the quantities package and molar masses from [PeriodicTable](https://github.com/cran/PeriodicTable)):
+
 ```{r}
 # g/g to mol
 x %>% 
@@ -95,6 +102,7 @@ x %>%
 ```
 
 ... even with complete data.frames!
+
 ```{r}
 # g/g to mol
 d %>% elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass)
@@ -110,7 +118,7 @@ d %>%
                 co_molar = C/O)
 ```
 
-Finally, elco provides functions to compute the nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU) [@Worrall.2016b]
+Finally, elco provides functions to compute the nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU) [@Worrall.2016b; @Masiello.2008]
 
 ```{r}
 d <- 

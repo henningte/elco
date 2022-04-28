@@ -1,11 +1,14 @@
-#' Takes an object of class `irms` and extracts all rows referring to standards in `irms_standards`.
+#' Takes an object of class `irms` and extracts all rows referring to standards in `irms_standards`
 #'
-#' `elco_irms_extract_standards` takes an object of class `irms` and extracts all rows
-#' referring to standards in `irms_standards`.
+#' `elco_irms_extract_standards` takes an object of class `irms` and extracts
+#' all rows referring to standards in `irms_standards`.
 #'
 #' @param x An object of class [`irms`][elco::elco_new_irms]
-#' @return An object of class [`irms_std`][elco::elco_new_irms_std] containing only the rows
-#' in `x` where `sample_name \%in\% elco::irms_standards$standard_name`.
+#'
+#' @return An object of class [`irms_std`][elco::elco_new_irms_std] containing
+#' only the rows in `x` where
+#' `sample_name %in% elco::irms_standards$standard_name`.
+#'
 #' @export
 elco_irms_extract_standards <- function(x) {
 
@@ -13,7 +16,7 @@ elco_irms_extract_standards <- function(x) {
   elco_check_irms(x)
 
   # get data on standards
-  data("irms_standards", package = "elco")
+  irms_standards <- irms_standards
   irms_standards <- irms_standards[, 1, drop = FALSE]
   colnames(irms_standards) <- "sample_label"
 
@@ -26,20 +29,25 @@ elco_irms_extract_standards <- function(x) {
 
 }
 
-#' Takes an object of class `irms` and checks if it contains only measurements on standards.
+#' Takes an object of class `irms` and checks if it contains only measurements on standards
 #'
-#' `elco_irms_check_standards` takes an object of class `irms` and checks if it has only rows
-#' referring to standards in `irms_standards`.
+#' `elco_irms_check_standards` takes an object of class `irms` and checks if it
+#' has only rows referring to standards in `irms_standards`.
 #'
-#' @param x An object of class [`irms()`][elco::elco_new_irms]
+#' @param x An object of class [`irms`][elco::elco_new_irms]
+#'
 #' @return `x`.
+#'
+#' @keywords internal
+#' @noRd
+#'
 elco_irms_check_standards <- function(x) {
 
   # checks
   elco_check_irms(x)
 
   # get data on standards
-  data("irms_standards", package = "elco")
+  irms_standards <- irms_standards
 
   cond <- !purrr::map_lgl(x$sample_label, function(y) y %in% irms_standards$standard_name)
   if(any(cond)) {

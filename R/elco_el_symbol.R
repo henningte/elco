@@ -25,8 +25,6 @@ elco_el_symbol.elco <- function(x) {
 
 #' @rdname elco_el_symbol
 #'
-#' @param value
-#'
 #' @return `x` with attribute value for `el_symbol` replaced by `value`.
 #'
 #' @export

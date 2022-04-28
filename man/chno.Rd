@@ -3,14 +3,14 @@
 \docType{data}
 \name{chno}
 \alias{chno}
-\title{Simulated C, H, N, O contents, and sample masses for five samples.}
+\title{Simulated C, H, N, O contents, and sample masses for five samples}
 \format{
 A data frame with 5 rows and 5 columns:
 \describe{
-\item{C}{A numeric vector with the relative mass fraction of C of the standards [g/g].}
-\item{H}{A numeric vector with the relative mass fraction of H of the standards [g/g].}
-\item{N}{A numeric vector with the relative mass fraction of N of the standards [g/g].}
-\item{O}{A numeric vector with the relative mass fraction of O of the standards [g/g].}
+\item{C}{A numeric vector with the relative mass fraction of C [g/g].}
+\item{H}{A numeric vector with the relative mass fraction of H [g/g].}
+\item{N}{A numeric vector with the relative mass fraction of N [g/g].}
+\item{O}{A numeric vector with the relative mass fraction of O [g/g].}
 \item{sample_mass}{A numeric vector with the mass of the samples [mg].}
 }
 }
@@ -18,6 +18,7 @@ A data frame with 5 rows and 5 columns:
 chno
 }
 \description{
-A \code{data.frame} with simulated C, H, N, O contents, and sample masses for five samples.
+A \code{data.frame} with simulated C, H, N, O contents, and sample masses for five
+samples.
 }
 \keyword{datasets}

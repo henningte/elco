@@ -125,7 +125,7 @@ c.elco <- function(...){
   if(length(dots_el_symbols) != 1) {
     message("`...` contains `elco` objects with different chemical elements. Dropping `elco` class.")
   }
-  .reclass(NextMethod(), el_symbol = dots_el_symbols)
+  .reclass(do.call("c", lapply(dots, elco_drop_elco)), el_symbol = dots_el_symbols)
 }
 
 
@@ -137,7 +137,15 @@ c.elco <- function(...){
 #'
 #' @name elco-extract
 #'
-#' @inheritParams base::`[`
+#' @param x An `elco` object to subset values from or where to replace values.
+#'
+#' @param i,j,... indices specifying elements to extract or replace. See
+#' [`base::Extract`].
+#'
+#' @param value An object of class `elco` which replaces elements in `x`.
+#'
+#' @return An object of class `elco` with subsetted or replaced values.
+#'
 NULL
 
 #' @rdname elco-extract
@@ -235,7 +243,7 @@ elco_as_elco <- function(x, ...) UseMethod("elco_as_elco")
 #'   elco_as_elco(el_symbol = "C")
 #'
 #' @export
-elco_as_elco.quantities <- function(x, el_symbol) {
+elco_as_elco.quantities <- function(x, el_symbol, ...) {
   elco_new_elco(x, el_symbol = el_symbol)
 }
 
@@ -247,7 +255,7 @@ elco_as_elco.quantities <- function(x, el_symbol) {
 #'   elco_as_elco()
 #'
 #' @export
-elco_as_elco.elco <- function(x) {
+elco_as_elco.elco <- function(x, ...) {
   x
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/elco_irms_extract_standards.R
 \name{elco_irms_extract_standards}
 \alias{elco_irms_extract_standards}
-\title{Takes an object of class \code{irms} and extracts all rows referring to standards in \code{irms_standards}.}
+\title{Takes an object of class \code{irms} and extracts all rows referring to standards in \code{irms_standards}}
 \usage{
 elco_irms_extract_standards(x)
 }
@@ -10,10 +10,11 @@ elco_irms_extract_standards(x)
 \item{x}{An object of class \code{\link[=elco_new_irms]{irms}}}
 }
 \value{
-An object of class \code{\link[=elco_new_irms_std]{irms_std}} containing only the rows
-in \code{x} where \verb{sample_name \\\%in\\\% elco::irms_standards$standard_name}.
+An object of class \code{\link[=elco_new_irms_std]{irms_std}} containing
+only the rows in \code{x} where
+\code{sample_name \%in\% elco::irms_standards$standard_name}.
 }
 \description{
-\code{elco_irms_extract_standards} takes an object of class \code{irms} and extracts all rows
-referring to standards in \code{irms_standards}.
+\code{elco_irms_extract_standards} takes an object of class \code{irms} and extracts
+all rows referring to standards in \code{irms_standards}.
 }

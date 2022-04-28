@@ -4,7 +4,7 @@
 \alias{elco_nosc}
 \alias{elco_or}
 \alias{elco_du}
-\title{Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation.}
+\title{Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation}
 \usage{
 elco_nosc(c, h, n, o)
 
@@ -22,15 +22,24 @@ elco_du(c, h, n)
 \item{o}{An object of class \code{elco} with the amount of O [mol].}
 }
 \value{
-An object of class \code{\link[quantities:quantities]{quantities::quantities()}} with the carbon oxidation state.
+\itemize{
+\item \code{elco_nosc}: A \code{\link[quantities:quantities]{quantities}} object with the carbon
+oxidation state.
+}
 
-A numeric vector with the oxidative ratio.
+\itemize{
+\item \code{elco_or}: A \code{\link[quantities:quantities]{quantities}} object with the
+oxidative ratio.
+}
 
-A numeric vector with the oxidative ratio.
+\itemize{
+\item \code{elco_du}: A \code{\link[quantities:quantities]{quantities}} object with the degree
+of unsaturation.
+}
 }
 \description{
 Functions to compute the carbon oxidation state, carbon oxidative ratio, and
-degree of unsaturation with objects of class \code{\link[=elco_new_elco]{elco()}}.
+degree of unsaturation with objects of class \code{\link[=elco_new_elco]{elco}}.
 }
 \section{Functions}{
 \itemize{
@@ -44,3 +53,29 @@ state using the elemental composition of C, H, N, O.
 of unsaturation using the elemental composition of C, H, N.
 }}
 
+\examples{
+## NOSC
+elco::chno \%>\%
+  elco::elco_elco_convert_df(
+    to = "mol",
+    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
+  ) \%>\%
+  dplyr::mutate(nosc = elco_nosc(c = C, h = H, n = N, o = O))
+
+## oxidative ratio
+elco::chno \%>\%
+  elco::elco_elco_convert_df(
+    to = "mol",
+    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
+  ) \%>\%
+  dplyr::mutate(or = elco_or(c = C, h = H, n = N, o = O))
+
+## degree of unsaturation
+elco::chno \%>\%
+  elco::elco_elco_convert_df(
+    to = "mol",
+    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
+  ) \%>\%
+  dplyr::mutate(du = elco_du(c = C, h = H, n = N))
+
+}

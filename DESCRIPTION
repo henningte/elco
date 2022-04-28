@@ -36,7 +36,9 @@ Imports:
     PeriodicTable,
     vctrs,
     Rdpack,
-    magrittr
+    magrittr,
+    lifecycle,
+    stringr
 RoxygenNote: 7.1.2.9000
 Suggests: 
     knitr,

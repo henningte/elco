@@ -30,7 +30,8 @@ elco_set_el_symbol(x, value)
 \arguments{
 \item{x}{An object.}
 
-\item{value}{}
+\item{value}{A character value representing a chemical element symbol with
+which to set or replace an existing attribute \code{"el_symbol"} in \code{x}.}
 }
 \value{
 \code{x} converted to an \code{\link[=elco_new_elco]{elco}} object.

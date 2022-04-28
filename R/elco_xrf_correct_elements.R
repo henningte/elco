@@ -111,7 +111,7 @@ elco_xrf_correct_elements <- function(x,
     y_unit <- as.character(units(y))
     y <- elco::elco_drop_elco(y)/factors$correction_factor
     y <- units::set_units(y, "g/g")
-    units(y) <- with(units::ud_units, y_unit)
+    units(y) <- units::as_units(y_unit)
     y
 
   })

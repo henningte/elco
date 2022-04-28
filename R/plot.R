@@ -21,8 +21,8 @@ plot.xrf <- function(x,
   x <-
     dplyr::mutate(
       x,
-      index_flag = stringr::str_detect(variable, "_flag"),
-      variable = stringr::str_remove(variable, "_flag")
+      index_flag = stringr::str_detect(.data$variable, "_flag"),
+      variable = stringr::str_remove(.data$variable, "_flag")
     )
   x <- split(x, f = x$index_flag)
   x <- purrr::map(x, dplyr::select, -.data$index_flag)

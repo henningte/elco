@@ -1,23 +1,36 @@
-#' Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation.
+#' Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation
 #'
 #' Functions to compute the carbon oxidation state, carbon oxidative ratio, and
-#' degree of unsaturation with objects of class [`elco()`][elco::elco_new_elco].
+#' degree of unsaturation with objects of class [`elco`][elco::elco_new_elco].
 #'
 #' @describeIn elco_nosc Computes the carbon oxidation
 #' state using the elemental composition of C, H, N, O.
 #'
 #' @param c An object of class `elco` with the amount of C \[mol\].
+#'
 #' @param h An object of class `elco` with the amount of H \[mol\].
+#'
 #' @param n An object of class `elco` with the amount of N \[mol\].
+#'
 #' @param o An object of class `elco` with the amount of O \[mol\].
-#' @return An object of class [quantities::quantities()] with the carbon oxidation state.
+#'
+#' @return
+#' - `elco_nosc`: A [`quantities`][quantities::quantities] object with the carbon
+#' oxidation state.
+#'
+#' @examples
+#' ## NOSC
+#' elco::chno %>%
+#'   elco::elco_elco_convert_df(
+#'     to = "mol",
+#'     sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
+#'   ) %>%
+#'   dplyr::mutate(nosc = elco_nosc(c = C, h = H, n = N, o = O))
+#'
 #' @export
-elco_nosc <- function(c,
-                      h,
-                      n,
-                      o) {
+elco_nosc <- function(c, h, n, o) {
 
-  elco_chno_check(c = c, h = h, n = n, o = o)
+  .elco_chno_check(c = c, h = h, n = n, o = o)
   (quantities::set_quantities(2, unit = "1", errors = 0) * elco_drop_elco(o) - elco_drop_elco(h) + quantities::set_quantities(3, unit = "1", errors = 0) * elco_drop_elco(n))/elco_drop_elco(c)
 
 }
@@ -27,12 +40,22 @@ elco_nosc <- function(c,
 #'
 #' @describeIn elco_nosc Computes the carbon oxidation
 #' state using the elemental composition of C, H, N, O.
-#' @return A numeric vector with the oxidative ratio.
+#'
+#' @return
+#' - `elco_or`: A [`quantities`][quantities::quantities] object with the
+#' oxidative ratio.
+#'
+#' @examples
+#' ## oxidative ratio
+#' elco::chno %>%
+#'   elco::elco_elco_convert_df(
+#'     to = "mol",
+#'     sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
+#'   ) %>%
+#'   dplyr::mutate(or = elco_or(c = C, h = H, n = N, o = O))
+#'
 #' @export
-elco_or <- function(c,
-                    h,
-                    n,
-                    o) {
+elco_or <- function(c, h, n, o) {
 
   nosc <- elco_nosc(c = c, h = h, n = n, o = o)
   nosc/quantities::set_quantities(4, unit = "1", errors = 0) + (quantities::set_quantities(3, unit = "1", errors = 0) * elco_drop_elco(n))/(quantities::set_quantities(4, unit = "1", errors = 0) * elco_drop_elco(c))
@@ -43,20 +66,34 @@ elco_or <- function(c,
 #'
 #' @describeIn elco_nosc Computes the carbon degree
 #' of unsaturation using the elemental composition of C, H, N.
-#' @return A numeric vector with the oxidative ratio.
+#'
+#' @return
+#' - `elco_du`: A [`quantities`][quantities::quantities] object with the degree
+#' of unsaturation.
+#'
+#' @examples
+#' ## degree of unsaturation
+#' elco::chno %>%
+#'   elco::elco_elco_convert_df(
+#'     to = "mol",
+#'     sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
+#'   ) %>%
+#'   dplyr::mutate(du = elco_du(c = C, h = H, n = N))
+#'
 #' @export
-elco_du <- function(c,
-                    h,
-                    n) {
+elco_du <- function(c, h, n) {
 
-  elco_chno_check(c = c, h = h, n = n, o = NULL)
+  .elco_chno_check(c = c, h = h, n = n, o = NULL)
   elco_drop_elco(c) - elco_drop_elco(h)/quantities::set_quantities(2, unit = "1", errors = 0) - elco_drop_elco(n)/quantities::set_quantities(2, unit = "1", errors = 0) + quantities::set_quantities(1, unit = "mol", errors = 0)
 
 }
 
 #' helper function to check inputs
 #'
-elco_chno_check <- function(c = NULL, h = NULL, n = NULL, o = NULL) {
+#' @keywords internal
+#' @noRd
+#'
+.elco_chno_check <- function(c = NULL, h = NULL, n = NULL, o = NULL) {
   l <- list(c = c, h = h, n = n, o = o)
   l <- l[!purrr::map_lgl(l, is.null)]
   l_lengths <- purrr::map_dbl(l, length)

@@ -7,6 +7,8 @@
 #'
 #' @inheritParams base::groupGeneric
 #'
+#' @param x An object of class `elco`.
+#'
 #' @examples
 #' # Math
 #' abs(elco::chno$C)
@@ -17,6 +19,11 @@ Math.elco <- function(x, ...) {
 }
 
 #' @rdname elco-groupGeneric
+#'
+#' @param e1 An object of class `elco`.
+#'
+#' @param e2 An object of class `elco` which is
+#' added to/subtracted from/multiplied with/used for division of `e1`.
 #'
 #' @examples
 #' x <- elco::chno

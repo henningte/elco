@@ -3,22 +3,33 @@
 \docType{data}
 \name{irms_standards}
 \alias{irms_standards}
-\title{C and N contents and \eqn{^{13}}C and \eqn{^{15}}N \eqn{\delta\text{\textperthousand}} of IRMS standards.}
+\title{C and N contents and \eqn{^{13}}C and \eqn{^{15}}N \eqn{\delta\text{\textperthousand}} of IRMS standards}
 \format{
 A data frame with 4 rows and 5 columns:
 \describe{
 \item{standard_name}{A character vector with the names of the standards as used in the
 vendor device of the IRMS.}
-\item{C}{A numeric vector with the relative mass fraction of C of the standards [g/g].}
-\item{N}{A numeric vector with the relative mass fraction of N of the standards [g/g].}
-\item{S}{A numeric vector with the relative mass fraction of S of the standards [g/g].}
-\item{H}{A numeric vector with the relative mass fraction of H of the standards [g/g].}
-\item{O}{A numeric vector with the relative mass fraction of O of the standards [g/g].}
-\item{13C}{A numeric vector with the \eqn{\delta\text{\textperthousand}^{13}}C value of the standards.}
-\item{15N}{A numeric vector with the \eqn{\delta\text{\textperthousand}^{15}}N value of the standards.}
-\item{threshold_d13C}{A numeric vector with a threshold for the \eqn{\delta\text{\textperthousand}^{13}}C value of the standards. The thresholds indicate the (by expert knowledge) estimated 95-\% confidence interval half-width for standards measured at our working group's laboratory. If after isotope signature correction with \code{\link[=elco_irms_correct_isotopes]{elco_irms_correct_isotopes()}}, values for a standard exceed this limit, a warning is printed. Note that not for all standards such values are defined.}
-\item{threshold_d15N}{A numeric vector with a threshold for the \eqn{\delta\text{\textperthousand}^{15}}N value of the standards. The thresholds indicate the (by expert knowledge) estimated 95-\% confidence interval half-width for standards measured at our working group's laboratory. If after isotope signature correction with \code{\link[=elco_irms_correct_isotopes]{elco_irms_correct_isotopes()}}, values for a standard exceed this limit, a warning is printed. Note that not for all standards such values are defined.}
-\item{source}{A character vector with the bibtex keys to the references where the data was derived from. If \code{NA}, values are own, uncertified, measurements.}
+\item{C}{A numeric vector with the relative mass fraction of C of the
+standards [g/g].}
+\item{N}{A numeric vector with the relative mass fraction of N of the
+standards [g/g].}
+\item{S}{A numeric vector with the relative mass fraction of S of the
+standards [g/g].}
+\item{H}{A numeric vector with the relative mass fraction of H of the
+standards [g/g].}
+\item{O}{A numeric vector with the relative mass fraction of O of the
+standards [g/g].}
+\item{13C}{A numeric vector with the
+\eqn{\delta\text{\textperthousand}^{13}}C value of the standards.}
+\item{15N}{A numeric vector with the
+\eqn{\delta\text{\textperthousand}^{15}}N value of the standards.}
+\item{threshold_13C}{A numeric vector with a threshold for the
+\eqn{\delta\text{\textperthousand}^{13}}C value of the standards. The thresholds indicate the (by expert knowledge) estimated 95-\% confidence interval half-width for standards measured at our working group's laboratory. If after isotope signature correction with \code{\link[=elco_irms_correct_isotopes]{elco_irms_correct_isotopes()}}, values for a standard exceed this limit, a warning is printed. Note that not for all standards such values are defined.}
+\item{threshold_15N}{A numeric vector with a threshold for the
+\eqn{\delta\text{\textperthousand}^{15}}N value of the standards. The thresholds indicate the (by expert knowledge) estimated 95-\% confidence interval half-width for standards measured at our working group's laboratory. If after isotope signature correction with \code{\link[=elco_irms_correct_isotopes]{elco_irms_correct_isotopes()}}, values for a standard exceed this limit, a warning is printed. Note that not for all standards such values are defined.}
+\item{source}{A character vector with the bibtex keys to the references
+where the data was derived from. If \code{NA}, values are own, uncertified,
+measurements.}
 }
 }
 \source{

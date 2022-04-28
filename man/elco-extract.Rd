@@ -17,8 +17,15 @@
 \method{[[}{elco}(x, i, j, ...) <- value
 }
 \arguments{
-\item{value}{typically an array-like \R object of a similar class as
-    \code{x}.}
+\item{x}{An \code{elco} object to subset values from or where to replace values.}
+
+\item{i, j, ...}{indices specifying elements to extract or replace. See
+\code{\link[base:Extract]{base::Extract}}.}
+
+\item{value}{An object of class \code{elco} which replaces elements in \code{x}.}
+}
+\value{
+An object of class \code{elco} with subsetted or replaced values.
 }
 \description{
 Extract or replace parts of an \code{elco} object

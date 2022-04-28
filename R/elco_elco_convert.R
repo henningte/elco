@@ -48,7 +48,7 @@ elco_elco_convert <- function(x, to, sample_mass = NULL) {
   }
 
   # get allowed units
-  data("el_units_allowed", package = "elco")
+  el_units_allowed <- elco::el_units_allowed
   type_conversion_from <- el_units_allowed$type[el_units_allowed$unit_symbol == as.character(units(x))]
   type_conversion_to <- el_units_allowed$type[el_units_allowed$unit_symbol == to]
 
