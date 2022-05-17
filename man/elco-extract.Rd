@@ -37,6 +37,7 @@ elco::chno$C[[1]]
 
 x <- elco::chno$C
 y <- elco::chno$N
+z <- NA_real_
 
 # returns `elco` object because both have the same el_symbol attribute
 x[1] <- x[2]
@@ -45,6 +46,10 @@ class(x)
 # strips off the elco class because the el_symbol attribute differs
 y[1] <- x[2]
 class(y)
+
+# strips off the elco class because z is no elco object
+x[1] <- z
+class(x)
 
 x <- elco::chno$C
 y <- elco::chno$N

@@ -20,5 +20,6 @@ S3 method for \code{elco} objects (see \code{\link[=c]{c()}}).
 \examples{
 c(elco::chno$C[[1]], elco::chno$C[-1])
 c(elco::chno$C[[1]], elco::chno$N[-1])
+c(elco::chno$C[[1]], units::set_units(NA_real_, "g/g"))
 
 }

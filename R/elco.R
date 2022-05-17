@@ -117,13 +117,25 @@ print.elco <- function(x, ...) {
 #' @examples
 #' c(elco::chno$C[[1]], elco::chno$C[-1])
 #' c(elco::chno$C[[1]], elco::chno$N[-1])
+#' c(elco::chno$C[[1]], units::set_units(NA_real_, "g/g"))
 #'
 #' @export
 c.elco <- function(...){
   dots <- list(...)
-  dots_el_symbols <- unique(purrr::map_chr(dots, attr, "el_symb"))
-  if(length(dots_el_symbols) != 1) {
+  dots_el_symbols <- unique(purrr::map_chr(dots, function(.x) {
+    res <- attr(.x, "el_symbol")
+    if(is.null(res)) {
+      NA_character_
+    } else {
+      res
+    }
+  }))
+  if(length(stats::na.omit(dots_el_symbols)) != 1) {
     message("`...` contains `elco` objects with different chemical elements. Dropping `elco` class.")
+  }
+  if(any(is.na(dots_el_symbols))) {
+    message("`...` contains non-`elco` object. Dropping `elco` class.")
+    dots_el_symbols <- NULL
   }
   .reclass(do.call("c", lapply(dots, elco_drop_elco)), el_symbol = dots_el_symbols)
 }
@@ -175,6 +187,7 @@ NULL
 #' @examples
 #' x <- elco::chno$C
 #' y <- elco::chno$N
+#' z <- NA_real_
 #'
 #' # returns `elco` object because both have the same el_symbol attribute
 #' x[1] <- x[2]
@@ -184,12 +197,27 @@ NULL
 #' y[1] <- x[2]
 #' class(y)
 #'
+#' # strips off the elco class because z is no elco object
+#' x[1] <- z
+#' class(x)
+#'
 #' @export
 "[<-.elco" <- function(x, i, j, ..., value) {
   dots <- list(x, value)
-  dots_el_symbols <- unique(purrr::map_chr(dots, attr, "el_symb"))
-  if(length(dots_el_symbols) != 1) {
+  dots_el_symbols <- unique(purrr::map_chr(dots, function(.x) {
+    res <- attr(.x, "el_symbol")
+    if(is.null(res)) {
+      NA_character_
+    } else {
+      res
+    }
+  }))
+  if(length(stats::na.omit(dots_el_symbols)) != 1) {
     message("`value` is an `elco` object with different chemical element than `x`. Dropping `elco` class.")
+  }
+  if(is.null(attr(value, "el_symbol"))) {
+   message("`value` is no `elco` object. Dropping `elco` class.")
+   dots_el_symbols <- NULL
   }
   .reclass(NextMethod(), el_symbol = dots_el_symbols)
 }
