@@ -139,8 +139,8 @@ elco_irms_correct_isotopes <- function(x,
     y <- dplyr::group_by(y, .data$sample_label)
     y <- dplyr::summarise(y,
                           file_id = unique(.data$file_id),
-                          signature_measured = stats::median(!!disotope),
-                          area_measured = stats::median(!!disotope_area),
+                          signature_measured = stats::median(!!disotope, na.rm = TRUE),
+                          area_measured = stats::median(!!disotope_area, na.rm = TRUE),
                           count = length(.data$sample_mass),
                           .groups = "keep")
     y <- dplyr::left_join(y, irms_standards_sel, by = "sample_label")

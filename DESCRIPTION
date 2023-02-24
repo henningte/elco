@@ -39,7 +39,7 @@ Imports:
     magrittr,
     lifecycle,
     stringr
-RoxygenNote: 7.1.2.9000
+RoxygenNote: 7.2.0
 Suggests: 
     knitr,
     rmarkdown,
