@@ -156,8 +156,8 @@ elco_irms_correct_elements <- function(x,
                                                    yend = as.numeric(element_m),
                                                    colour = .data$sample_label)) +
       ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = as.numeric(x_or[, element, drop = TRUE]),
-                                                     xmin = as.numeric(x[, element, drop = TRUE]) - errors(x[, element, drop = TRUE]),
-                                                     xmax = as.numeric(x[, element, drop = TRUE]) + errors(x[, element, drop = TRUE]),), height = 0, colour = "dimgrey") +
+                                                     xmin = as.numeric(x[, element, drop = TRUE]) - as.numeric(errors(x[, element, drop = TRUE])),
+                                                     xmax = as.numeric(x[, element, drop = TRUE]) + as.numeric(errors(x[, element, drop = TRUE]))), height = 0, colour = "dimgrey") +
       ggplot2::geom_point() +
       ggplot2::geom_abline(intercept = 0, slope = 1, colour = "dimgrey") +
       ggplot2::labs(y = "Measured", x = "Fitted", title = paste0("Element: ", element,", File: all files")) +
