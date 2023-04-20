@@ -18,22 +18,27 @@ elco_irms_correct_isotopes(
 \item{x}{An object of class \code{\link[=elco_new_irms]{irms()}}.}
 
 \item{ref}{A \code{data.frame} with the same format as \code{\link[=irms_standards]{irms_standards()}}
-and exactly one row. \code{ref} contains the data for the standard to use for the correction.}
+and exactly one row. \code{ref} contains the data for the standard to use for the
+correction.}
 
 \item{check}{A \code{data.frame} with the same format as \code{\link[=irms_standards]{irms_standards()}}.
-\code{check} contains data for standards with which to check the correction. If the median of their
-corrected isotope signature values deviates (absolutely) by more than a threshold value as defined by
-\code{check$threshold_13C} or \code{check$threshold_15N} (depending on the value of \code{isotope}), a
-warning will be printed. Can alternatively be set to \code{NULL}, in which case no warning is printed.}
+\code{check} contains data for standards with which to check the correction. If
+the median of their corrected isotope signature values deviates (absolutely)
+by more than a threshold value as defined by \code{check$threshold_13C} or
+\code{check$threshold_15N} (depending on the value of \code{isotope}), a warning will
+be printed. Can alternatively be set to \code{NULL}, in which case no warning is
+printed.}
 
-\item{isotope}{A character value representing the isotope for which to correct isotope signatures.
-This must be one of "13C" or "15N".}
+\item{isotope}{A character value representing the isotope for which to
+correct isotope signatures. This must be one of "13C" or "15N".}
 
-\item{t}{An integer value specifying the number of measurements that must be available for a particular
-standard to make it eligible for being a reference for correcting the measured isotope values.}
+\item{t}{An integer value specifying the number of measurements that must be
+available for a particular standard to make it eligible for being a reference
+for correcting the measured isotope values.}
 
-\item{by_file}{A logical value indicating if medians of standards are computed across different files
-as indicated by \code{x$file_id} or (\code{FALSE}) individually for each file (\code{TRUE}).}
+\item{by_file}{A logical value indicating if medians of standards are
+computed across different files as indicated by \code{x$file_id} or (\code{FALSE})
+individually for each file (\code{TRUE}).}
 
 \item{plotit}{A logical value indicating if a plot for checking should be printed (\code{TRUE}) or not
 (\code{FALSE}).}

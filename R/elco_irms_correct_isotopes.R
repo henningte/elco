@@ -23,21 +23,33 @@
 #' }
 #'
 #' @param x An object of class [`irms()`][elco::elco_new_irms].
-#' @param isotope A character value representing the isotope for which to correct isotope signatures.
-#' This must be one of "13C" or "15N".
+#'
+#' @param isotope A character value representing the isotope for which to
+#' correct isotope signatures. This must be one of "13C" or "15N".
+#'
 #' @param ref A `data.frame` with the same format as [elco::irms_standards()]
-#' and exactly one row. `ref` contains the data for the standard to use for the correction.
+#' and exactly one row. `ref` contains the data for the standard to use for the
+#' correction.
+#'
 #' @param check A `data.frame` with the same format as [elco::irms_standards()].
-#' `check` contains data for standards with which to check the correction. If the median of their
-#' corrected isotope signature values deviates (absolutely) by more than a threshold value as defined by
-#' `check$threshold_13C` or `check$threshold_15N` (depending on the value of `isotope`), a
-#' warning will be printed. Can alternatively be set to `NULL`, in which case no warning is printed.
-#' @param t An integer value specifying the number of measurements that must be available for a particular
-#' standard to make it eligible for being a reference for correcting the measured isotope values.
-#' @param by_file A logical value indicating if medians of standards are computed across different files
-#' as indicated by `x$file_id` or (`FALSE`) individually for each file (`TRUE`).
+#' `check` contains data for standards with which to check the correction. If
+#' the median of their corrected isotope signature values deviates (absolutely)
+#' by more than a threshold value as defined by `check$threshold_13C` or
+#' `check$threshold_15N` (depending on the value of `isotope`), a warning will
+#' be printed. Can alternatively be set to `NULL`, in which case no warning is
+#' printed.
+#'
+#' @param t An integer value specifying the number of measurements that must be
+#' available for a particular standard to make it eligible for being a reference
+#' for correcting the measured isotope values.
+#'
+#' @param by_file A logical value indicating if medians of standards are
+#' computed across different files as indicated by `x$file_id` or (`FALSE`)
+#' individually for each file (`TRUE`).
+#'
 #' @param plotit A logical value indicating if a plot for checking should be printed (`TRUE`) or not
 #' (`FALSE`).
+#'
 #' @export
 elco_irms_correct_isotopes <- function(x,
                                        ref = irms_standards[irms_standards$standard_name == "BBOT", ],
@@ -131,58 +143,83 @@ elco_irms_correct_isotopes <- function(x,
   if(!is.null(check)) colnames(check)[[1]] <- "sample_label"
 
   # get median isotope signature and isotope signal area and the number of measurements for the reference standard
-  x_standards <- purrr::map(x, elco_irms_extract_standards)
-  x_standards <- purrr::map(x_standards, function(y) {
-    y[y$sample_label == irms_standards_sel$sample_label, ]
-  })
-  x_standards_signature_median <- purrr::map(x_standards, function(y) {
-    y <- dplyr::group_by(y, .data$sample_label)
-    y <- dplyr::summarise(y,
-                          file_id = unique(.data$file_id),
-                          signature_measured = stats::median(!!disotope, na.rm = TRUE),
-                          area_measured = stats::median(!!disotope_area, na.rm = TRUE),
-                          count = length(.data$sample_mass),
-                          .groups = "keep")
-    y <- dplyr::left_join(y, irms_standards_sel, by = "sample_label")
-    y$signature_difference <- y$signature_measured - y$disotope
-    y
-  })
+  x_standards <-
+    purrr::map(x, function(.x) {
+      .x %>%
+        elco_irms_extract_standards() %>%
+        dplyr::filter(sample_label == irms_standards_sel$sample_label)
+    })
+
+  x_standards_signature_median <-
+    purrr::map(x_standards, function(.x) {
+      .x %>%
+        dplyr::group_by(.data$sample_label) %>%
+        dplyr::summarise(
+          file_id = unique(.data$file_id),
+          signature_measured = stats::median(!!disotope, na.rm = TRUE),
+          area_measured = stats::median(!!disotope_area, na.rm = TRUE),
+          count = length(.data$sample_mass),
+          .groups = "keep"
+        ) %>%
+        dplyr::left_join(
+          irms_standards_sel,
+          by = "sample_label"
+        ) %>%
+        dplyr::mutate(
+          signature_difference = signature_measured - disotope
+        )
+    })
 
   # print warning if there are too few measurements in any file
-  cond <- purrr::map2_lgl(x_standards_signature_median, seq_along(x_standards_signature_median), function(y, i) {
-    cond <- !y$count >= t
-    if(cond) rlang::warn(paste0("For file ", i, ", there are less than ", t, " measurements for the selected reference standard."))
-    cond
-  })
+  cond <-
+    purrr::map2_lgl(x_standards_signature_median, seq_along(x_standards_signature_median), function(y, i) {
+      cond <- !y$count >= t
+      if(cond) rlang::warn(paste0("For file ", i, ", there are less than ", t, " measurements for the selected reference standard."))
+      cond
+    })
 
   # subtract
-  x <- purrr::map2(x, x_standards_signature_median, function(y, z) {
-    y[, as.character(disotope)] <- y[, as.character(disotope), drop = TRUE] - z$signature_difference
-    y
-  })
+  x <-
+    purrr::map2(x, x_standards_signature_median, function(y, z) {
+      y[, as.character(disotope)] <- y[, as.character(disotope), drop = TRUE] - z$signature_difference
+      y
+    })
 
   # check if the signature of any standards in `check` deviates too much from the median corrected signature of the standards
   if(!is.null(check)) {
-    x_standards <- purrr::map(x, elco_irms_extract_standards)
-    x_standards_signature_median <- purrr::map(x_standards, function(y) {
-      y <- dplyr::group_by(y, .data$sample_label)
-      y <- dplyr::summarise(y,
-                            file_id = unique(.data$file_id),
-                            signature_measured = stats::median(!!disotope),
-                            .groups = "keep")
-      y <- dplyr::left_join(y, check, by = "sample_label")
-      y$signature_difference <- y$signature_measured - y[, as.character(disotope), drop = TRUE]
+    purrr::map(x, function(.x) {
+
+      # compute median signature of corrected standards
+      .x <-
+        .x %>%
+        elco_irms_extract_standards() %>%
+        dplyr::group_by(.data$sample_label) %>%
+        dplyr::summarise(
+          file_id = unique(.data$file_id),
+          signature_measured = stats::median(!!disotope),
+          .groups = "keep"
+        ) %>%
+        dplyr::left_join(
+          check,
+          by = "sample_label"
+        ) %>%
+        dplyr::mutate(
+          signature_difference = signature_measured - !!disotope
+        )
+
       # check thresholds
-      for(i in seq_len(nrow(y))) {
-        if(is.na(y[i, paste0("threshold_", disotope)])) {
-          rlang::warn(paste0("For standard ", y$sample_label[[i]], " isotope correction cannot be checked because the threshold given in `check` is `NA`."))
+      for(i in seq_len(nrow(.x))) {
+        if(is.na(.x[i, paste0("threshold_", disotope)])) {
+          rlang::warn(paste0("For standard ", .x$sample_label[[i]], " isotope correction cannot be checked because the threshold given in `check` is `NA`."))
         } else {
-          if(abs(y$signature_difference[[i]]) > y[i, paste0("threshold_", disotope)]) {
-            rlang::warn(paste0("For file ", y$file_id[[i]], " and standard ", y$sample_label[[i]], " the corrected isotope signature is larger than the reference threshold value."))
+          if(abs(.x$signature_difference[[i]]) > .x[i, paste0("threshold_", disotope)]) {
+            rlang::warn(paste0("For file ", .x$file_id[[i]], " and standard ", .x$sample_label[[i]], " the corrected isotope signature is larger than the reference threshold value."))
           }
         }
       }
-      y
+
+      .x
+
     })
   }
 
@@ -197,9 +234,15 @@ elco_irms_correct_isotopes <- function(x,
       dplyr::bind_rows(
         dplyr::mutate(x_or, Corrected = FALSE),
         dplyr::mutate(x, Corrected = TRUE)
+      ) %>%
+      dplyr::mutate(
+        sample_label =
+          dplyr::case_when(
+            sample_label %in% irms_standards$standard_name ~ sample_label,
+            sample_label == "bla" ~ "Blank",
+            TRUE ~ "Sample"
+          )
       )
-    x_or$sample_label <- ifelse(x_or$sample_label %in% irms_standards$standard_name, x_or$sample_label, ifelse(x_or$sample_label == "bla", "Blank", "Sample"))
-    x_or$signature_known[x_or$sample_label %in% c("Sample", "Blank")] <- NA_real_
 
     if(by_file) {
       x_or <- split(x_or, f = x_or$file_id)
@@ -207,37 +250,68 @@ elco_irms_correct_isotopes <- function(x,
       x_or <- list(x_or)
     }
 
-
     # plot (don't show blanks and samples because these often have such small values that checking for standards and samples gets impossible)
-    print(
-      purrr::map(x_or, function(y) {
-        ggplot2::ggplot(dplyr::filter(y[y$sample_label != "Blank", ], .data$sample_label != "Sample"), ggplot2::aes(x = .data$sample_label)) +
-          ggplot2::geom_jitter(ggplot2::aes(y = !!disotope, colour = .data$Corrected)) +
-          ggplot2::geom_point(data = dplyr::filter(irms_standards, .data$standard_name %in% !!x$sample_label), ggplot2::aes(x = .data$standard_name, y = !!disotope)) +
-          ggplot2::stat_boxplot(ggplot2::aes(y = !!disotope, colour = .data$Corrected), fill = NA) +
-          ggplot2::geom_point(ggplot2::aes(x = .data$sample_label, y = .data$signature_known)) +
-          ggplot2::guides(colour = ggplot2::guide_legend(nrow = 2)) +
-          ggplot2::theme(legend.position = "bottom") +
-          ggplot2::labs(x = "Standards",
-                        y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-                        title = paste0("File id: ", y$file_id[[1]], ", Corrected and uncorrected isotope signatures"))
-      })
-    )
+    for(i in seq_along(x_or)) {
+
+      p1 <-
+        ggplot2::ggplot(
+          data = .x %>% dplyr::filter(! .data$sample_label %in% c("Blank", "Sample"))
+        ) +
+        ggplot2::geom_point(
+          ggplot2::aes(x = .data$sample_label, y = !!disotope, color = .data$Corrected),
+          position = ggplot2::position_jitterdodge()
+        ) +
+        ggplot2::geom_point(
+          data = irms_standards %>% dplyr::filter(.data$standard_name %in% !!x$sample_label),
+          ggplot2::aes(x = .data$standard_name, y = !!disotope)
+        ) +
+        ggplot2::geom_boxplot(
+          ggplot2::aes(x = .data$sample_label, y = !!disotope, color = .data$Corrected),
+          fill = NA
+        ) +
+        ggplot2::guides(colour = ggplot2::guide_legend(nrow = 2)) +
+        ggplot2::theme(legend.position = "bottom") +
+        ggplot2::labs(
+          x = "Standards",
+          y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
+          title = paste0("File id: ", .x$file_id[[1]], ", Corrected and uncorrected isotope signatures")
+        )
+
+      print(p1)
+
+    }
 
     # same plot as before, but now also with samples
-    print(
-      purrr::map(x_or, function(y) {
-        ggplot2::ggplot(y[y$sample_label != "Blank", ], ggplot2::aes(x = .data$sample_label)) +
-          ggplot2::geom_jitter(ggplot2::aes(y = !!disotope, colour = .data$Corrected)) +
-          ggplot2::stat_boxplot(ggplot2::aes(y = !!disotope, colour = .data$Corrected), fill = NA) +
-          ggplot2::geom_point(ggplot2::aes(x = .data$sample_label, y = .data$signature_known)) +
-          ggplot2::guides(colour = ggplot2::guide_legend(nrow = 2)) +
-          ggplot2::theme(legend.position = "bottom") +
-          ggplot2::labs(x = "Standards and Samples",
-                        y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-                        title = paste0("File id: ", y$file_id[[1]], ", Corrected and uncorrected isotope signatures"))
-      })
-    )
+    for(i in seq_along(x_or)) {
+
+      p1 <-
+        ggplot2::ggplot(
+          data = .x %>% dplyr::filter(! .data$sample_label %in% c("Blank"))
+        ) +
+        ggplot2::geom_point(
+          ggplot2::aes(x = .data$sample_label, y = !!disotope, color = .data$Corrected),
+          position = ggplot2::position_jitterdodge()
+        ) +
+        ggplot2::geom_point(
+          data = irms_standards %>% dplyr::filter(.data$standard_name %in% !!x$sample_label),
+          ggplot2::aes(x = .data$standard_name, y = !!disotope)
+        ) +
+        ggplot2::geom_boxplot(
+          ggplot2::aes(x = .data$sample_label, y = !!disotope, color = .data$Corrected),
+          fill = NA
+        ) +
+        ggplot2::guides(colour = ggplot2::guide_legend(nrow = 2)) +
+        ggplot2::theme(legend.position = "bottom") +
+        ggplot2::labs(
+          x = "Standards",
+          y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
+          title = paste0("File id: ", .x$file_id[[1]], ", Corrected and uncorrected isotope signatures")
+        )
+
+      print(p1)
+
+    }
+
   }
 
   x
