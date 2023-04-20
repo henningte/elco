@@ -260,7 +260,7 @@ elco_irms_correct_elements <- function(x,
           )
         ) +
         ggplot2::geom_rug(
-          data = x[x_or$is_standard == "Sample" & x$file_id == y$file_id[[1]], ],
+          data = x[x_or[[i]]$is_standard == "Sample" & x$file_id == y$file_id[[1]], ],
           mapping = ggplot2::aes(
             y = as.numeric(.data$C)/as.numeric(.data$sample_mass),
             x = !!delement_area
