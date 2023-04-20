@@ -15,18 +15,20 @@ elco_irms_correct_elements(
 \arguments{
 \item{x}{An object of class \code{\link[=elco_new_irms]{irms()}}.}
 
-\item{element}{A character value representing the chemical element for which to correct the mass fraction
-values. This must be one of "C" or "N".}
+\item{element}{A character value representing the chemical element for which
+to correct the mass fraction values. This must be one of "C" or "N".}
 
-\item{standards}{A character vale specifying standards to use for computing the regression equation.
-This must be one of \code{irms_standard::irms_standard$standard_name}. Default is to
-use all standards.}
+\item{standards}{A character vale specifying standards to use for computing
+the regression equation. This must be one of
+\code{irms_standard::irms_standard$standard_name}. Default is to use all
+standards.}
 
-\item{by_file}{A logical value indicating if medians of standards are computed across different files
-as indicated by \code{x$file_id} or (\code{FALSE}) individually for each file (\code{TRUE}).}
+\item{by_file}{A logical value indicating if medians of standards are
+computed across different files as indicated by \code{x$file_id} or (\code{FALSE})
+individually for each file (\code{TRUE}).}
 
-\item{plotit}{A logical value indicating if a plot for checking should be printed (\code{TRUE}) or not
-(\code{FALSE}).}
+\item{plotit}{A logical value indicating if a plot for checking should be
+printed (\code{TRUE}) or not (\code{FALSE}).}
 }
 \value{
 \code{x} with corrected element content.

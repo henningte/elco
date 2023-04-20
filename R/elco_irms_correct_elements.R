@@ -25,16 +25,24 @@
 #' }
 #'
 #' @param x An object of class [`irms()`][elco::elco_new_irms].
-#' @param element A character value representing the chemical element for which to correct the mass fraction
-#' values. This must be one of "C" or "N".
-#' @param standards A character vale specifying standards to use for computing the regression equation.
-#' This must be one of `irms_standard::irms_standard$standard_name`. Default is to
-#' use all standards.
-#' @param by_file A logical value indicating if medians of standards are computed across different files
-#' as indicated by `x$file_id` or (`FALSE`) individually for each file (`TRUE`).
-#' @param plotit A logical value indicating if a plot for checking should be printed (`TRUE`) or not
-#' (`FALSE`).
+#'
+#' @param element A character value representing the chemical element for which
+#' to correct the mass fraction values. This must be one of "C" or "N".
+#'
+#' @param standards A character vale specifying standards to use for computing
+#' the regression equation. This must be one of
+#' `irms_standard::irms_standard$standard_name`. Default is to use all
+#' standards.
+#'
+#' @param by_file A logical value indicating if medians of standards are
+#' computed across different files as indicated by `x$file_id` or (`FALSE`)
+#' individually for each file (`TRUE`).
+#'
+#' @param plotit A logical value indicating if a plot for checking should be
+#' printed (`TRUE`) or not (`FALSE`).
+#'
 #' @return `x` with corrected element content.
+#'
 #' @export
 elco_irms_correct_elements <- function(x,
                                        element = "C",
@@ -101,34 +109,55 @@ elco_irms_correct_elements <- function(x,
   irms_standards_sel <- irms_standards_sel[irms_standards_sel$sample_label %in% standards, , drop = FALSE]
 
   # assign known C mass fractions to measured standards
-  x_standards <- purrr::map(x, elco_irms_extract_standards)
-  x_standards <- purrr::map(x_standards, function(y) {
-    dplyr::left_join(y, irms_standards_sel, by = "sample_label")
-  })
+  x_standards <-
+    purrr::map(x, function(.x) {
+      .x %>%
+        elco_irms_extract_standards() %>%
+        dplyr::left_join(
+          irms_standards_sel,
+          by = "sample_label"
+        )
+    })
 
   # compute absolute C mass contents
-  x_standards <- purrr::map(x_standards, function(y) {
-    dplyr::mutate(y, element_m_abs = element_m * errors::drop_errors(.data$sample_mass))
-  })
+  x_standards <-
+    purrr::map(x_standards, function(.x) {
+      .x %>%
+        dplyr::mutate(
+          element_m_abs = element_m * errors::drop_errors(.data$sample_mass)
+        )
+    })
 
   # compute regression models
-  x_standards_lm <- purrr::map(x_standards, function(y) {
-    y <- purrr::map_df(y[, c("element_m_abs", as.character(delement_area))], as.numeric) # drop units
-    stats::lm(y)
-  })
+  x_standards_lm <-
+    purrr::map(x_standards, function(y) {
+      y <- purrr::map_df(y[, c("element_m_abs", as.character(delement_area))], as.numeric) # drop units
+      stats::lm(y)
+    })
 
   # predict values
-  x <- purrr::map2(x, x_standards_lm, function(y, z) {
-    res <- as.data.frame(predict(z, newdata = y, se.fit = TRUE, type = "response"))
-    res$se_pi <- sqrt(res$se.fit^2 + res$residual.scale^2)
-    res <- elco_new_elco(quantities::set_quantities(res$fit/as.numeric(y$sample_mass),
-                                                    unit = units(y[, element, drop = TRUE]),
-                                                    errors = res$se_pi/as.numeric(y$sample_mass), mode = "standard"), el_symbol = element)
-    switch(element,
-           "C" = dplyr::mutate(y, C = res),
-           "N" = dplyr::mutate(y, N = res)
-    )
-  })
+  x <-
+    purrr::map2(x, x_standards_lm, function(y, z) {
+      res <- as.data.frame(predict(z, newdata = y, se.fit = TRUE, type = "response"))
+      res$se_pi <- sqrt(res$se.fit^2 + res$residual.scale^2)
+      res <-
+        elco_new_elco(
+          quantities::set_quantities(
+            res$fit/as.numeric(y$sample_mass),
+            unit = units(y[, element, drop = TRUE]),
+            errors = res$se_pi/as.numeric(y$sample_mass),
+            mode = "standard"
+          ),
+          el_symbol = element
+        )
+
+      switch(
+        element,
+        "C" = dplyr::mutate(y, C = res),
+        "N" = dplyr::mutate(y, N = res)
+      )
+
+    })
 
   # bind rows
   x <- dplyr::bind_rows(x)
@@ -136,50 +165,121 @@ elco_irms_correct_elements <- function(x,
   # plot
   if(plotit) {
 
-    is_standard <- ifelse(x_or$sample_label %in% irms_standards$standard_name, x_or$sample_label, ifelse(x_or$sample_label == "bla", "Blank", "Sample"))
+    x_or <-
+      dplyr::bind_rows(x_or) %>%
+      dplyr::mutate(
+        is_standard =
+          dplyr::case_when(
+            sample_label %in% irms_standards$standard_name ~ sample_label,
+            sample_label == "bla" ~ "Blank",
+            TRUE ~ "Sample"
+          )
+      )
 
     # measured vs fitted values
     p1 <-
-      ggplot2::ggplot(mapping = ggplot2::aes(y = as.numeric(x_or[, element, drop = TRUE]),
-                                             x = as.numeric(x[, element, drop = TRUE]),
-                                             colour = is_standard)) +
-      ggplot2::geom_segment(data = irms_standards_sel,
-                            mapping = ggplot2::aes(x = as.numeric(element_m),
-                                                   xend = as.numeric(element_m),
-                                                   y = 0,
-                                                   yend = as.numeric(element_m),
-                                                   colour = .data$sample_label)) +
-      ggplot2::geom_segment(data = irms_standards_sel,
-                            mapping = ggplot2::aes(x = 0,
-                                                   xend = as.numeric(element_m),
-                                                   y = as.numeric(element_m),
-                                                   yend = as.numeric(element_m),
-                                                   colour = .data$sample_label)) +
-      ggplot2::geom_errorbarh(mapping = ggplot2::aes(y = as.numeric(x_or[, element, drop = TRUE]),
-                                                     xmin = as.numeric(x[, element, drop = TRUE]) - as.numeric(errors(x[, element, drop = TRUE])),
-                                                     xmax = as.numeric(x[, element, drop = TRUE]) + as.numeric(errors(x[, element, drop = TRUE]))), height = 0, colour = "dimgrey") +
-      ggplot2::geom_point() +
+      ggplot2::ggplot() +
+      ggplot2::geom_segment(
+        data = irms_standards_sel,
+        mapping =
+          ggplot2::aes(
+            x = as.numeric(element_m),
+            xend = as.numeric(element_m),
+            y = 0,
+            yend = as.numeric(element_m),
+            color = .data$sample_label
+          )
+      ) +
+      ggplot2::geom_segment(
+        data = irms_standards_sel,
+        mapping =
+          ggplot2::aes(
+            x = 0,
+            xend = as.numeric(element_m),
+            y = as.numeric(element_m),
+            yend = as.numeric(element_m),
+            color = .data$sample_label
+          )
+      ) +
+      ggplot2::geom_errorbarh(
+        mapping =
+          ggplot2::aes(
+            # x = as.numeric(x[, element, drop = TRUE]),
+            y = as.numeric(x_or[, element, drop = TRUE]),
+            xmin = as.numeric(x[, element, drop = TRUE]) - as.numeric(errors(x[, element, drop = TRUE])),
+            xmax = as.numeric(x[, element, drop = TRUE]) + as.numeric(errors(x[, element, drop = TRUE]))
+          ),
+        height = 0, color = "dimgrey"
+      ) +
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(
+          y = as.numeric(x_or[, element, drop = TRUE]),
+          x = as.numeric(x[, element, drop = TRUE]),
+          color = x_or$is_standard
+        )
+      ) +
       ggplot2::geom_abline(intercept = 0, slope = 1, colour = "dimgrey") +
-      ggplot2::labs(y = "Measured", x = "Fitted", title = paste0("Element: ", element,", File: all files")) +
-      ggplot2::guides(colour = ggplot2::guide_legend(title = "Sample type")) +
+      ggplot2::labs(
+        y = "Measured",
+        x = "Fitted",
+        title = paste0("Element: ", element,", File: all files")
+      ) +
+      ggplot2::guides(color = ggplot2::guide_legend(title = "Sample type")) +
       ggplot2::theme(legend.position = "bottom")
 
     print(p1)
 
     # regression models
-    purrr::map(x_standards, function(y) {
-      p2 <-
-        ggplot2::ggplot(y, ggplot2::aes(y = as.numeric(.data$element_m_abs), x = !!delement_area)) +
-        ggplot2::geom_smooth(method = "lm", se = FALSE, colour = "dimgrey") +
-        ggplot2::geom_point(ggplot2::aes(colour = .data$sample_label)) +
-        ggplot2::geom_rug(data = x[is_standard == "Sample" & x$file_id == y$file_id[[1]], ], ggplot2::aes(y = as.numeric(.data$C)/as.numeric(.data$sample_mass), x = !!delement_area), sides="b") +
-        ggplot2::labs(y = paste0("Absolute ", element, " mass [mg]"),
-                      x = "Signal area",
-                      title = paste0("Element: ", element,", File: ", y$file_id[[1]])) +
-        ggplot2::guides(colour = ggplot2::guide_legend(title = "Standard")) +
+    if(by_file) {
+      x_or <- split(x_or, f = x_or$file_id)
+    } else {
+      x_or <- list(x_or)
+    }
+
+    for(i in seq_along(x_standards)) {
+
+      y <- x_standards[[i]]
+
+      p1 <-
+        ggplot2::ggplot() +
+        ggplot2::geom_smooth(
+          data = y,
+          mapping =
+            aes(
+              y = as.numeric(.data$element_m_abs),
+              x = !!delement_area
+            ),
+          formula = y ~ x, method = "lm", se = FALSE, colour = "dimgrey"
+        ) +
+        ggplot2::geom_point(
+          data = y,
+          mapping = ggplot2::aes(
+            y = as.numeric(.data$element_m_abs),
+            x = !!delement_area,
+            color = .data$sample_label
+          )
+        ) +
+        ggplot2::geom_rug(
+          data = x[x_or$is_standard == "Sample" & x$file_id == y$file_id[[1]], ],
+          mapping = ggplot2::aes(
+            y = as.numeric(.data$C)/as.numeric(.data$sample_mass),
+            x = !!delement_area
+          ),
+          sides="b"
+        ) +
+        ggplot2::labs(
+          y = paste0("Absolute ", element, " mass [mg]"),
+          x = "Signal area",
+          title = paste0("Element: ", element,", File: ", y$file_id[[1]])
+        ) +
+        ggplot2::guides(
+          color = ggplot2::guide_legend(title = "Standard")
+        ) +
         ggplot2::theme(legend.position = "bottom")
-      print(p2)
-    })
+
+      print(p1)
+
+    }
 
   }
 
