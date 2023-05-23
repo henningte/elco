@@ -255,7 +255,7 @@ elco_irms_correct_isotopes <- function(x,
 
       p1 <-
         ggplot2::ggplot(
-          data = .x %>% dplyr::filter(! .data$sample_label %in% c("Blank", "Sample"))
+          data = x_or[[i]] %>% dplyr::filter(! .data$sample_label %in% c("Blank", "Sample"))
         ) +
         ggplot2::geom_point(
           ggplot2::aes(x = .data$sample_label, y = !!disotope, color = .data$Corrected),
@@ -274,7 +274,7 @@ elco_irms_correct_isotopes <- function(x,
         ggplot2::labs(
           x = "Standards",
           y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-          title = paste0("File id: ", .x$file_id[[1]], ", Corrected and uncorrected isotope signatures")
+          title = paste0("File id: ", x_or[[i]]$file_id[[1]], ", Corrected and uncorrected isotope signatures")
         )
 
       print(p1)
@@ -286,7 +286,7 @@ elco_irms_correct_isotopes <- function(x,
 
       p1 <-
         ggplot2::ggplot(
-          data = .x %>% dplyr::filter(! .data$sample_label %in% c("Blank"))
+          data = x_or[[i]] %>% dplyr::filter(! .data$sample_label %in% c("Blank"))
         ) +
         ggplot2::geom_point(
           ggplot2::aes(x = .data$sample_label, y = !!disotope, color = .data$Corrected),
@@ -305,7 +305,7 @@ elco_irms_correct_isotopes <- function(x,
         ggplot2::labs(
           x = "Standards",
           y = bquote(delta^{.(stringr::str_extract(isotope, "[1-9]+"))}*.(stringr::str_extract(isotope, "[:alpha:]"))),
-          title = paste0("File id: ", .x$file_id[[1]], ", Corrected and uncorrected isotope signatures")
+          title = paste0("File id: ", x_or[[i]]$file_id[[1]], ", Corrected and uncorrected isotope signatures")
         )
 
       print(p1)
