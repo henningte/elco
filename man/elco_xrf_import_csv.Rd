@@ -4,18 +4,26 @@
 \alias{elco_xrf_import_csv}
 \title{Reformats raw csv X-ray fluorescence data as exported by the vendor software.}
 \usage{
-elco_xrf_import_csv(files)
+elco_xrf_import_csv(files, use_intensities = FALSE)
 }
 \arguments{
-\item{files}{A vector of character values representing paths to csv files with XRF raw data as exported
-by the vendor software of the XRF spectrometer (ZSX Primus II, Rigaku).}
+\item{files}{A vector of character values representing paths to csv files
+with XRF raw data as exported by the vendor software of the XRF spectrometer
+(ZSX Primus II, Rigaku).}
+
+\item{use_intensities}{Logical value indicating whether instead of elemental
+contents intensities of peaks should be extracted (\code{TRUE}) or not (\code{FALSE}).}
 }
 \value{
-An object of class \code{\link[=elco_new_xrf]{xrf}}.
+\describe{
+\item{If \code{use_intensities} is \code{FALSE}}{An object of class \code{\link[=elco_new_xrf]{xrf}}.}
+\item{If \code{use_intensities} is \code{TRUE}}{A data frame with the extracted intensities.}
+}
 }
 \description{
-\code{elco_xrf_import_csv} reads one or more csv files that contain raw X-ray fluorescence (XRF) data as
-exported by the vendor software of the XRF spectrometer (ZSX Primus II, Rigaku) and tidies the data. This includes
-reformatting columns and rows, deleting unneeded columns and rows (summary statistics),
-adding units, and renaming columns.
+\code{elco_xrf_import_csv} reads one or more csv files that contain raw X-ray
+fluorescence (XRF) data as exported by the vendor software of the XRF
+spectrometer (ZSX Primus II, Rigaku) and tidies the data. This includes
+reformatting columns and rows, deleting unneeded columns and rows (summary
+statistics), adding units, and renaming columns.
 }
