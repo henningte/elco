@@ -245,7 +245,7 @@ elco_irms_correct_elements <- function(x,
         ggplot2::geom_smooth(
           data = y,
           mapping =
-            aes(
+            ggplot2::aes(
               y = as.numeric(.data$element_m_abs),
               x = !!delement_area
             ),

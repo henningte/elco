@@ -147,7 +147,7 @@ elco_irms_correct_isotopes <- function(x,
     purrr::map(x, function(.x) {
       .x %>%
         elco_irms_extract_standards() %>%
-        dplyr::filter(sample_label == irms_standards_sel$sample_label)
+        dplyr::filter(.data$sample_label == irms_standards_sel$sample_label)
     })
 
   x_standards_signature_median <-
@@ -166,7 +166,7 @@ elco_irms_correct_isotopes <- function(x,
           by = "sample_label"
         ) %>%
         dplyr::mutate(
-          signature_difference = signature_measured - disotope
+          signature_difference = .data$signature_measured - disotope
         )
     })
 
@@ -204,7 +204,7 @@ elco_irms_correct_isotopes <- function(x,
           by = "sample_label"
         ) %>%
         dplyr::mutate(
-          signature_difference = signature_measured - !!disotope
+          signature_difference = .data$signature_measured - !!disotope
         )
 
       # check thresholds
