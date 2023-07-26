@@ -7,6 +7,7 @@
 elco_irms_correct_elements(
   x,
   element = "C",
+  irms_standards_to_use = elco::irms_standards,
   standards = irms_standards$standard_name,
   by_file = TRUE,
   plotit = FALSE
@@ -18,9 +19,14 @@ elco_irms_correct_elements(
 \item{element}{A character value representing the chemical element for which
 to correct the mass fraction values. This must be one of "C" or "N".}
 
+\item{irms_standards_to_use}{A \code{data.frame} with the same format as
+\code{\link[=irms_standards]{irms_standards()}}. This can optionally be used to make available other
+reference values for plotting.}
+
 \item{standards}{A character vale specifying standards to use for computing
 the regression equation. This must be one of
-\code{irms_standard::irms_standard$standard_name}. Default is to use all
+\code{irms_standard::irms_standard$standard_name} or, if specified, values in the
+same column of \code{irms_standards_to_use}. Default is to use all
 standards.}
 
 \item{by_file}{A logical value indicating if medians of standards are

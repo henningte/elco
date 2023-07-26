@@ -31,6 +31,10 @@
 #' and exactly one row. `ref` contains the data for the standard to use for the
 #' correction.
 #'
+#' @param irms_standards_to_use A `data.frame` with the same format as
+#' [elco::irms_standards()]. This can optionally be used to make available other
+#' reference values for plotting.
+#'
 #' @param check A `data.frame` with the same format as [elco::irms_standards()].
 #' `check` contains data for standards with which to check the correction. If
 #' the median of their corrected isotope signature values deviates (absolutely)
@@ -53,6 +57,7 @@
 #' @export
 elco_irms_correct_isotopes <- function(x,
                                        ref = irms_standards[irms_standards$standard_name == "BBOT", ],
+                                       irms_standards_to_use = elco::irms_standards,
                                        check = irms_standards,
                                        isotope = "13C",
                                        t = 5,
@@ -77,9 +82,13 @@ elco_irms_correct_isotopes <- function(x,
   if(nrow(ref) != 1) {
     rlang::abort(paste0("`ref` must have exactly one row, but has ", nrow(ref), " rows."))
   }
-  irms_standards <- irms_standards
+  if(! is.null(irms_standards_to_use)) {
+    irms_standards <- irms_standards_to_use
+  } else {
+    data("irms_standards", envir = environment())
+  }
   irms_standards_colnames <- colnames(irms_standards)
-  cond <- !colnames(ref) %in% irms_standards_colnames
+  cond <- ! colnames(ref) %in% irms_standards_colnames
   if(any(cond)) {
     if(sum(cond) == 1) {
       rlang::abort(paste0('`ref` must contain the columns ', paste(irms_standards_colnames, collapse = ", "), ', but contains a mismatching column ', colnames(ref)[cond], '.'))

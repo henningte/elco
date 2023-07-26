@@ -7,6 +7,7 @@
 elco_irms_correct_isotopes(
   x,
   ref = irms_standards[irms_standards$standard_name == "BBOT", ],
+  irms_standards_to_use = elco::irms_standards,
   check = irms_standards,
   isotope = "13C",
   t = 5,
@@ -20,6 +21,10 @@ elco_irms_correct_isotopes(
 \item{ref}{A \code{data.frame} with the same format as \code{\link[=irms_standards]{irms_standards()}}
 and exactly one row. \code{ref} contains the data for the standard to use for the
 correction.}
+
+\item{irms_standards_to_use}{A \code{data.frame} with the same format as
+\code{\link[=irms_standards]{irms_standards()}}. This can optionally be used to make available other
+reference values for plotting.}
 
 \item{check}{A \code{data.frame} with the same format as \code{\link[=irms_standards]{irms_standards()}}.
 \code{check} contains data for standards with which to check the correction. If

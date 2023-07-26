@@ -26,12 +26,17 @@
 #'
 #' @param x An object of class [`irms()`][elco::elco_new_irms].
 #'
+#' @param irms_standards_to_use A `data.frame` with the same format as
+#' [elco::irms_standards()]. This can optionally be used to make available other
+#' reference values for plotting.
+#'
 #' @param element A character value representing the chemical element for which
 #' to correct the mass fraction values. This must be one of "C" or "N".
 #'
 #' @param standards A character vale specifying standards to use for computing
 #' the regression equation. This must be one of
-#' `irms_standard::irms_standard$standard_name`. Default is to use all
+#' `irms_standard::irms_standard$standard_name` or, if specified, values in the
+#' same column of `irms_standards_to_use`. Default is to use all
 #' standards.
 #'
 #' @param by_file A logical value indicating if medians of standards are
@@ -46,6 +51,7 @@
 #' @export
 elco_irms_correct_elements <- function(x,
                                        element = "C",
+                                       irms_standards_to_use = elco::irms_standards,
                                        standards = irms_standards$standard_name,
                                        by_file = TRUE,
                                        plotit = FALSE) {
@@ -62,7 +68,11 @@ elco_irms_correct_elements <- function(x,
   if(!element %in% c("C", "N")) {
     rlang::abort(paste0("`element` must be one of c('C', 'N'), but is ", element, "."))
   }
-  irms_standards <- irms_standards
+  if(! is.null(irms_standards_to_use)) {
+    irms_standards <- irms_standards_to_use
+  } else {
+    data("irms_standards", envir = environment())
+  }
   if(!is.character(standards)) {
     rlang::abort(paste0("`standards` must be a character vector, but is of class ", class(standards)[[1]], "."))
   }
