@@ -122,7 +122,7 @@ elco_irms_correct_elements <- function(x,
   x_standards <-
     purrr::map(x, function(.x) {
       .x %>%
-        elco_irms_extract_standards() %>%
+        elco_irms_extract_standards(irms_standards_to_use = irms_standards) %>%
         dplyr::left_join(
           irms_standards_sel,
           by = "sample_label"
