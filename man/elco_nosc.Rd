@@ -43,16 +43,16 @@ degree of unsaturation with objects of class \code{\link[=elco_new_elco]{elco}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{elco_nosc}: Computes the carbon oxidation
+\item \code{elco_nosc()}: Computes the carbon oxidation
 state using the elemental composition of C, H, N, O.
 
-\item \code{elco_or}: Computes the carbon oxidation
+\item \code{elco_or()}: Computes the carbon oxidation
 state using the elemental composition of C, H, N, O.
 
-\item \code{elco_du}: Computes the carbon degree
+\item \code{elco_du()}: Computes the carbon degree
 of unsaturation using the elemental composition of C, H, N.
-}}
 
+}}
 \examples{
 ## NOSC
 elco::chno \%>\%
