@@ -85,7 +85,7 @@ elco_irms_correct_isotopes <- function(x,
   if(! is.null(irms_standards_to_use)) {
     irms_standards <- irms_standards_to_use
   } else {
-    data("irms_standards", envir = environment())
+    utils::data("irms_standards", envir = environment())
   }
   irms_standards_colnames <- colnames(irms_standards)
   cond <- ! colnames(ref) %in% irms_standards_colnames
@@ -155,7 +155,7 @@ elco_irms_correct_isotopes <- function(x,
   x_standards <-
     purrr::map(x, function(.x) {
       .x %>%
-        elco_irms_extract_standards() %>%
+        elco_irms_extract_standards(irms_standards_to_use = irms_standards) %>%
         dplyr::filter(.data$sample_label == irms_standards_sel$sample_label)
     })
 

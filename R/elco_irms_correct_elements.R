@@ -71,7 +71,7 @@ elco_irms_correct_elements <- function(x,
   if(! is.null(irms_standards_to_use)) {
     irms_standards <- irms_standards_to_use
   } else {
-    data("irms_standards", envir = environment())
+    utils::data("irms_standards", envir = environment())
   }
   if(!is.character(standards)) {
     rlang::abort(paste0("`standards` must be a character vector, but is of class ", class(standards)[[1]], "."))

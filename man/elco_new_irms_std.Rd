@@ -4,7 +4,7 @@
 \alias{elco_new_irms_std}
 \title{Creates an object of class \code{irms_std}}
 \usage{
-elco_new_irms_std(x)
+elco_new_irms_std(x, irms_standards_to_use = elco::irms_standards)
 }
 \arguments{
 \item{x}{A \code{data.frame} with a row for each measured sample or standard and the
@@ -34,6 +34,10 @@ data for the corresponding measurement.}
 \item{C_m}{A numeric vector with the relative mass fraction of C.}
 \item{N_m}{A numeric vector with the relative mass fraction of N.}
 }}
+
+\item{irms_standards_to_use}{A \code{data.frame} with the same format as
+\code{\link[=irms_standards]{irms_standards()}}. This can optionally be used to make available other
+reference values for plotting.}
 }
 \value{
 An object of class \code{irms_std}. This is identical to \code{x}, but has

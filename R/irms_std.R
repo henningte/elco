@@ -6,6 +6,8 @@
 #' contains only measurements on standards. Objects of class `irms` are intended to be created
 #' only internally.
 #'
+#' @inheritParams elco_irms_correct_isotopes
+#'
 #' @param x A `data.frame` with a row for each measured sample or standard and the
 #' following columns:
 #' \describe{
@@ -35,11 +37,17 @@
 #' }
 #' @return An object of class `irms_std`. This is identical to `x`, but has
 #' an additional class attribute.
-elco_new_irms_std <- function(x) {
+elco_new_irms_std <- function(x, irms_standards_to_use = elco::irms_standards) {
 
   # checks
   elco_check_irms(x)
-  elco_irms_check_standards(x)
+
+  if(! is.null(irms_standards_to_use)) {
+    irms_standards <- irms_standards_to_use
+  } else {
+    utils::data("irms_standards", envir = environment())
+  }
+  elco_irms_check_standards(x, irms_standards_to_use = irms_standards)
 
   structure(x, class = c("irms_std", class(x)))
 

@@ -3,6 +3,8 @@
 #' `elco_irms_extract_standards` takes an object of class `irms` and extracts
 #' all rows referring to standards in `irms_standards`.
 #'
+#' @inheritParams elco_irms_correct_isotopes
+#'
 #' @param x An object of class [`irms`][elco::elco_new_irms]
 #'
 #' @return An object of class [`irms_std`][elco::elco_new_irms_std] containing
@@ -10,13 +12,18 @@
 #' `sample_name %in% elco::irms_standards$standard_name`.
 #'
 #' @export
-elco_irms_extract_standards <- function(x) {
+elco_irms_extract_standards <- function(x, irms_standards_to_use = elco::irms_standards) {
 
   # checks
   elco_check_irms(x)
 
   # get data on standards
-  irms_standards <- irms_standards
+  if(! is.null(irms_standards_to_use)) {
+    irms_standards <- irms_standards_to_use
+  } else {
+    utils::data("irms_standards", envir = environment())
+  }
+  irms_standards_or <- irms_standards
   irms_standards <- irms_standards[, 1, drop = FALSE]
   colnames(irms_standards) <- "sample_label"
 
@@ -25,7 +32,7 @@ elco_irms_extract_standards <- function(x) {
   x <- x[!is.na(x$file_id), ]
 
   # restore class
-  elco_new_irms_std(elco_new_irms(x))
+  elco_new_irms_std(elco_new_irms(x), irms_standards_to_use = irms_standards_or)
 
 }
 
@@ -41,13 +48,17 @@ elco_irms_extract_standards <- function(x) {
 #' @keywords internal
 #' @noRd
 #'
-elco_irms_check_standards <- function(x) {
+elco_irms_check_standards <- function(x, irms_standards_to_use = elco::irms_standards) {
 
   # checks
   elco_check_irms(x)
 
   # get data on standards
-  irms_standards <- irms_standards
+  if(! is.null(irms_standards_to_use)) {
+    irms_standards <- irms_standards_to_use
+  } else {
+    utils::data("irms_standards", envir = environment())
+  }
 
   cond <- !purrr::map_lgl(x$sample_label, function(y) y %in% irms_standards$standard_name)
   if(any(cond)) {

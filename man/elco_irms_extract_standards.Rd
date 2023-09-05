@@ -4,10 +4,14 @@
 \alias{elco_irms_extract_standards}
 \title{Takes an object of class \code{irms} and extracts all rows referring to standards in \code{irms_standards}}
 \usage{
-elco_irms_extract_standards(x)
+elco_irms_extract_standards(x, irms_standards_to_use = elco::irms_standards)
 }
 \arguments{
 \item{x}{An object of class \code{\link[=elco_new_irms]{irms}}}
+
+\item{irms_standards_to_use}{A \code{data.frame} with the same format as
+\code{\link[=irms_standards]{irms_standards()}}. This can optionally be used to make available other
+reference values for plotting.}
 }
 \value{
 An object of class \code{\link[=elco_new_irms_std]{irms_std}} containing
