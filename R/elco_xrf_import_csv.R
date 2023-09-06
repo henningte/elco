@@ -13,11 +13,8 @@
 #' @param use_intensities Logical value indicating whether instead of elemental
 #' contents intensities of peaks should be extracted (`TRUE`) or not (`FALSE`).
 #'
-#' @return
-#' \describe{
-#'   \item{If `use_intensities` is `FALSE`}{An object of class [`xrf`][elco::elco_new_xrf].}
-#'   \item{If `use_intensities` is `TRUE`}{A data frame with the extracted intensities.}
-#' }
+#' @return A data frame with the extracted elemental contents (if
+#' `use_intensities = FALSE`) or intensities (if `use_intensities = TRUE`).
 #'
 #' @export
 elco_xrf_import_csv <- function(files, use_intensities = FALSE) {
@@ -63,23 +60,26 @@ elco_xrf_import_csv <- function(files, use_intensities = FALSE) {
     })
 
     # extract units
-    index_target_vars <- purrr::map(d, function(x) {
-      index <- seq_len(ncol(x))
-      index > 5 & ! stringr::str_detect(colnames(x), "_flag")
-    })
-    d_units <- purrr::map2(d, index_target_vars, function(x, i) {
-      x_units <-
-        tibble::tibble(
-          el_symbol = colnames(x)[i],
-          index_variable = which(i),
-          unit = unlist(x[1, i])
-        )
-      index_unit <- x_units$unit == "ppm"
-      x_units$division_factor <- ifelse(index_unit, 1, 100)
-      x_units$unit[!index_unit] <- "g/g"
-      x_units$unit[index_unit] <- "ug/g"
-      x_units
-    })
+    index_target_vars <-
+      purrr::map(d, function(x) {
+        index <- seq_len(ncol(x))
+        index > 5 & ! stringr::str_detect(colnames(x), "_flag")
+      })
+    d_units <-
+      purrr::map2(d, index_target_vars, function(x, i) {
+        x_units <-
+          tibble::tibble(
+            el_symbol = colnames(x)[i],
+            index_variable = which(i),
+            unit = unlist(x[1, i])
+          )
+        index_unit <- x_units$unit == "ppm"
+        x_units$division_factor <- ifelse(index_unit, 1, 100)
+        x_units$unit[! index_unit] <- paste0("g_", x_units$el_symbol[! index_unit], "/g_sample")
+        x_units$unit[index_unit] <- paste0("ug_", x_units$el_symbol[index_unit], "/g_sample")
+        x_units$unit[x_units$el_symbol == "C6H10O5N" & index_unit] <- "ug/g_sample"
+        x_units
+      })
 
     d <-
       purrr::map(d, function(x) {
@@ -96,13 +96,10 @@ elco_xrf_import_csv <- function(files, use_intensities = FALSE) {
     # reformat units
     d <-
       purrr::map2(d, d_units, function(x, y) {
-        x[, y$index_variable] <- purrr::map2_df(x[, y$index_variable], seq_len(nrow(y)), function(z, i) {
-          res <- quantities::set_quantities(as.numeric(z)/y$division_factor[[i]], unit = y$unit[[i]], errors = 0, mode = "standard")
-          if(y$el_symbol[[i]] != "C6H10O5N") {
-            res <- elco_new_elco(res, el_symbol = y$el_symbol[[i]])
-          }
-          res
-        })
+        x[, y$index_variable] <-
+          purrr::map2_df(x[, y$index_variable], seq_len(nrow(y)), function(z, i) {
+            quantities::set_quantities(as.numeric(z)/y$division_factor[[i]], unit = y$unit[[i]], errors = 0, mode = "standard")
+          })
         x
       })
 
@@ -162,10 +159,6 @@ elco_xrf_import_csv <- function(files, use_intensities = FALSE) {
 
   # merge
   d <- dplyr::bind_rows(d)
-
-  if(! use_intensities) {
-    d <- elco_new_xrf(d)
-  }
 
   d
 

@@ -51,7 +51,7 @@ not described here, but in the vignettes.
 library(elco)
 #> Loading required package: quantities
 #> Loading required package: units
-#> udunits database from C:/Users/henni/AppData/Local/R/win-library/4.2/units/share/udunits/udunits2.xml
+#> udunits database from C:/Users/henni/AppData/Local/R/win-library/4.3/units/share/udunits/udunits2.xml
 #> Loading required package: errors
 
 # load other required packages
@@ -64,7 +64,6 @@ library(dplyr)
 #> The following objects are masked from 'package:base':
 #> 
 #>     intersect, setdiff, setequal, union
-library(quantities)
 library(magrittr)
 ```
 
@@ -73,100 +72,98 @@ First, we have a short look at the sample data and its structure:
 ``` r
 d <- elco::chno
 d
-#> # A tibble: 5 × 5
-#>              C            H             N            O sample_mass
-#>    (err) [g/g]  (err) [g/g]   (err) [g/g]  (err) [g/g]  (err) [mg]
-#> 1 0.4928286(0)  0.177478(0) 0.09203495(0) 0.1705965(0)     3.78(1)
-#> 2 0.4970892(0) 0.1692088(0) 0.09216568(0) 0.1640896(0)     3.81(1)
-#> 3 0.5218047(0)  0.162892(0) 0.09125226(0) 0.1606575(0)    3.494(4)
-#> 4 0.5008897(0) 0.1642393(0) 0.08918042(0)  0.165484(0)    4.251(3)
-#> 5 0.5016323(0) 0.1738859(0) 0.09247861(0) 0.1609109(0)    4.046(9)
+#>                             C                           H
+#> 1 0.4928286(0) [g_C/g_sample]  0.177478(0) [g_H/g_sample]
+#> 2 0.4970892(0) [g_C/g_sample] 0.1692088(0) [g_H/g_sample]
+#> 3 0.5218047(0) [g_C/g_sample]  0.162892(0) [g_H/g_sample]
+#> 4 0.5008897(0) [g_C/g_sample] 0.1642393(0) [g_H/g_sample]
+#> 5 0.5016323(0) [g_C/g_sample] 0.1738859(0) [g_H/g_sample]
+#>                              N                           O          sample_mass
+#> 1 0.09203495(0) [g_N/g_sample] 0.1705965(0) [g_O/g_sample]  3.78(1) [mg_sample]
+#> 2 0.09216568(0) [g_N/g_sample] 0.1640896(0) [g_O/g_sample]  3.81(1) [mg_sample]
+#> 3 0.09125226(0) [g_N/g_sample] 0.1606575(0) [g_O/g_sample] 3.494(4) [mg_sample]
+#> 4 0.08918042(0) [g_N/g_sample]  0.165484(0) [g_O/g_sample] 4.251(3) [mg_sample]
+#> 5 0.09247861(0) [g_N/g_sample] 0.1609109(0) [g_O/g_sample] 4.046(9) [mg_sample]
 ```
 
 Contents for one element are stored in a numeric vector. Measurement
 units and errors are tracked using the
-[quantities](https://github.com/r-quantities/quantities) package. elco
-adds to this an identifier for the element:
+[quantities](https://github.com/r-quantities/quantities) package.
 
-``` r
-# show exemplary structure for the C content
-d$C
-#> Element: C
-#> Units: [g/g]
-#> Errors: 0 0 0 0 0
-#> [1] 0.4928286 0.4970892 0.5218047 0.5008897 0.5016323
-```
-
-New elco objects can be defined with `elco_new_elco` (by providing a
-quantities object and an element symbol). For instance, this specifies
-two new C content values:
-
-``` r
-x <- 
-  quantities::set_quantities(c(0.3, 0.43), unit = "g/g", errors = c(0.2, 0.12)) %>%
-  elco_new_elco(el_symbol = "C")
-x
-#> Element: C
-#> Units: [g/g]
-#> Errors: 0.20 0.12
-#> [1] 0.30 0.43
-```
-
-elco supports unit conversion (using the functions of the quantities
-package and molar masses from
+elco supports unit conversion (using the functions of the units package
+and molar masses from
 [PeriodicTable](https://github.com/cran/PeriodicTable)):
 
 ``` r
-# g/g to mol
-x %>% 
-  elco_elco_convert(to = "mol", 
-                    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0))
-#> Element: C
-#> Units: [mol]
-#> Errors: 0.016651819 0.009991091
-#> [1] 0.02497773 0.03580141
-
-# g/g to mg
-x %>% 
-  elco_elco_convert(to = "mg", 
-                    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0))
-#> Element: C
-#> Units: [mg]
-#> Errors: 200 120
-#> [1] 300 430
+# g_C/g_sample to mol_C/g_sample (umol_C/g_sample)
+units::set_units(d$C, value = "mol_C/g_sample", mode = "standard")
+#> Units: [mol_C/g_sample]
+#> Errors: 0 0 0 0 0
+#> [1] 5.919217 5.970389 6.267240 6.016036 6.024955
+units::set_units(d$C, value = "umol_C/g_sample", mode = "standard")
+#> Units: [umol_C/g_sample]
+#> Errors: 0 0 0 0 0
+#> [1] 5919217 5970389 6267240 6016036 6024955
 ```
 
-… even with complete data.frames!
+`elco_convert()` can be used to batch-convert units. This will convert
+the numerator of the unit while it keeps the denominator. For example,
+here we convert g_C/g_sample to mmol_C/g_sample (and similarly for all
+other elements in `d`):
 
 ``` r
 # g/g to mol
-d %>% elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass)
-#> # A tibble: 5 × 5
-#>             C           H           N           O sample_mass
-#>   (err) [mol] (err) [mol] (err) [mol] (err) [mol]  (err) [mg]
-#> 1 1.552(5)e-4  6.66(2)e-4 2.485(7)e-5  4.03(1)e-5     3.78(1)
-#> 2 1.578(5)e-4  6.40(2)e-4 2.509(8)e-5  3.91(1)e-5     3.81(1)
-#> 3 1.518(2)e-4 5.647(7)e-4 2.276(3)e-5 3.508(4)e-5    3.494(4)
-#> 4 1.773(1)e-4 6.927(5)e-4 2.707(2)e-5 4.397(3)e-5    4.251(3)
-#> 5 1.690(4)e-4  6.98(2)e-4 2.671(6)e-5 4.069(9)e-5    4.046(9)
+d %>% 
+  dplyr::mutate(
+    dplyr::across(
+      ! dplyr::all_of("sample_mass"), 
+      \(.x) elco_convert(.x, to = "mmol"))
+  )
+#>                               C                             H
+#> 1 5919.217(0) [mmol_C/g_sample] 178.8871(0) [mmol_H/g_sample]
+#> 2 5970.389(0) [mmol_C/g_sample] 170.5523(0) [mmol_H/g_sample]
+#> 3  6267.24(0) [mmol_C/g_sample] 164.1854(0) [mmol_H/g_sample]
+#> 4 6016.036(0) [mmol_C/g_sample] 165.5433(0) [mmol_H/g_sample]
+#> 5 6024.955(0) [mmol_C/g_sample] 175.2665(0) [mmol_H/g_sample]
+#>                               N                             O
+#> 1 1289.106(0) [mmol_N/g_sample] 2729.441(0) [mmol_O/g_sample]
+#> 2 1290.937(0) [mmol_N/g_sample] 2625.335(0) [mmol_O/g_sample]
+#> 3 1278.143(0) [mmol_N/g_sample] 2570.423(0) [mmol_O/g_sample]
+#> 4 1249.123(0) [mmol_N/g_sample] 2647.644(0) [mmol_O/g_sample]
+#> 5  1295.32(0) [mmol_N/g_sample] 2574.478(0) [mmol_O/g_sample]
+#>            sample_mass
+#> 1  3.78(1) [mg_sample]
+#> 2  3.81(1) [mg_sample]
+#> 3 3.494(4) [mg_sample]
+#> 4 4.251(3) [mg_sample]
+#> 5 4.046(9) [mg_sample]
 ```
 
 elco helps computing element ratios:
 
 ``` r
 d %>%
-  elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass) %>%
-  dplyr::mutate(cn_molar = C/N,
-                ch_molar = C/H,
-                co_molar = C/O)
-#> # A tibble: 5 × 8
-#>             C         H        N        O sample_mass cn_molar ch_molar co_molar
-#>   (err) [mol] (err) [m… (err) [… (err) […  (err) [mg] (err) [… (err) [… (err) […
-#> 1 1.552(5)e-4 6.66(2)e… 2.485(7… 4.03(1)…     3.78(1)  6.24(3) 0.233(1)  3.85(2)
-#> 2 1.578(5)e-4 6.40(2)e… 2.509(8… 3.91(1)…     3.81(1)  6.29(3) 0.247(1)  4.04(2)
-#> 3 1.518(2)e-4 5.647(7)… 2.276(3… 3.508(4…    3.494(4)  6.67(1) 0.2688(… 4.327(7)
-#> 4 1.773(1)e-4 6.927(5)… 2.707(2… 4.397(3…    4.251(3) 6.550(6) 0.2559(… 4.032(4)
-#> 5 1.690(4)e-4 6.98(2)e… 2.671(6… 4.069(9…    4.046(9)  6.33(2) 0.2421(…  4.15(1)
+  dplyr::mutate(
+    cn_molar = elco_convert(C, to = "mol") / elco_convert(N, to = "mol")
+  )
+#>                             C                           H
+#> 1 0.4928286(0) [g_C/g_sample]  0.177478(0) [g_H/g_sample]
+#> 2 0.4970892(0) [g_C/g_sample] 0.1692088(0) [g_H/g_sample]
+#> 3 0.5218047(0) [g_C/g_sample]  0.162892(0) [g_H/g_sample]
+#> 4 0.5008897(0) [g_C/g_sample] 0.1642393(0) [g_H/g_sample]
+#> 5 0.5016323(0) [g_C/g_sample] 0.1738859(0) [g_H/g_sample]
+#>                              N                           O          sample_mass
+#> 1 0.09203495(0) [g_N/g_sample] 0.1705965(0) [g_O/g_sample]  3.78(1) [mg_sample]
+#> 2 0.09216568(0) [g_N/g_sample] 0.1640896(0) [g_O/g_sample]  3.81(1) [mg_sample]
+#> 3 0.09125226(0) [g_N/g_sample] 0.1606575(0) [g_O/g_sample] 3.494(4) [mg_sample]
+#> 4 0.08918042(0) [g_N/g_sample]  0.165484(0) [g_O/g_sample] 4.251(3) [mg_sample]
+#> 5 0.09247861(0) [g_N/g_sample] 0.1609109(0) [g_O/g_sample] 4.046(9) [mg_sample]
+#>                    cn_molar
+#> 1 4.591723(0) [mol_C/mol_N]
+#> 2 4.624849(0) [mol_C/mol_N]
+#> 3 4.903395(0) [mol_C/mol_N]
+#> 4 4.816207(0) [mol_C/mol_N]
+#> 5 4.651325(0) [mol_C/mol_N]
 ```
 
 Finally, elco provides functions to compute the nominal oxidation state
@@ -175,34 +172,32 @@ of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)
 
 ``` r
 d <- 
-  d %>%
-  elco::elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass) %>%
+  d %>% 
   dplyr::mutate(
-    nosc = elco_nosc(C, H, N, O),
-    or = elco_or(C, H, N, O),
-    du = elco_du(C, H, N)
+    dplyr::across(
+      ! dplyr::all_of("sample_mass"),
+      function(.x) elco_convert(.x * sample_mass, to = "mol")
+    )
+  ) %>%
+  dplyr::mutate(
+    nosc = elco_nosc(C = C, H = H, N = N, O = O),
+    or = elco_or(C = C, H = H, N = N, O = O),
+    du = elco_du(C = C, H = H, N = N)
   )
 ```
 
 Further information can be found in the vignettes:
 
--   [Reformatting and checking raw data (csv files) from the X-ray
-    fluorescence device (ZSX Primus II, Rigaku)](vignettes/v001-xrf.Rmd)
-
--   [Importing and Manipulating IRMS
-    data](vignettes/v002-irms-functions.Rmd)
-
--   [Computation with element contents - unit conversion, element
-    ratios, nominal oxidation state of carbon, oxidative ratio, and
-    degree of unsaturation](vignettes/v004-element-ratios.Rmd)
+- [Importing and Manipulating IRMS
+  data](vignettes/v002-irms-functions.Rmd)
 
 ### How to cite
 
 Please cite this compendium as:
 
-> Teickner, H. and Knorr, K.-H., (2022). *elco: Handling data on
-> chemical element contents and isotope signatures.*. Accessed 28 Apr
-> 2022. Online at <https://github.com/henningte/elco>
+> Teickner, H. and Knorr, K.-H., (2023). *elco: Handling data on
+> chemical element contents and isotope signatures.*. Accessed 06 Sep
+> 2023. Online at <https://github.com/henningte/elco>
 
 ### Acknowledgments
 
@@ -240,9 +235,8 @@ All data for this package are from Gałka et al. (2019).
 <div id="ref-Coplen.2006" class="csl-entry">
 
 Coplen, Tyler B., Willi A. Brand, Matthias Gehre, Manfred Gröning, Harro
-A. J. Meijer, Blaza Toman, and R. Michael Verkouteren. 2006. “<span
-class="nocase">New guidelines for
-![\\delta^{13}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cdelta%5E%7B13%7D "\delta^{13}")C
+A. J. Meijer, Blaza Toman, and R. Michael Verkouteren. 2006.
+“<span class="nocase">New guidelines for $\delta^{13}$C
 measurements</span>.” *Analytical Chemistry* 78 (7): 2439–41.
 <https://doi.org/10.1021/ac052027c>.
 
@@ -250,9 +244,9 @@ measurements</span>.” *Analytical Chemistry* 78 (7): 2439–41.
 
 <div id="ref-Gaka.2019" class="csl-entry">
 
-Gałka, M., T. Broder, H. Teickner, and K.-H. Knorr. 2019. “<span
-class="nocase">Randomized dummy IRMS and XRF data for peat for the R
-package elco</span>.”
+Gałka, M., T. Broder, H. Teickner, and K.-H. Knorr. 2019.
+“<span class="nocase">Randomized dummy IRMS and XRF data for peat for
+the R package elco</span>.”
 
 </div>
 

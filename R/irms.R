@@ -55,7 +55,7 @@ elco_new_irms <- function(x) {
   x <- x[, target_variables] # sort columns
   target_variable_types <- c("integer", "integer", "character", "character", "quantities", "POSIXct",
                              "character", "numeric", "numeric", "numeric", "numeric", "numeric",
-                             "elco", "elco")
+                             "quantities", "quantities")
   x_variable_types <- purrr::map_chr(x, function(x) class(x)[[1]])
   cond <- !purrr::map2_lgl(x_variable_types, target_variable_types, identical)
   if(any(cond)) {
@@ -65,6 +65,8 @@ elco_new_irms <- function(x) {
       rlang::abort(paste0("Columns ", paste(colnames(x)[cond], collapse = ", ")," should be of class ", paste(target_variable_types[cond], collapse = ", "), ", but are of class ", paste(x_variable_types[cond], collapse = ", "),"."))
     }
   }
+  stopifnot(identical(units(as_units("g_C/g_sample")), units(x$C)))
+  stopifnot(identical(units(as_units("g_N/g_sample")), units(x$N)))
 
   structure(cbind(x, x_leftover), class = c("irms", class(x)))
 

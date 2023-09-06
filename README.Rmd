@@ -59,7 +59,6 @@ library(elco)
 
 # load other required packages
 library(dplyr)
-library(quantities)
 library(magrittr)
 ```
 
@@ -71,73 +70,60 @@ d <- elco::chno
 d
 ```
 
-Contents for one element are stored in a numeric vector. Measurement units and errors are tracked using the [quantities](https://github.com/r-quantities/quantities) package. elco adds to this an identifier for the element:
+Contents for one element are stored in a numeric vector. Measurement units and errors are tracked using the [quantities](https://github.com/r-quantities/quantities) package.
+
+elco supports unit conversion (using the functions of the units package and molar masses from [PeriodicTable](https://github.com/cran/PeriodicTable)):
 
 ```{r}
-# show exemplary structure for the C content
-d$C
+# g_C/g_sample to mol_C/g_sample (umol_C/g_sample)
+units::set_units(d$C, value = "mol_C/g_sample", mode = "standard")
+units::set_units(d$C, value = "umol_C/g_sample", mode = "standard")
 ```
 
-New elco objects can be defined with `elco_new_elco` (by providing a quantities object and an element symbol). For instance, this specifies two new C content values:
 
-```{r}
-x <- 
-  quantities::set_quantities(c(0.3, 0.43), unit = "g/g", errors = c(0.2, 0.12)) %>%
-  elco_new_elco(el_symbol = "C")
-x
-```
-
-elco supports unit conversion (using the functions of the quantities package and molar masses from [PeriodicTable](https://github.com/cran/PeriodicTable)):
+`elco_convert()` can be used to batch-convert units. This will convert the numerator of the unit while it keeps the denominator. For example, here we convert g_C/g_sample to mmol_C/g_sample (and similarly for all other elements in `d`):
 
 ```{r}
 # g/g to mol
-x %>% 
-  elco_elco_convert(to = "mol", 
-                    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0))
-
-# g/g to mg
-x %>% 
-  elco_elco_convert(to = "mg", 
-                    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0))
-```
-
-... even with complete data.frames!
-
-```{r}
-# g/g to mol
-d %>% elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass)
+d %>% 
+  dplyr::mutate(
+    dplyr::across(
+      ! dplyr::all_of("sample_mass"), 
+      \(.x) elco_convert(.x, to = "mmol"))
+  )
 ```
 
 elco helps computing element ratios:
 
 ```{r}
 d %>%
-  elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass) %>%
-  dplyr::mutate(cn_molar = C/N,
-                ch_molar = C/H,
-                co_molar = C/O)
+  dplyr::mutate(
+    cn_molar = elco_convert(C, to = "mol") / elco_convert(N, to = "mol")
+  )
 ```
 
 Finally, elco provides functions to compute the nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU) [@Worrall.2016b; @Masiello.2008]
 
 ```{r}
 d <- 
-  d %>%
-  elco::elco_elco_convert_df(to = "mol", sample_mass = d$sample_mass) %>%
+  d %>% 
   dplyr::mutate(
-    nosc = elco_nosc(C, H, N, O),
-    or = elco_or(C, H, N, O),
-    du = elco_du(C, H, N)
+    dplyr::across(
+      ! dplyr::all_of("sample_mass"),
+      function(.x) elco_convert(.x * sample_mass, to = "mol")
+    )
+  ) %>%
+  dplyr::mutate(
+    nosc = elco_nosc(C = C, H = H, N = N, O = O),
+    or = elco_or(C = C, H = H, N = N, O = O),
+    du = elco_du(C = C, H = H, N = N)
   )
 ```
 
 Further information can be found in the vignettes:
 
-+ [Reformatting and checking raw data (csv files) from the X-ray fluorescence device (ZSX Primus II, Rigaku)](vignettes/v001-xrf.Rmd)
-
 + [Importing and Manipulating IRMS data](vignettes/v002-irms-functions.Rmd)
 
-+ [Computation with element contents - unit conversion, element ratios, nominal oxidation state of carbon, oxidative ratio, and degree of unsaturation](vignettes/v004-element-ratios.Rmd)
 
 ### How to cite
 

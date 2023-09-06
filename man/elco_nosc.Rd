@@ -6,20 +6,20 @@
 \alias{elco_du}
 \title{Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation}
 \usage{
-elco_nosc(c, h, n, o)
+elco_nosc(C, H, N, O)
 
-elco_or(c, h, n, o)
+elco_or(C, H, N, O)
 
-elco_du(c, h, n)
+elco_du(C, H, N)
 }
 \arguments{
-\item{c}{An object of class \code{elco} with the amount of C [mol].}
+\item{C}{A quantities object [mol_C].}
 
-\item{h}{An object of class \code{elco} with the amount of H [mol].}
+\item{H}{A quantities object [mol_H].}
 
-\item{n}{An object of class \code{elco} with the amount of N [mol].}
+\item{N}{A quantities object [mol_N].}
 
-\item{o}{An object of class \code{elco} with the amount of O [mol].}
+\item{O}{A quantities object [mol_O].}
 }
 \value{
 \itemize{
@@ -39,7 +39,7 @@ of unsaturation.
 }
 \description{
 Functions to compute the carbon oxidation state, carbon oxidative ratio, and
-degree of unsaturation with objects of class \code{\link[=elco_new_elco]{elco}}.
+degree of unsaturation with \code{\link[quantities:quantities]{quantities}} objects.
 }
 \section{Functions}{
 \itemize{
@@ -54,28 +54,26 @@ of unsaturation using the elemental composition of C, H, N.
 
 }}
 \examples{
+# sample data with elemental contents in mol
+d <-
+  elco::chno \%>\%
+  dplyr::mutate(
+    dplyr::across(
+      ! dplyr::all_of("sample_mass"),
+      function(.x) elco_convert(.x * sample_mass, to = "mol")
+    )
+  )
+
 ## NOSC
-elco::chno \%>\%
-  elco::elco_elco_convert_df(
-    to = "mol",
-    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
-  ) \%>\%
-  dplyr::mutate(nosc = elco_nosc(c = C, h = H, n = N, o = O))
+d \%>\%
+  dplyr::mutate(nosc = elco_nosc(C = C, H = H, N = N, O = O))
 
 ## oxidative ratio
-elco::chno \%>\%
-  elco::elco_elco_convert_df(
-    to = "mol",
-    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
-  ) \%>\%
-  dplyr::mutate(or = elco_or(c = C, h = H, n = N, o = O))
+d \%>\%
+  dplyr::mutate(or = elco_or(C = C, H = H, N = N, O = O))
 
 ## degree of unsaturation
-elco::chno \%>\%
-  elco::elco_elco_convert_df(
-    to = "mol",
-    sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
-  ) \%>\%
-  dplyr::mutate(du = elco_du(c = C, h = H, n = N))
+d \%>\%
+  dplyr::mutate(du = elco_du(C = C, H = H, N = N))
 
 }

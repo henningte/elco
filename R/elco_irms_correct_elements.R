@@ -134,7 +134,7 @@ elco_irms_correct_elements <- function(x,
     purrr::map(x_standards, function(.x) {
       .x %>%
         dplyr::mutate(
-          element_m_abs = element_m * errors::drop_errors(.data$sample_mass)
+          element_m_abs = .data$element_m * .data$sample_mass
         )
     })
 
@@ -151,15 +151,14 @@ elco_irms_correct_elements <- function(x,
       res <- as.data.frame(predict(z, newdata = y, se.fit = TRUE, type = "response"))
       res$se_pi <- sqrt(res$se.fit^2 + res$residual.scale^2)
       res <-
-        elco_new_elco(
           quantities::set_quantities(
-            res$fit/as.numeric(y$sample_mass),
-            unit = units(y[, element, drop = TRUE]),
-            errors = res$se_pi/as.numeric(y$sample_mass),
+            res$fit,
+            unit = units(y[, element, drop = TRUE])$numerator,
+            errors = res$se_pi,
             mode = "standard"
-          ),
-          el_symbol = element
-        )
+          ) %>%
+        magrittr::divide_by(y$sample_mass) %>%
+        units::set_units(as.character(units(y[, element, drop = TRUE])), mode = "standard")
 
       switch(
         element,
@@ -256,7 +255,7 @@ elco_irms_correct_elements <- function(x,
           data = y,
           mapping =
             ggplot2::aes(
-              y = as.numeric(.data$element_m_abs),
+              y = .data$element_m_abs,
               x = !!delement_area
             ),
           formula = y ~ x, method = "lm", se = FALSE, colour = "dimgrey"
@@ -264,21 +263,21 @@ elco_irms_correct_elements <- function(x,
         ggplot2::geom_point(
           data = y,
           mapping = ggplot2::aes(
-            y = as.numeric(.data$element_m_abs),
+            y = .data$element_m_abs,
             x = !!delement_area,
             color = .data$sample_label
           )
         ) +
         ggplot2::geom_rug(
-          data = x[x_or[[i]]$is_standard == "Sample" & x$file_id == y$file_id[[1]], ],
+          data = x_or[[i]][x_or[[i]]$is_standard == "Sample", ],
           mapping = ggplot2::aes(
-            y = as.numeric(.data$C)/as.numeric(.data$sample_mass),
+            y = y$element_m_abs[[1]],
             x = !!delement_area
           ),
           sides="b"
         ) +
         ggplot2::labs(
-          y = paste0("Absolute ", element, " mass [mg]"),
+          y = paste0("Absolute ", element, " mass"),
           x = "Signal area",
           title = paste0("Element: ", element,", File: ", y$file_id[[1]])
         ) +

@@ -13,15 +13,23 @@ chno <-
   )
 
 # convert to class elco
-chno <- purrr::map_df(chno, quantities::set_quantities, unit = "g/g", errors = 0)
-chno <- purrr::map2_df(chno, colnames(chno), function(x, y) elco::elco_new_elco(x, el_symbol = y))
+chno <-
+  chno %>%
+  dplyr::mutate(
+    dplyr::across(
+      dplyr::everything(),
+      function(.x) {
+        quantities::set_quantities(.x, unit = paste0("g_", dplyr::cur_column(), "/g_sample"), errors = 0, mode = "standard")
+      }
+    )
+  )
 
 # add sample mass
 chno <-
   dplyr::mutate(chno,
                 sample_mass = quantities::set_quantities(
                   rnorm(no, mean = 4, sd = 0.3),
-                  unit = "mg",
+                  unit = "mg_sample",
                   errors = rnorm(no, mean = 0, sd = 0.01)
                   )
                 )

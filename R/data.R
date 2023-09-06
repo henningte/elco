@@ -54,37 +54,24 @@
 #'
 "chno"
 
-#' Correction factors for XRF element contents for samples with differing masses
+#' Custom units defined by the 'elco' package
 #'
-#' A `data.frame` with chemical element-specific heuristic correction factors
-#' for XRF element contents (relative to a reference mass of 500 mg) measured
-#' with masses smaller than the reference mass.
+#' A data frame listing the custom units defined by the 'elco' package
 #'
-#' @note This is only a sample data frame which may not be suitable to correct
-#' a specific measured data set.
-#'
-#' @format A data frame with 60 rows and 3 columns:
+#' @format A data frame with 117 rows and 6 columns:
 #' \describe{
-#'   \item{el_symbol}{A character vector with the symbols of chemical elements
-#'     for which correction factors were computed.}
-#'   \item{sample_mass}{A character vector with discrete sample mass values
-#'     \[mg\] for which the correction factors were computed.}
-#'   \item{correction_factor}{A `quantities` vector with the mean, standard
-#'     deviation, and unit for each correction factor. See
-#'     [elco::elco_xrf_correct_elements()]} for how these values are used.
+#'   \item{thing}{A character value defining the chemical element or other
+#'   entity for which a unit is defined.}
+#'   \item{mol}{A character value defining the unit for molar amount of the
+#'   entity. This is `NA` if no such unit is defined.}
+#'   \item{mol_names}{A character value defining the unit names corresponding to
+#'   column `mol`.}
+#'   \item{g}{A character value defining the unit for mass of the
+#'   entity. This is `NA` if no such unit is defined.}
+#'   \item{g_names}{A character value defining the unit names corresponding to
+#'   column `g`.}
+#'   \item{g_to_mol}{A character value defining the conversion constants between
+#'   the mol and g units.}
 #' }
 #'
-"xrf_calibration"
-
-#' Allowed units for `elco` objects
-#'
-#' A data frame listing allowed units for `elco` objects.
-#'
-#' @format A data frame with 96 rows and 2 columns:
-#' \describe{
-#'   \item{type}{A character value classifying measurement units by their
-#'     nominator and denominator.}
-#'   \item{unit_symbol}{A character value representing a measurement unit.}
-#' }
-#'
-"el_units_allowed"
+"elco_units"

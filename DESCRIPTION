@@ -1,6 +1,6 @@
 Package: elco
 Title: Handling Data on Chemical Element Contents and Isotope signatures
-Version: 0.0.0.9000
+Version: 0.1.0.9000
 Authors@R: c(
     person(given = "Henning",
            family = "Teickner",
@@ -30,11 +30,8 @@ Imports:
     rlang,
     dplyr,
     purrr,
-    tidyr,
     lubridate,
     data.table,
-    PeriodicTable,
-    vctrs,
     Rdpack,
     magrittr,
     lifecycle,
@@ -48,7 +45,7 @@ Suggests:
     tibble
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10),
+    R (>= 4.3.0),
     quantities,
     errors,
     units

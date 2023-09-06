@@ -15,10 +15,8 @@ with XRF raw data as exported by the vendor software of the XRF spectrometer
 contents intensities of peaks should be extracted (\code{TRUE}) or not (\code{FALSE}).}
 }
 \value{
-\describe{
-\item{If \code{use_intensities} is \code{FALSE}}{An object of class \code{\link[=elco_new_xrf]{xrf}}.}
-\item{If \code{use_intensities} is \code{TRUE}}{A data frame with the extracted intensities.}
-}
+A data frame with the extracted elemental contents (if
+\code{use_intensities = FALSE}) or intensities (if \code{use_intensities = TRUE}).
 }
 \description{
 \code{elco_xrf_import_csv} reads one or more csv files that contain raw X-ray

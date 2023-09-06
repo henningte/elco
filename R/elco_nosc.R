@@ -1,37 +1,48 @@
 #' Carbon oxidation state, carbon oxidative ratio, and degree of unsaturation
 #'
 #' Functions to compute the carbon oxidation state, carbon oxidative ratio, and
-#' degree of unsaturation with objects of class [`elco`][elco::elco_new_elco].
+#' degree of unsaturation with [`quantities`][quantities::quantities] objects.
 #'
 #' @describeIn elco_nosc Computes the carbon oxidation
 #' state using the elemental composition of C, H, N, O.
 #'
-#' @param c An object of class `elco` with the amount of C \[mol\].
+#' @param C A quantities object \[mol_C\].
 #'
-#' @param h An object of class `elco` with the amount of H \[mol\].
+#' @param H A quantities object \[mol_H\].
 #'
-#' @param n An object of class `elco` with the amount of N \[mol\].
+#' @param N A quantities object \[mol_N\].
 #'
-#' @param o An object of class `elco` with the amount of O \[mol\].
+#' @param O A quantities object \[mol_O\].
 #'
 #' @return
 #' - `elco_nosc`: A [`quantities`][quantities::quantities] object with the carbon
 #' oxidation state.
 #'
 #' @examples
+#' # sample data with elemental contents in mol
+#' d <-
+#'   elco::chno %>%
+#'   dplyr::mutate(
+#'     dplyr::across(
+#'       ! dplyr::all_of("sample_mass"),
+#'       function(.x) elco_convert(.x * sample_mass, to = "mol")
+#'     )
+#'   )
+#'
 #' ## NOSC
-#' elco::chno %>%
-#'   elco::elco_elco_convert_df(
-#'     to = "mol",
-#'     sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
-#'   ) %>%
-#'   dplyr::mutate(nosc = elco_nosc(c = C, h = H, n = N, o = O))
+#' d %>%
+#'   dplyr::mutate(nosc = elco_nosc(C = C, H = H, N = N, O = O))
 #'
 #' @export
-elco_nosc <- function(c, h, n, o) {
+elco_nosc <- function(C, H, N, O) {
 
-  .elco_chno_check(c = c, h = h, n = n, o = o)
-  (quantities::set_quantities(2, unit = "1", errors = 0) * elco_drop_elco(o) - elco_drop_elco(h) + quantities::set_quantities(3, unit = "1", errors = 0) * elco_drop_elco(n))/elco_drop_elco(c)
+  elements <-
+    list(C = C, H = H, N = N, O = O) %>%
+    purrr::map(elco_convert, to = "mol") %>%
+    purrr::map(units::drop_units) %>%
+    purrr::map(units::set_units, value = "mol", mode = "standard")
+
+  (quantities::set_quantities(2, unit = "1", errors = 0) * elements$O - elements$H + quantities::set_quantities(3, unit = "1", errors = 0) * elements$N)/elements$C
 
 }
 
@@ -47,18 +58,21 @@ elco_nosc <- function(c, h, n, o) {
 #'
 #' @examples
 #' ## oxidative ratio
-#' elco::chno %>%
-#'   elco::elco_elco_convert_df(
-#'     to = "mol",
-#'     sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
-#'   ) %>%
-#'   dplyr::mutate(or = elco_or(c = C, h = H, n = N, o = O))
+#' d %>%
+#'   dplyr::mutate(or = elco_or(C = C, H = H, N = N, O = O))
 #'
 #' @export
-elco_or <- function(c, h, n, o) {
+elco_or <- function(C, H, N, O) {
 
-  nosc <- elco_nosc(c = c, h = h, n = n, o = o)
-  nosc/quantities::set_quantities(4, unit = "1", errors = 0) + (quantities::set_quantities(3, unit = "1", errors = 0) * elco_drop_elco(n))/(quantities::set_quantities(4, unit = "1", errors = 0) * elco_drop_elco(c))
+  nosc <- elco_nosc(C = C, H = H, N = N, O = O)
+
+  elements <-
+    list(C = C, H = H, N = N, O = O) %>%
+    purrr::map(elco_convert, to = "mol") %>%
+    purrr::map(units::drop_units) %>%
+    purrr::map(units::set_units, value = "mol", mode = "standard")
+
+  nosc/quantities::set_quantities(4, unit = "1", errors = 0) + (quantities::set_quantities(3, unit = "1", errors = 0) * elements$N)/(quantities::set_quantities(4, unit = "1", errors = 0) * elements$C)
 
 }
 
@@ -73,58 +87,18 @@ elco_or <- function(c, h, n, o) {
 #'
 #' @examples
 #' ## degree of unsaturation
-#' elco::chno %>%
-#'   elco::elco_elco_convert_df(
-#'     to = "mol",
-#'     sample_mass = quantities::set_quantities(1, unit = "g", errors = 0)
-#'   ) %>%
-#'   dplyr::mutate(du = elco_du(c = C, h = H, n = N))
+#' d %>%
+#'   dplyr::mutate(du = elco_du(C = C, H = H, N = N))
 #'
 #' @export
-elco_du <- function(c, h, n) {
+elco_du <- function(C, H, N) {
 
-  .elco_chno_check(c = c, h = h, n = n, o = NULL)
-  elco_drop_elco(c) - elco_drop_elco(h)/quantities::set_quantities(2, unit = "1", errors = 0) - elco_drop_elco(n)/quantities::set_quantities(2, unit = "1", errors = 0) + quantities::set_quantities(1, unit = "mol", errors = 0)
+  elements <-
+    list(C = C, H = H, N = N) %>%
+    purrr::map(elco_convert, to = "mol") %>%
+    purrr::map(units::drop_units) %>%
+    purrr::map(units::set_units, value = "mol", mode = "standard")
 
-}
+  elements$C - elements$H/quantities::set_quantities(2, unit = "1", errors = 0) - elements$N/quantities::set_quantities(2, unit = "1", errors = 0) + quantities::set_quantities(1, unit = "mol", errors = 0)
 
-#' helper function to check inputs
-#'
-#' @keywords internal
-#' @noRd
-#'
-.elco_chno_check <- function(c = NULL, h = NULL, n = NULL, o = NULL) {
-  l <- list(c = c, h = h, n = n, o = o)
-  l <- l[!purrr::map_lgl(l, is.null)]
-  l_lengths <- purrr::map_dbl(l, length)
-  cond <- length(unique(l_lengths))
-  if(cond > 1) {
-    rlang::abort("All, c, h, n, o, must have the same length.")
-  }
-  cond <- purrr::map_lgl(l, elco_check_elco)
-  if(!all(cond)) {
-    rlang::abort("All, c, h, n, o, must be of class elco.")
-  }
-  l_element_symbols <- purrr::map_chr(l, attr, "el_symbol")
-  cond <- !purrr::map2_lgl(l_element_symbols, names(l), function(x, y) {
-    x == toupper(y)
-  })
-  if(any(cond)) {
-    if(sum(cond) == 1) {
-      rlang::abort(paste0("`", names(l)[cond], "` does not match the element symbol given in the elco object which is ", l_element_symbols[cond], "."))
-    } else {
-      rlang::abort(paste0(paste(paste0("`", names(l)[cond], "`"), collapse = ", "), " do not match the element symbols given in the elco object which are ", paste(l_element_symbols[cond], collapse = ", "), "."))
-    }
-  }
-  cond <- !purrr::map_lgl(l, function(x) stringr::str_detect(units::deparse_unit(x), pattern = "mol"))
-  if(any(cond)) {
-    if(sum(cond) == 1) {
-      rlang::abort(paste0("All, c, h, n, o, must have unit 'mol' or any derivative of it. ", names(l)[cond], " does not have unit 'mol'."))
-    } else {
-      rlang::abort(paste0("All, c, h, n, o, must have unit 'mol' or any derivative of it. ", paste(names(l)[cond], collapse = ", "), " do not have unit 'mol'."))
-    }
-
-  }
-
-  TRUE
 }
