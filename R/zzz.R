@@ -28,7 +28,7 @@
 }
 
 
-.onUnLoad <- function(libname, pkgname) {
+.onUnload <- function(libname, pkgname) {
 
   # remove custom units
   utils::data("elco_units", package = "elco")
