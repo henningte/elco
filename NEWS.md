@@ -1,7 +1,7 @@
 # elco 0.1.0.9000
 
 This version introduces major changes which break past code:
-* The `elco` class is deprecated. Instead, the 'elco' package defines custom units via the 'units' package to differentiate between masses and amounts of chemical elements.
+* The `elco` class is deprecated. Instead, the 'elco' package defines custom units via the 'units' package to differentiate between masses and amounts of chemical elements. These custom units may be changed into the corresponding generic units with `elco_make_units_generic()`.
 * The `xrf` class is deprecated. `elco_xrf_import_csv()` now returns a data frame. This was done because there are not yet any methods for this type of data which would warrant introducing a new class.
 * `elco_nosc()`, `elco_du()`, `elco_or()` now use capital letters as arguments for chemical elements.
 * `elco_convert()` replaces `elco_elco_convert()` and there is no `elco_elco_convert_df()` function any more. Instead, you can use `elco_convert()`.
