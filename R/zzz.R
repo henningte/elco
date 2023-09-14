@@ -1,7 +1,8 @@
 .onLoad <- function(libname, pkgname) {
 
   ## install custom units for chemical elements and their conversion constants
-  utils::data("elco_units", package = "elco")
+  elco_units <- NULL
+  utils::data("elco_units", package = "elco", envir = environment())
 
   # install units
   for(i in seq_len(nrow(elco_units))) {
@@ -31,7 +32,8 @@
 .onUnload <- function(libname, pkgname) {
 
   # remove custom units
-  utils::data("elco_units", package = "elco")
+  elco_units <- NULL
+  utils::data("elco_units", package = "elco", envir = environment())
   for(i in seq_len(nrow(elco_units))) {
     units::remove_unit(symbol = elco_units$mol[[i]])
     units::remove_unit(symbol = elco_units$g[[i]])

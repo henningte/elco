@@ -6,6 +6,11 @@
 #' reformatting columns and rows, deleting unneeded columns and rows (summary
 #' statistics), adding units, and renaming columns.
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' @keywords internal
+#'
 #' @param files A vector of character values representing paths to csv files
 #' with XRF raw data as exported by the vendor software of the XRF spectrometer
 #' (ZSX Primus II, Rigaku).
@@ -18,6 +23,8 @@
 #'
 #' @export
 elco_xrf_import_csv <- function(files, use_intensities = FALSE) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_xrf_import_csv()", "iloekxrf::xrf_import_csv()")
 
   # checks
   if(!is.character(files)) {

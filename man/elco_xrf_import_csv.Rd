@@ -19,9 +19,13 @@ A data frame with the extracted elemental contents (if
 \code{use_intensities = FALSE}) or intensities (if \code{use_intensities = TRUE}).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 \code{elco_xrf_import_csv} reads one or more csv files that contain raw X-ray
 fluorescence (XRF) data as exported by the vendor software of the XRF
 spectrometer (ZSX Primus II, Rigaku) and tidies the data. This includes
 reformatting columns and rows, deleting unneeded columns and rows (summary
 statistics), adding units, and renaming columns.
 }
+\keyword{internal}

@@ -28,7 +28,8 @@
 elco_make_units_generic <- function(x) {
 
   stopifnot(inherits(x, "units"))
-  utils::data("elco_units", package = "elco")
+  elco_units <- NULL
+  utils::data("elco_units", package = "elco", envir = environment())
   allowed_prefixes <- c(units::valid_udunits_prefixes(quiet = TRUE)$symbol, "")
   allowed_prefixes_pattern <- paste0("^", allowed_prefixes)
 
