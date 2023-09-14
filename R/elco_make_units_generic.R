@@ -29,7 +29,7 @@ elco_make_units_generic <- function(x) {
 
   stopifnot(inherits(x, "units"))
   utils::data("elco_units", package = "elco")
-  allowed_prefixes <- c(units::valid_udunits_prefixes()$symbol, "")
+  allowed_prefixes <- c(units::valid_udunits_prefixes(quiet = TRUE)$symbol, "")
   allowed_prefixes_pattern <- paste0("^", allowed_prefixes)
 
   elco_convert_unit_to_generic <-
@@ -70,7 +70,13 @@ elco_make_units_generic <- function(x) {
         unlist()
     ) |>
     paste(collapse = " * ")
+  conversion_factor <- units::set_units(1, value = x_conversion_units, mode = "standard")
 
-   x * units::set_units(1, value = x_conversion_units, mode = "standard")
+  if(inherits(x, "quantities")) {
+    conversion_factor <- errors::set_errors(conversion_factor, value = 0)
+  }
+
+
+  x * conversion_factor
 
 }
