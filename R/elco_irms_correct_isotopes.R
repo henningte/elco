@@ -22,6 +22,11 @@
 #'   correction procedure.
 #' }
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @param x An object of class [`irms()`][elco::elco_new_irms].
 #'
 #' @param isotope A character value representing the isotope for which to
@@ -63,6 +68,8 @@ elco_irms_correct_isotopes <- function(x,
                                        t = 5,
                                        by_file = TRUE,
                                        plotit = FALSE) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_irms_correct_isotopes()", "iloekirms::irms_correct_isotopes()")
 
   # checks
   elco_check_irms(x)

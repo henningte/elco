@@ -24,6 +24,11 @@
 #'   the measured data for the standards.
 #' }
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @param x An object of class [`irms()`][elco::elco_new_irms].
 #'
 #' @param irms_standards_to_use A `data.frame` with the same format as
@@ -55,6 +60,8 @@ elco_irms_correct_elements <- function(x,
                                        standards = irms_standards$standard_name,
                                        by_file = TRUE,
                                        plotit = FALSE) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_irms_correct_elements()", "iloekirms::irms_correct_elements()")
 
   # checks
   elco_check_irms(x)

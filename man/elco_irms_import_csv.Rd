@@ -14,8 +14,12 @@ by the vendor software of the IRMS.}
 An object of class \code{\link[=elco_new_irms]{irms}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
+\details{
 \code{elco_irms_import_csv} reads one or more csv files that contain raw element analyzer isotope ratio mass spectrometry
 (EA-IRMS) data as exported by the vendor software of the IRMS spectrometer and tidies the
 data. This includes reformatting columns and rows, deleting unneeded columns and rows,
 adding units, and renaming columns.
 }
+\keyword{internal}

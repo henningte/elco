@@ -3,6 +3,11 @@
 #' `elco_irms_extract_standards` takes an object of class `irms_std` and extracts all rows
 #' referring to standards in `irms_standards`.
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @param x An object of class [`irms_std`][elco::elco_new_irms_std].
 #' @param file A character value representing a path to an existing rds file with
 #' an object of class [`irms_std`][elco::elco_new_irms_std] or to such a file
@@ -18,6 +23,8 @@ elco_irms_write_standards <- function(x,
                                       file,
                                       initialize = FALSE,
                                       verbose = FALSE) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_irms_write_standards()", "iloekirms::irms_write_standards()")
 
   # checks
   elco_check_irms_std(x)

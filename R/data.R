@@ -3,6 +3,9 @@
 #' A `data.frame` with names, C and N contents and \eqn{^{13}}C and
 #' \eqn{^{15}}N \eqn{\delta\text{\textperthousand}} of IRMS standards.
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' @source
 #' \describe{
 #'   \item{IAEA 600}{\insertRef{Coplen.2006}{elco}}

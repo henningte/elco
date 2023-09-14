@@ -6,6 +6,11 @@
 #' contains only measurements on standards. Objects of class `irms` are intended to be created
 #' only internally.
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @inheritParams elco_irms_correct_isotopes
 #'
 #' @param x A `data.frame` with a row for each measured sample or standard and the
@@ -39,6 +44,8 @@
 #' an additional class attribute.
 elco_new_irms_std <- function(x, irms_standards_to_use = elco::irms_standards) {
 
+  lifecycle::deprecate_warn("0.1.0", "elco_new_irms_std()", "iloekirms::irms_new_irms_std()")
+
   # checks
   elco_check_irms(x)
 
@@ -56,6 +63,9 @@ elco_new_irms_std <- function(x, irms_standards_to_use = elco::irms_standards) {
 #' Checks if an object is of class `irms_std`.
 #'
 #' `elco_check_irms_std` checks if an object is of class [`irms_std()`][elco::elco_new_irms_std].
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
 #'
 #' @param x An object.
 #' @return An object of class [`irms_std()`][elco::elco_new_irms_std].

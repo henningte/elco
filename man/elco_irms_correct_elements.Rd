@@ -40,6 +40,9 @@ printed (\code{TRUE}) or not (\code{FALSE}).}
 \code{x} with corrected element content.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
+\details{
 \code{elco_irms_correct_elements} is a heuristic function to correct measured element contents of samples
 during IRMS analysis. Correction can be performed for either C or N and, if multiple
 files are batch-processed, using either standards from all files or only from the file where the respective
@@ -64,3 +67,4 @@ areas with the regression line. These plot can be used to assess if the regressi
 the measured data for the standards.
 }
 }
+\keyword{internal}

@@ -13,6 +13,9 @@ elco_check_irms_std(x)
 An object of class \code{\link[=elco_new_irms_std]{irms_std()}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
+\details{
 \code{elco_check_irms_std} checks if an object is of class \code{\link[=elco_new_irms_std]{irms_std()}}.
 }
 \keyword{internal}

@@ -42,6 +42,9 @@ measurements.}
 irms_standards
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 A \code{data.frame} with names, C and N contents and \eqn{^{13}}C and
 \eqn{^{15}}N \eqn{\delta\text{\textperthousand}} of IRMS standards.
 }

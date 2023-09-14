@@ -5,11 +5,18 @@
 #' data. This includes reformatting columns and rows, deleting unneeded columns and rows,
 #' adding units, and renaming columns.
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @param files A vector of character values representing paths to csv files with EA-IRMS raw data as exported
 #' by the vendor software of the IRMS.
 #' @return An object of class [`irms`][elco::elco_new_irms].
 #' @export
 elco_irms_import_csv <- function(files) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_irms_import_csv()", "iloekirms::irms_import_csv()")
 
   # checks
   if(!is.character(files)) {

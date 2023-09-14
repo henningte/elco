@@ -3,6 +3,11 @@
 #' `elco_irms_extract_standards` takes an object of class `irms` and extracts
 #' all rows referring to standards in `irms_standards`.
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @inheritParams elco_irms_correct_isotopes
 #'
 #' @param x An object of class [`irms`][elco::elco_new_irms]
@@ -13,6 +18,8 @@
 #'
 #' @export
 elco_irms_extract_standards <- function(x, irms_standards_to_use = elco::irms_standards) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_irms_extract_standards()", "iloekirms::irms_extract_standards()")
 
   # checks
   elco_check_irms(x)
@@ -40,6 +47,9 @@ elco_irms_extract_standards <- function(x, irms_standards_to_use = elco::irms_st
 #'
 #' `elco_irms_check_standards` takes an object of class `irms` and checks if it
 #' has only rows referring to standards in `irms_standards`.
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
 #'
 #' @param x An object of class [`irms`][elco::elco_new_irms]
 #'

@@ -7,6 +7,11 @@
 #' element contents. Objects of class `irms` are intended to be created
 #' only internally.
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @keywords internal
+#'
 #' @param x A `data.frame` with a row for each measured sample or standard and the
 #' following columns:
 #' \describe{
@@ -37,6 +42,8 @@
 #' @return An object of class `irms`. This is identical to `x`, but has
 #' an additional class attribute.
 elco_new_irms <- function(x) {
+
+  lifecycle::deprecate_warn("0.1.0", "elco_new_irms()", "iloekirms::irms_new_irms()")
 
   # checks
   target_variables <- c("file_id", "measurement_id", "measurement_type", "sample_label",
@@ -75,6 +82,9 @@ elco_new_irms <- function(x) {
 #' Checks if an object is of class `irms`.
 #'
 #' `elco_check_irms` checks if an object is of class [`irms()`][elco::elco_new_irms].
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
 #'
 #' @param x An object.
 #' @return An object of class [`irms()`][elco::elco_new_irms].

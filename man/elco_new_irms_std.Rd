@@ -44,9 +44,13 @@ An object of class \code{irms_std}. This is identical to \code{x}, but has
 an additional class attribute.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
+\details{
 \code{elco_new_irms_std} is the internal constructor function for objects of class
 \code{irms_std}.
 An object of class \code{irms} is an object of class \code{\link[=elco_new_irms]{irms}}, but
 contains only measurements on standards. Objects of class \code{irms} are intended to be created
 only internally.
 }
+\keyword{internal}

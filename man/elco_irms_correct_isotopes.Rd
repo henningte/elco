@@ -49,6 +49,9 @@ individually for each file (\code{TRUE}).}
 (\code{FALSE}).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
+\details{
 \code{elco_irms_correct_isotopes} is a heuristic function to correct measured isotope signatures of samples
 during IRMS analysis. Correction can be performed for either \eqn{^{13}}C or \eqn{^{13}}N and, if multiple
 files are batch-processed, using either standards from all files or only from the file where the respective
@@ -71,3 +74,4 @@ standards along their known reference values. This plot may be used as a visual 
 correction procedure.
 }
 }
+\keyword{internal}

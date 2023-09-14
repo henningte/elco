@@ -40,6 +40,9 @@ An object of class \code{irms}. This is identical to \code{x}, but has
 an additional class attribute.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
+\details{
 \code{elco_new_irms} is the internal constructor function for objects of class
 \code{irms}.
 An object of class \code{irms} is a \code{\link[tibble:tibble]{tibble::tibble()}} with a
@@ -47,3 +50,4 @@ sample in each row and a prescribed set of columns for metadata and
 element contents. Objects of class \code{irms} are intended to be created
 only internally.
 }
+\keyword{internal}
