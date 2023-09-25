@@ -23,27 +23,19 @@ Title <- "Title of your paper goes here"
 
 ## Overview
 
-'elco' provides functions to handle and (rudimentary) analyze element content data and isotope signature data. Features are:
+'elco' extends the ['units'](https://r-quantities.github.io/units/) R package with measurement units specific for chemical elements. This allows to consider the identity of chemical elements in calculations with measurement units. 
 
-1. **Import of XRF and IRMS data** as they can be exported from X-ray fluorescence spectrometers (Rigaku ZSX Primus II) and EA-IRMS devices (HEKATech's Eurovector
-EA3000 coupled with Nu Instruments Nu Horizon).
+'elco' defines units such as g$_\text{C}$ (grams of carbon) and helps to avoid erroneous calculations, such as $\frac{1~\text{g}_\text{C}  \cdot \text{mol}_\text{N}}{`r PeriodicTable::mass("N")`~\text{g}_\text{N}} = `r round(1/PeriodicTable::mass("N"), 2)`~\text{mol}_\text{C}$. 
 
-2. Graphical display for easy **data checking**.
+In addition, 'elco' provides the following functions: 
 
-3. **Correction of IRMS-measured element content data and isotope signatures** in cases of a mismatch in the signal areas between samples and standards.
-
-4. **Unit conversion** of element content data (e.g. g/g to mol).
-
-5. Computation of the **nominal oxidation state of carbon (NOSC), oxidative ratio (OR), and degree of unsaturation (DU)** [@Worrall.2016b; @Masiello.2008].
-
-```{r, out.width="50%", fig.align='center', echo=FALSE}
-knitr::include_graphics("man/figures/elco-features.svg")
-```
+1. `elco_convert()`: batch-conversion of elemental contents in data frames (e.g. from g to mol). 
+2. `elco_nosc()`, `elco_or()`, `elco_du()`: Compute the nominal oxidation state of carbon, oxidative ratio, and degree of unsaturation, respectively (see e.g., @Worrall.2016b, @Masiello.2008).
 
 
 ### How to install
 
-elco can be installed from GitHub:
+'elco' can be installed from GitHub:
 
 ```{r, eval = FALSE}
 remotes::install_github("henningte/elco")
@@ -52,7 +44,7 @@ remotes::install_github("henningte/elco")
 
 ### How to use
 
-Here is a short overview on elco general-purpose capabilities (handling element content ratios). Examples of how to import and correct data are not described here, but in the vignettes.
+Here is a quick overview on how 'elco' helps with computing elemental ratios.
 
 ```{r, mesage = FALSE, warning=FALSE}
 library(elco)
@@ -72,7 +64,7 @@ d
 
 Contents for one element are stored in a numeric vector. Measurement units and errors are tracked using the [quantities](https://github.com/r-quantities/quantities) package.
 
-elco supports unit conversion (using the functions of the units package and molar masses from [PeriodicTable](https://github.com/cran/PeriodicTable)):
+elco supports unit conversion (using the functions of the units package):
 
 ```{r}
 # g_C/g_sample to mol_C/g_sample (umol_C/g_sample)
@@ -120,20 +112,12 @@ d <-
   )
 ```
 
-Further information can be found in the vignettes:
-
-+ [Importing and Manipulating IRMS data](vignettes/v002-irms-functions.Rmd)
-
 
 ### How to cite
 
-Please cite this compendium as:
+Please cite this package as:
 
-> Teickner, H. and Knorr, K.-H., (`r format(Sys.Date(), "%Y")`). _elco: Handling data on chemical element contents and isotope signatures._. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://github.com/henningte/elco>
-
-### Acknowledgments
-
-We thank @Gaka.2019 for the provision of test data.
+> Teickner, H. and Knorr, K.-H., (`r format(Sys.Date(), "%Y")`). _elco: Handling data on chemical element contents and isotope signatures_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://github.com/henningte/elco>
 
 ### Licenses
 
@@ -141,7 +125,7 @@ We thank @Gaka.2019 for the provision of test data.
 
 **Code :** See the [DESCRIPTION](DESCRIPTION) file
 
-**Data :** [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en). All external data (files "xrf1.csv", "xrf2.csv", "irms1.csv", and "irms2.csv") for elco were provided by @Gaka.2019. `elco::irms_standards` was collected from different data sources [@Coplen.2006; @IVAAnalysentechnikGmbHuCoKGt.2016] and own measurements (see the documentation for details). `elco::chno` was created by the package's authors.
+**Data :** [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en).
 
 ### Contributions
 
@@ -149,5 +133,5 @@ We welcome contributions from everyone. Before you get started, please see our [
 
 ### Sources
 
-All data for this package are from @Gaka.2019.
+Conversion constants between masses and molar amounts of chemical elements are from [PeriodicTable](https://github.com/cran/PeriodicTable).
 

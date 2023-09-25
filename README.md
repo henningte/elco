@@ -11,31 +11,27 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Overview
 
-‘elco’ provides functions to handle and (rudimentary) analyze element
-content data and isotope signature data. Features are:
+‘elco’ extends the [‘units’](https://r-quantities.github.io/units/) R
+package with measurement units specific for chemical elements. This
+allows to consider the identity of chemical elements in calculations
+with measurement units.
 
-1.  **Import of XRF and IRMS data** as they can be exported from X-ray
-    fluorescence spectrometers (Rigaku ZSX Primus II) and EA-IRMS
-    devices (HEKATech’s Eurovector EA3000 coupled with Nu Instruments Nu
-    Horizon).
+‘elco’ defines units such as g$_\text{C}$ (grams of carbon) and helps to
+avoid erroneous calculations, such as
+$\frac{1~\text{g}_\text{C} \cdot \text{mol}_\text{N}}{14.0067~\text{g}_\text{N}} = 0.07~\text{mol}_\text{C}$.
 
-2.  Graphical display for easy **data checking**.
+In addition, ‘elco’ provides the following functions:
 
-3.  **Correction of IRMS-measured element content data and isotope
-    signatures** in cases of a mismatch in the signal areas between
-    samples and standards.
-
-4.  **Unit conversion** of element content data (e.g. g/g to mol).
-
-5.  Computation of the **nominal oxidation state of carbon (NOSC),
-    oxidative ratio (OR), and degree of unsaturation (DU)** (Worrall et
-    al. 2016; Masiello et al. 2008).
-
-<img src="man/figures/elco-features.svg" width="50%" style="display: block; margin: auto;" />
+1.  `elco_convert()`: batch-conversion of elemental contents in data
+    frames (e.g. from g to mol).
+2.  `elco_nosc()`, `elco_or()`, `elco_du()`: Compute the nominal
+    oxidation state of carbon, oxidative ratio, and degree of
+    unsaturation, respectively (see e.g., Worrall et al. (2016),
+    Masiello et al. (2008)).
 
 ### How to install
 
-elco can be installed from GitHub:
+‘elco’ can be installed from GitHub:
 
 ``` r
 remotes::install_github("henningte/elco")
@@ -43,9 +39,8 @@ remotes::install_github("henningte/elco")
 
 ### How to use
 
-Here is a short overview on elco general-purpose capabilities (handling
-element content ratios). Examples of how to import and correct data are
-not described here, but in the vignettes.
+Here is a quick overview on how ‘elco’ helps with computing elemental
+ratios.
 
 ``` r
 library(elco)
@@ -90,9 +85,8 @@ Contents for one element are stored in a numeric vector. Measurement
 units and errors are tracked using the
 [quantities](https://github.com/r-quantities/quantities) package.
 
-elco supports unit conversion (using the functions of the units package
-and molar masses from
-[PeriodicTable](https://github.com/cran/PeriodicTable)):
+elco supports unit conversion (using the functions of the units
+package):
 
 ``` r
 # g_C/g_sample to mol_C/g_sample (umol_C/g_sample)
@@ -186,22 +180,13 @@ d <-
   )
 ```
 
-Further information can be found in the vignettes:
-
-- [Importing and Manipulating IRMS
-  data](vignettes/v002-irms-functions.Rmd)
-
 ### How to cite
 
-Please cite this compendium as:
+Please cite this package as:
 
 > Teickner, H. and Knorr, K.-H., (2023). *elco: Handling data on
-> chemical element contents and isotope signatures.*. Accessed 06 Sep
+> chemical element contents and isotope signatures*. Accessed 25 Sep
 > 2023. Online at <https://github.com/henningte/elco>
-
-### Acknowledgments
-
-We thank Gałka et al. (2019) for the provision of test data.
 
 ### Licenses
 
@@ -212,12 +197,6 @@ We thank Gałka et al. (2019) for the provision of test data.
 
 **Data :**
 [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en).
-All external data (files “xrf1.csv”, “xrf2.csv”, “irms1.csv”, and
-“irms2.csv”) for elco were provided by Gałka et al. (2019).
-`elco::irms_standards` was collected from different data sources (Coplen
-et al. 2006; IVA Analysentechnik GmbH & Co. KGt 2016) and own
-measurements (see the documentation for details). `elco::chno` was
-created by the package’s authors.
 
 ### Contributions
 
@@ -228,35 +207,11 @@ participating in this project you agree to abide by its terms.
 
 ### Sources
 
-All data for this package are from Gałka et al. (2019).
+Conversion constants between masses and molar amounts of chemical
+elements are from
+[PeriodicTable](https://github.com/cran/PeriodicTable).
 
 <div id="refs" class="references csl-bib-body hanging-indent">
-
-<div id="ref-Coplen.2006" class="csl-entry">
-
-Coplen, Tyler B., Willi A. Brand, Matthias Gehre, Manfred Gröning, Harro
-A. J. Meijer, Blaza Toman, and R. Michael Verkouteren. 2006.
-“<span class="nocase">New guidelines for $\delta^{13}$C
-measurements</span>.” *Analytical Chemistry* 78 (7): 2439–41.
-<https://doi.org/10.1021/ac052027c>.
-
-</div>
-
-<div id="ref-Gaka.2019" class="csl-entry">
-
-Gałka, M., T. Broder, H. Teickner, and K.-H. Knorr. 2019.
-“<span class="nocase">Randomized dummy IRMS and XRF data for peat for
-the R package elco</span>.”
-
-</div>
-
-<div id="ref-IVAAnalysentechnikGmbHuCoKGt.2016" class="csl-entry">
-
-IVA Analysentechnik GmbH & Co. KGt. 2016. “Elementaranalyse Eurovector/
-HEKAtech.” Edited by IVA Analysentechnik GmbH & Co. KGt.
-<https://www.iva-analysentechnik.de/wp-content/uploads/2016/05/EA_Eurovector_2016_Rev01.pdf>.
-
-</div>
 
 <div id="ref-Masiello.2008" class="csl-entry">
 

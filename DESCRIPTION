@@ -1,5 +1,5 @@
 Package: elco
-Title: Handling Data on Chemical Element Contents and Isotope signatures
+Title: Measurement units for chemical elements 
 Version: 0.1.0.9000
 Authors@R: c(
     person(given = "Henning",
@@ -10,18 +10,11 @@ Authors@R: c(
     person(given = "Klaus-Holger", 
            family = "Knorr", 
            role = c("aut"), 
-           email = "kh.knorrr@wwu.de"),
-    person(given = "Tanja", 
-           family = "Broder", 
-           role = c("ctb")),
-    person(given = "Mariusz", 
-           family = "Gałka", 
-           role = c("ctb"))
+           email = "kh.knorrr@wwu.de")
            )
-Description: 'elco' provides functions to read in raw data on element contents
-    from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and 
-    isotope ratio mass spectrometry (IRMS), handling these as data frames with 
-    units, and computing simple derived variables, such as element ratios.
+Description: 'elco' extends the 'units' package by defining measurement units
+    for each chemical element. This allows to consider the identity of the 
+    chemical element in calculations with units.
 License: GPL-3
 ByteCompile: true
 Encoding: UTF-8
