@@ -4,9 +4,9 @@
 \name{elco-package}
 \alias{elco}
 \alias{elco-package}
-\title{elco: Handling Data on Chemical Element Contents and Isotope signatures}
+\title{elco: Measurement units for chemical elements}
 \description{
-'elco' provides functions to read in raw data on element contents from X-ray fluorescence (XRF), gaschromatographic element analysis (EA), and isotope ratio mass spectrometry (IRMS), handling these as data frames with units, and computing simple derived variables, such as element ratios.
+'elco' extends the 'units' package by defining measurement units for each chemical element. This allows to consider the identity of the chemical element in calculations with units.
 }
 \author{
 \strong{Maintainer}: Henning Teickner \email{h_teic01@uni-muenster.de} (\href{https://orcid.org/0000-0002-3993-1182}{ORCID})
@@ -14,12 +14,6 @@
 Authors:
 \itemize{
   \item Klaus-Holger Knorr \email{kh.knorrr@wwu.de}
-}
-
-Other contributors:
-\itemize{
-  \item Tanja Broder [contributor]
-  \item Mariusz Gałka [contributor]
 }
 
 }

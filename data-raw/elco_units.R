@@ -17,7 +17,7 @@ elco_units <-
       purrr::map(chemical_elements$symb, function(.x) {
         paste0(c("grams_of_", "GramsOf"), .x)
       }),
-    g_to_mol = paste(PeriodicTable::mass(chemical_elements$symb), mol)
+    g_to_mol = paste(1 / PeriodicTable::mass(chemical_elements$symb), mol)
   ) |>
   dplyr::bind_rows(
     tibble::tibble(
