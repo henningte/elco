@@ -7,7 +7,7 @@
 #' statistics), adding units, and renaming columns.
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("deprecated")`
 #'
 #' @keywords internal
 #'
