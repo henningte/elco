@@ -28,6 +28,16 @@ elco_units <-
       g_names = list(c("grams_of_sample", "GramsOfSample")),
       g_to_mol = NA_character_
     )
+  ) |>
+  dplyr::bind_rows(
+    tibble::tibble(
+      thing = "electron",
+      mol = "mol_e",
+      mol_names = list(c("mols_of_electron", "MolsOfElectron")),
+      g = "g_e",
+      g_names = list(c("grams_of_electron", "GramsOfElectron")),
+      g_to_mol = paste(1/(with(constants::syms, me)/1000 * with(constants::syms, na)), mol)
+    )
   )
 
 usethis::use_data(elco_units, overwrite = TRUE)
