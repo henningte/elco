@@ -23,6 +23,8 @@
 #' units::as_units("(g_C * g_H) / (g_sample * L)", mode = "standard") |>
 #'   elco_make_units_generic()
 #'
+#' units::as_units("mol_C/g_sample", mode = "standard") |>
+#'   elco_make_units_generic()
 #'
 #' @export
 elco_make_units_generic <- function(x) {
@@ -35,30 +37,17 @@ elco_make_units_generic <- function(x) {
 
   elco_convert_unit_to_generic <-
     function(.x, is_numerator) {
-      is_selected_g <- stringr::str_remove(.x, pattern = allowed_prefixes_pattern) %in% elco_units$g
-      if(all(is_selected_g)) {
-        is_selected_g <- rep(FALSE, length(is_selected_g))
-        is_selected_g[allowed_prefixes == ""] <- TRUE
+      elco_thing <-
+        stringr::str_extract(.x, pattern = "_.+$")
+      if(all(is.na(elco_thing))) {
+        return(character())
       }
-      is_selected_mol <- stringr::str_remove(.x, pattern = allowed_prefixes_pattern) %in% elco_units$mol
-      if(all(is_selected_mol)) {
-        is_selected_mol <- rep(FALSE, length(is_selected_mol))
-        is_selected_mol[allowed_prefixes == ""] <- TRUE
-      }
-      if(any(is_selected_g)) {
-        if(is_numerator) {
-          paste0(allowed_prefixes[is_selected_g], "g/", .x)
-        } else {
-          paste0(.x, "/", allowed_prefixes[is_selected_g], "g")
-        }
-      } else if(any(is_selected_mol)) {
-        if(is_numerator) {
-          paste0(allowed_prefixes[is_selected_mol], "mol/", .x)
-        } else {
-          paste0(.x, "/", allowed_prefixes[is_selected_mol], "mol")
-        }
+      elco_base_unit <-
+        stringr::str_remove(.x, pattern = paste0(elco_thing, "$"))
+      if(is_numerator) {
+        paste0(elco_base_unit, "/", .x)
       } else {
-        character()
+        paste0(.x, "/", elco_base_unit)
       }
     }
 

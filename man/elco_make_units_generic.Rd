@@ -32,5 +32,7 @@ units::as_units("mmol_C/kg_sample", mode = "standard") |>
 units::as_units("(g_C * g_H) / (g_sample * L)", mode = "standard") |>
   elco_make_units_generic()
 
+units::as_units("mol_C/g_sample", mode = "standard") |>
+  elco_make_units_generic()
 
 }
